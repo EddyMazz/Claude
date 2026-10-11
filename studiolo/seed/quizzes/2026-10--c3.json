@@ -3,61 +3,116 @@
  "key": "c3",
  "questions": [
   {
-   "q": "Chi progettò e costruì la cupola di Santa Maria del Fiore a Firenze?",
+   "q": "Quale pittore di Sansepolcro, attivo anche a Urbino, scrisse il trattato De prospectiva pingendi?",
    "options": [
-    "Michelozzo",
-    "Lorenzo Ghiberti",
-    "Filippo Brunelleschi",
-    "Leon Battista Alberti"
+    "Luca Signorelli",
+    "Paolo Uccello",
+    "Melozzo da Forlì",
+    "Piero della Francesca"
+   ],
+   "answer": 3,
+   "explain": "Piero della Francesca fu anche matematico; a Urbino dipinse il doppio ritratto dei duchi di Montefeltro."
+  },
+  {
+   "q": "A chi apparteneva il celebre studiolo decorato a tarsie lignee del Palazzo Ducale di Urbino?",
+   "options": [
+    "Ludovico il Moro",
+    "Isabella d'Este",
+    "Federico da Montefeltro",
+    "Sigismondo Pandolfo Malatesta"
    ],
    "answer": 2,
-   "explain": "Brunelleschi la costruì tra il 1420 e il 1436 senza le tradizionali impalcature di sostegno (centine), con una doppia calotta e mattoni a spina di pesce."
+   "explain": "Federico, condottiero e mecenate, fece realizzare lo studiolo negli anni '70 del Quattrocento: le tarsie creano armadi e libri in finta prospettiva."
   },
   {
-   "q": "Quale affresco di Masaccio in Santa Maria Novella è considerato un manifesto della prospettiva lineare?",
+   "q": "Per quale signore Leonardo dipinse l'Ultima Cena a Milano?",
    "options": [
-    "L'Annunciazione di Cortona",
-    "La Trinità",
-    "La Primavera",
-    "Il Tributo"
+    "Gian Galeazzo Visconti",
+    "Galeazzo Maria Sforza",
+    "Ludovico Sforza detto il Moro",
+    "Francesco Sforza"
    ],
-   "answer": 1,
-   "explain": "La Trinità (circa 1426-1428) crea l'illusione di una cappella che sfonda il muro. Il Tributo è nella Cappella Brancacci, la Primavera è di Botticelli."
+   "answer": 2,
+   "explain": "Leonardo dipinse il Cenacolo in Santa Maria delle Grazie tra il 1494 e il 1498, su commissione di Ludovico il Moro."
   },
   {
-   "q": "In quale trattato Leon Battista Alberti codificò le regole della prospettiva?",
+   "q": "Chi affrescò la Camera degli Sposi nel Palazzo Ducale di Mantova?",
    "options": [
-    "De divina proportione",
-    "De pictura",
-    "De re aedificatoria",
-    "Il libro dell'arte"
+    "Piero della Francesca",
+    "Giulio Romano",
+    "Pisanello",
+    "Andrea Mantegna"
    ],
-   "answer": 1,
-   "explain": "Il De pictura (1435) spiega la costruzione prospettica; il De re aedificatoria è il suo trattato di architettura."
+   "answer": 3,
+   "explain": "Mantegna la dipinse tra il 1465 e il 1474 per i Gonzaga; il finto oculo sul soffitto è un capolavoro di illusione prospettica."
   },
   {
-   "q": "Quale opera di Donatello è considerata il primo nudo maschile a tutto tondo dall'antichità?",
+   "q": "Di quale città fu marchesa, per matrimonio, la collezionista Isabella d'Este?",
    "options": [
-    "Il David in bronzo",
-    "La Maddalena penitente",
-    "Il San Giorgio",
-    "Il Gattamelata"
+    "Mantova",
+    "Ferrara",
+    "Urbino",
+    "Milano"
    ],
    "answer": 0,
-   "explain": "Il David in bronzo, realizzato probabilmente negli anni '40 del Quattrocento per i Medici, riprende il nudo classico."
+   "explain": "Nata a Ferrara, sposò Francesco II Gonzaga e trasformò Mantova in uno dei centri culturali più vivaci d'Italia."
   },
   {
-   "q": "Chi vinse nel 1401 il concorso per la porta nord del Battistero di Firenze?",
+   "q": "Lo 'sfumato', il passaggio graduale tra luce e ombra senza contorni netti, è associato soprattutto a:",
    "options": [
-    "Jacopo della Quercia",
-    "Donatello",
-    "Lorenzo Ghiberti",
-    "Filippo Brunelleschi"
+    "Raffaello",
+    "Michelangelo",
+    "Botticelli",
+    "Leonardo da Vinci"
+   ],
+   "answer": 3,
+   "explain": "Leonardo lo usò per dare morbidezza e mistero ai volti, come nella Gioconda."
+  },
+  {
+   "q": "In quali anni Michelangelo affrescò la volta della Cappella Sistina?",
+   "options": [
+    "1536-1541",
+    "1508-1512",
+    "1520-1527",
+    "1475-1481"
+   ],
+   "answer": 1,
+   "explain": "La volta fu dipinta tra il 1508 e il 1512 per Giulio II; il Giudizio Universale sulla parete d'altare è invece del 1536-1541."
+  },
+  {
+   "q": "Quale papa commissionò sia la volta della Sistina sia le Stanze di Raffaello?",
+   "options": [
+    "Sisto IV",
+    "Alessandro VI",
+    "Giulio II",
+    "Leone X"
    ],
    "answer": 2,
-   "explain": "Ghiberti vinse con la formella del Sacrificio di Isacco; Brunelleschi, sconfitto, si dedicò all'architettura."
+   "explain": "Giulio II della Rovere, il 'papa guerriero', volle trasformare Roma nella capitale del Rinascimento."
+  },
+  {
+   "q": "Dove si trova la Scuola di Atene di Raffaello?",
+   "options": [
+    "Galleria degli Uffizi",
+    "Stanza della Segnatura, nei Palazzi Vaticani",
+    "Galleria Borghese",
+    "Museo del Louvre"
+   ],
+   "answer": 1,
+   "explain": "Raffaello la affrescò tra il 1509 e il 1511; tra i filosofi ritrasse anche Leonardo, Michelangelo e se stesso."
+  },
+  {
+   "q": "In quali anni Michelangelo scolpì il David?",
+   "options": [
+    "1501-1504",
+    "1491-1494",
+    "1512-1516",
+    "1530-1534"
+   ],
+   "answer": 0,
+   "explain": "Lo ricavò da un grande blocco di marmo già lavorato e abbandonato da altri scultori; fu collocato davanti a Palazzo Vecchio nel 1504."
   }
  ],
- "createdAt": "2026-10-11T09:00:00.000Z",
+ "createdAt": "2026-10-11T13:00:00.000Z",
  "source": "seed"
 }

@@ -6,115 +6,71 @@
   "chapters": [
     {
       "id": "c1",
-      "title": "Che cos'è il Rinascimento",
-      "summary": "Da dove viene l'idea di una 'rinascita' dopo il Medioevo, chi l'ha inventata e perché proprio in Italia. Il ruolo di Petrarca, della peste nera e della riscoperta dei classici.",
+      "title": "Le origini e la Firenze dei Medici",
+      "summary": "Che cosa intendiamo per Rinascimento, perché nasce in Italia e come una repubblica di mercanti e banchieri diventa il suo laboratorio. Da Petrarca a Lorenzo il Magnifico, fino alla cacciata dei Medici nel 1494.",
       "points": [
         "Petrarca e la caccia ai manoscritti antichi: nasce l'Umanesimo",
         "Gli studia humanitatis: grammatica, retorica, storia, poesia, filosofia morale",
         "La peste nera del 1348 e la società che ne esce",
-        "Vasari parla di 'rinascita' delle arti; Burckhardt nel 1860 crea il concetto storico",
-        "Perché l'Italia: città ricche, rovine romane ovunque, nessun potere centrale"
+        "Vasari parla di 'rinascita'; Burckhardt nel 1860 crea il concetto storico",
+        "Il Banco Medici e la ricchezza costruita sul credito e sulla Chiesa",
+        "Cosimo il Vecchio: esilio nel 1433 e ritorno nel 1434",
+        "Lorenzo il Magnifico e la congiura dei Pazzi del 1478",
+        "1494: cacciata dei Medici e la repubblica di Savonarola"
       ],
-      "reading": "Gombrich, La storia dell'arte, capitolo 12. Burckhardt, La civiltà del Rinascimento in Italia, parte prima (lettura facoltativa).",
-      "minutes": 90
+      "reading": "Gombrich, La storia dell'arte, capitolo 12. Ross King, La cupola di Brunelleschi, capitoli 1-3. Facoltativo: Burckhardt, La civiltà del Rinascimento in Italia, parte prima.",
+      "minutes": 300
     },
     {
       "id": "c2",
-      "title": "Firenze e i Medici",
-      "summary": "Una repubblica di mercanti diventa il laboratorio del Rinascimento. I Medici, da banchieri a signori di fatto della città, e il mecenatismo come strumento di potere.",
+      "title": "Arte nuova e idee nuove: prospettiva e Umanesimo",
+      "summary": "Nella Firenze del primo Quattrocento Brunelleschi, Masaccio e Donatello reinventano lo spazio e il corpo, mentre gli umanisti riscoprono testi perduti, smascherano falsi e mettono l'essere umano al centro.",
       "points": [
-        "Il Banco Medici e la ricchezza costruita sul credito e sulla Chiesa",
-        "Cosimo il Vecchio: esilio nel 1433 e trionfale ritorno nel 1434",
-        "Lorenzo il Magnifico, poeta, diplomatico e mecenate",
-        "La congiura dei Pazzi del 1478 e la morte di Giuliano",
-        "1494: cacciata dei Medici e la repubblica di Savonarola"
+        "Il concorso del 1401 per la porta del Battistero, vinto da Ghiberti",
+        "La cupola di Santa Maria del Fiore (1420-1436)",
+        "Masaccio: la Trinità e la Cappella Brancacci",
+        "Il David in bronzo di Donatello",
+        "Alberti, De pictura (1435): la prospettiva diventa teoria",
+        "Poggio Bracciolini ritrova Lucrezio (1417); Valla smaschera la Donazione di Costantino (1440)",
+        "Ficino traduce Platone; Pico scrive l'Oratio de hominis dignitate (1486)",
+        "La caduta di Costantinopoli (1453) e i dotti greci in Italia"
       ],
-      "reading": "Ross King, La cupola di Brunelleschi, capitoli 1-3, per il contesto della Firenze del primo Quattrocento.",
-      "minutes": 100
+      "reading": "Ross King, La cupola di Brunelleschi (da finire). Greenblatt, Il manifesto della libertà, capitoli 1-5. Gombrich, capitolo 13.",
+      "minutes": 300
     },
     {
       "id": "c3",
-      "title": "La rivoluzione della prospettiva",
-      "summary": "Nella Firenze degli anni 1400-1440 tre artisti cambiano per sempre la rappresentazione dello spazio: Brunelleschi, Masaccio e Donatello. Alberti mette le regole per iscritto.",
+      "title": "Le corti e i grandi maestri",
+      "summary": "Fuori da Firenze i signori di Urbino, Mantova e Milano competono a colpi di artisti e biblioteche. Poi, tra Firenze e la Roma di Giulio II, Leonardo, Michelangelo e Raffaello portano il Rinascimento al suo culmine.",
       "points": [
-        "Il concorso del 1401 per la porta del Battistero, vinto da Ghiberti",
-        "La cupola di Santa Maria del Fiore (1420-1436) e la sua tecnica senza centine",
-        "Masaccio: la Trinità in Santa Maria Novella e la Cappella Brancacci",
-        "Il David in bronzo di Donatello e il ritorno del nudo",
-        "Alberti, De pictura (1435): la prospettiva diventa teoria"
+        "Federico da Montefeltro e lo studiolo di Urbino; Piero della Francesca",
+        "Mantegna e la Camera degli Sposi a Mantova (1465-1474)",
+        "Isabella d'Este, collezionista e diplomatica",
+        "Ludovico il Moro, Leonardo a Milano e il Cenacolo",
+        "Leonardo: lo sfumato, i taccuini, la curiosità senza confini",
+        "Il David di Michelangelo (1501-1504)",
+        "Giulio II e la volta della Sistina (1508-1512)",
+        "Raffaello e la Scuola di Atene"
       ],
-      "reading": "Ross King, La cupola di Brunelleschi (tutto il libro, si legge come un romanzo). Gombrich, capitolo 13.",
-      "minutes": 110
+      "reading": "Gombrich, capitolo 14. Isaacson, Leonardo da Vinci (4-5 capitoli a scelta). Vasari, Vite: le biografie di Leonardo, Michelangelo e Raffaello.",
+      "minutes": 300
     },
     {
       "id": "c4",
-      "title": "Umanesimo e filosofia",
-      "summary": "I dotti del Quattrocento leggono gli antichi con occhi nuovi: smascherano falsi, traducono Platone e mettono l'essere umano al centro. Ritrovamenti di manoscritti che cambiano la storia delle idee.",
-      "points": [
-        "Poggio Bracciolini ritrova il De rerum natura di Lucrezio (1417)",
-        "Lorenzo Valla dimostra falsa la Donazione di Costantino (1440)",
-        "Marsilio Ficino traduce Platone e anima l'Accademia neoplatonica",
-        "Pico della Mirandola e l'Oratio de hominis dignitate (1486)",
-        "La caduta di Costantinopoli (1453) e i dotti greci in Italia"
-      ],
-      "reading": "Stephen Greenblatt, Il manifesto della libertà, capitoli 1-5.",
-      "minutes": 100
-    },
-    {
-      "id": "c5",
-      "title": "Le corti: Urbino, Mantova, Ferrara, Milano",
-      "summary": "Fuori da Firenze, i signori delle corti padane e marchigiane competono a colpi di artisti e biblioteche. Il Rinascimento diventa uno stile di vita principesco.",
-      "points": [
-        "Federico da Montefeltro e lo studiolo di Urbino",
-        "Piero della Francesca, pittore e matematico",
-        "Mantegna e la Camera degli Sposi a Mantova (1465-1474)",
-        "Isabella d'Este, collezionista e diplomatica",
-        "Ludovico il Moro, Leonardo a Milano e il Cenacolo"
-      ],
-      "reading": "Gombrich, capitolo 14. Castiglione, Il libro del Cortegiano, libro primo (per l'atmosfera della corte di Urbino).",
-      "minutes": 100
-    },
-    {
-      "id": "c6",
-      "title": "Leonardo, Michelangelo, Raffaello",
-      "summary": "Il Rinascimento maturo, tra Firenze e la Roma di papa Giulio II. Tre personalità opposte che fissano un modello d'arte per i secoli successivi.",
-      "points": [
-        "Leonardo: lo sfumato, i taccuini, la curiosità senza confini",
-        "Il David di Michelangelo (1501-1504)",
-        "Giulio II e la nuova Roma: la volta della Sistina (1508-1512)",
-        "Raffaello e la Scuola di Atene nella Stanza della Segnatura",
-        "Il mito dell'artista geniale e le Vite di Vasari"
-      ],
-      "reading": "Walter Isaacson, Leonardo da Vinci (scegliete 4-5 capitoli). Vasari, Vite: le biografie di Leonardo, Michelangelo e Raffaello.",
-      "minutes": 120
-    },
-    {
-      "id": "c7",
-      "title": "Potere e politica: Machiavelli e Guicciardini",
-      "summary": "Mentre l'arte trionfa, l'Italia diventa il campo di battaglia delle grandi potenze. Machiavelli e Guicciardini guardano alla politica per come è, non per come dovrebbe essere.",
+      "title": "Potere, guerre e la fine di un'epoca",
+      "summary": "Mentre l'arte trionfa, l'Italia diventa il campo di battaglia delle grandi potenze e Machiavelli guarda alla politica per come è davvero. Venezia sviluppa un Rinascimento di colore e di libri, finché Controriforma e Manierismo chiudono la stagione.",
       "points": [
         "1494: la discesa di Carlo VIII apre le guerre d'Italia",
         "Il Principe (1513) e la 'verità effettuale della cosa'",
-        "Virtù e fortuna nel pensiero di Machiavelli",
-        "Guicciardini e la Storia d'Italia",
-        "Il Sacco di Roma del 1527"
-      ],
-      "reading": "Machiavelli, Il Principe (breve: leggetelo tutto, magari in un'edizione commentata).",
-      "minutes": 110
-    },
-    {
-      "id": "c8",
-      "title": "Venezia e la fine di un'epoca",
-      "summary": "Venezia sviluppa un Rinascimento tutto suo, fatto di colore, luce e stampa. A metà Cinquecento, tra Controriforma e Manierismo, la stagione si chiude.",
-      "points": [
-        "Aldo Manuzio: il libro tascabile e il carattere corsivo",
-        "Giorgione e l'enigma della Tempesta",
-        "Tiziano e il primato del colore",
+        "Virtù e fortuna; Guicciardini e la Storia d'Italia",
+        "Il Sacco di Roma del 1527",
+        "Aldo Manuzio: il libro tascabile e il corsivo",
+        "Giorgione e la Tempesta; Tiziano e il primato del colore",
         "Il Cortegiano (1528): il gentiluomo ideale",
         "Il Concilio di Trento (1545) e la fine del Rinascimento"
       ],
-      "reading": "Gombrich, capitolo 15. Rileggete i vostri appunti dei capitoli precedenti prima dell'esame finale.",
-      "minutes": 100
+      "reading": "Machiavelli, Il Principe (tutto). Gombrich, capitolo 15. Prima dell'esame finale rileggete i vostri appunti delle quattro settimane.",
+      "minutes": 300
     }
   ],
   "books": [
@@ -188,5 +144,6 @@
   "createdAt": "2026-10-11T09:00:00.000Z",
   "createdBy": null,
   "source": "seed",
-  "theme": "arte"
+  "theme": "arte",
+  "structure": "weeks"
 }

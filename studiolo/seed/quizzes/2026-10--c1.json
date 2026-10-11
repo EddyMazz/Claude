@@ -3,6 +3,28 @@
  "key": "c1",
  "questions": [
   {
+   "q": "Quale parola usò Giorgio Vasari nelle Vite per descrivere il rifiorire delle arti dopo il Medioevo?",
+   "options": [
+    "Rinascita",
+    "Risveglio",
+    "Illuminazione",
+    "Riforma"
+   ],
+   "answer": 0,
+   "explain": "Vasari parla di 'rinascita' delle arti, iniziata secondo lui con Cimabue e Giotto e culminata con Michelangelo."
+  },
+  {
+   "q": "In quale anno avvenne la congiura dei Pazzi, in cui fu ucciso Giuliano de' Medici?",
+   "options": [
+    "1453",
+    "1492",
+    "1478",
+    "1434"
+   ],
+   "answer": 2,
+   "explain": "Il 26 aprile 1478, durante la messa in Duomo, i congiurati uccisero Giuliano; Lorenzo, ferito, si salvò."
+  },
+  {
    "q": "Chi è considerato il padre dell'Umanesimo per la sua passione nel ritrovare e studiare i classici latini?",
    "options": [
     "Angelo Poliziano",
@@ -25,15 +47,26 @@
    "explain": "Il saggio di Burckhardt descrisse l'Italia del Quattrocento come culla dell'individuo moderno e fissò l'idea di Rinascimento."
   },
   {
-   "q": "Quale parola usò Giorgio Vasari nelle Vite per descrivere il rifiorire delle arti dopo il Medioevo?",
+   "q": "Su quale attività si fondava soprattutto la ricchezza dei Medici?",
    "options": [
-    "Rinascita",
-    "Risveglio",
-    "Illuminazione",
-    "Riforma"
+    "Le miniere d'argento",
+    "La costruzione di navi",
+    "Il commercio delle spezie",
+    "La banca"
+   ],
+   "answer": 3,
+   "explain": "Il Banco Medici, fondato nel 1397 da Giovanni di Bicci, aveva filiali in tutta Europa ed era il banchiere del papato."
+  },
+  {
+   "q": "Che cosa comprendevano gli studia humanitatis?",
+   "options": [
+    "Grammatica, retorica, storia, poesia e filosofia morale",
+    "Teologia e diritto canonico",
+    "Aritmetica, geometria, astronomia e musica",
+    "Medicina, alchimia e astrologia"
    ],
    "answer": 0,
-   "explain": "Vasari parla di 'rinascita' delle arti, iniziata secondo lui con Cimabue e Giotto e culminata con Michelangelo."
+   "explain": "Erano le discipline che formano l'uomo come cittadino e oratore; aritmetica, geometria, astronomia e musica formavano invece il quadrivio medievale."
   },
   {
    "q": "Quale evento del 1348 sconvolse l'Europa pochi decenni prima della stagione umanistica?",
@@ -47,17 +80,39 @@
    "explain": "La peste nera uccise forse un terzo degli europei; Boccaccio la descrive all'inizio del Decameron."
   },
   {
-   "q": "Che cosa comprendevano gli studia humanitatis?",
+   "q": "Quale frate domenicano dominò la vita politica fiorentina dopo la cacciata dei Medici nel 1494?",
    "options": [
-    "Grammatica, retorica, storia, poesia e filosofia morale",
-    "Teologia e diritto canonico",
-    "Aritmetica, geometria, astronomia e musica",
-    "Medicina, alchimia e astrologia"
+    "Girolamo Savonarola",
+    "Antonino Pierozzi",
+    "Tommaso Campanella",
+    "Bernardino da Siena"
    ],
    "answer": 0,
-   "explain": "Erano le discipline che formano l'uomo come cittadino e oratore; aritmetica, geometria, astronomia e musica formavano invece il quadrivio medievale."
+   "explain": "Savonarola predicava contro il lusso e organizzò i 'falò delle vanità'; fu giustiziato in piazza della Signoria nel 1498."
+  },
+  {
+   "q": "Nel 1434 Cosimo il Vecchio tornò a Firenze dopo:",
+   "options": [
+    "Una crociata in Oriente",
+    "Gli studi all'Università di Parigi",
+    "Un anno di esilio tra Padova e Venezia",
+    "Un periodo al servizio del papa ad Avignone"
+   ],
+   "answer": 2,
+   "explain": "Esiliato nel 1433 dalla fazione degli Albizzi, Cosimo rientrò l'anno dopo e governò di fatto la città fino al 1464."
+  },
+  {
+   "q": "Chi era chiamato 'il Magnifico'?",
+   "options": [
+    "Giovanni dalle Bande Nere",
+    "Cosimo il Vecchio",
+    "Lorenzo de' Medici",
+    "Piero il Gottoso"
+   ],
+   "answer": 2,
+   "explain": "Lorenzo (1449-1492) fu poeta, diplomatico e mecenate; mantenne l'equilibrio tra gli stati italiani fino alla morte."
   }
  ],
- "createdAt": "2026-10-11T09:00:00.000Z",
+ "createdAt": "2026-10-11T13:00:00.000Z",
  "source": "seed"
 }

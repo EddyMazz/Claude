@@ -3,61 +3,116 @@
  "key": "c2",
  "questions": [
   {
-   "q": "Su quale attività si fondava soprattutto la ricchezza dei Medici?",
+   "q": "Chi vinse nel 1401 il concorso per la porta nord del Battistero di Firenze?",
    "options": [
-    "Le miniere d'argento",
-    "La costruzione di navi",
-    "Il commercio delle spezie",
-    "La banca"
+    "Jacopo della Quercia",
+    "Donatello",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi"
+   ],
+   "answer": 2,
+   "explain": "Ghiberti vinse con la formella del Sacrificio di Isacco; Brunelleschi, sconfitto, si dedicò all'architettura."
+  },
+  {
+   "q": "Marsilio Ficino tradusse in latino le opere complete di:",
+   "options": [
+    "Aristotele",
+    "Lucrezio",
+    "Platone",
+    "Seneca"
+   ],
+   "answer": 2,
+   "explain": "Ficino, sostenuto da Cosimo de' Medici, tradusse tutto Platone e fu l'anima dell'Accademia neoplatonica fiorentina."
+  },
+  {
+   "q": "Quale documento Lorenzo Valla dimostrò falso, studiandone la lingua?",
+   "options": [
+    "L'Editto di Milano",
+    "La Donazione di Costantino",
+    "Il Dictatus papae",
+    "La Bolla d'oro"
+   ],
+   "answer": 1,
+   "explain": "Nel 1440 Valla mostrò che il latino del documento non poteva essere del IV secolo: nasce la filologia moderna."
+  },
+  {
+   "q": "Chi progettò e costruì la cupola di Santa Maria del Fiore a Firenze?",
+   "options": [
+    "Michelozzo",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi",
+    "Leon Battista Alberti"
+   ],
+   "answer": 2,
+   "explain": "Brunelleschi la costruì tra il 1420 e il 1436 senza le tradizionali impalcature di sostegno (centine), con una doppia calotta e mattoni a spina di pesce."
+  },
+  {
+   "q": "Chi scrisse l'Oratio de hominis dignitate (Discorso sulla dignità dell'uomo)?",
+   "options": [
+    "Marsilio Ficino",
+    "Angelo Poliziano",
+    "Leonardo Bruni",
+    "Giovanni Pico della Mirandola"
    ],
    "answer": 3,
-   "explain": "Il Banco Medici, fondato nel 1397 da Giovanni di Bicci, aveva filiali in tutta Europa ed era il banchiere del papato."
+   "explain": "Pico la scrisse nel 1486: l'uomo è l'unico essere che può scegliere che cosa diventare."
   },
   {
-   "q": "In quale anno avvenne la congiura dei Pazzi, in cui fu ucciso Giuliano de' Medici?",
+   "q": "Quale evento del 1453 contribuì a portare in Italia dotti bizantini e manoscritti greci?",
    "options": [
-    "1453",
-    "1492",
-    "1478",
-    "1434"
+    "Il Sacco di Roma",
+    "La Pace di Lodi",
+    "Il Concilio di Costanza",
+    "La caduta di Costantinopoli"
    ],
-   "answer": 2,
-   "explain": "Il 26 aprile 1478, durante la messa in Duomo, i congiurati uccisero Giuliano; Lorenzo, ferito, si salvò."
+   "answer": 3,
+   "explain": "La conquista ottomana di Costantinopoli accelerò l'arrivo di studiosi greci, già iniziato con il Concilio di Firenze del 1439."
   },
   {
-   "q": "Chi era chiamato 'il Magnifico'?",
+   "q": "Quale opera di Donatello è considerata il primo nudo maschile a tutto tondo dall'antichità?",
    "options": [
-    "Giovanni dalle Bande Nere",
-    "Cosimo il Vecchio",
-    "Lorenzo de' Medici",
-    "Piero il Gottoso"
-   ],
-   "answer": 2,
-   "explain": "Lorenzo (1449-1492) fu poeta, diplomatico e mecenate; mantenne l'equilibrio tra gli stati italiani fino alla morte."
-  },
-  {
-   "q": "Nel 1434 Cosimo il Vecchio tornò a Firenze dopo:",
-   "options": [
-    "Una crociata in Oriente",
-    "Gli studi all'Università di Parigi",
-    "Un anno di esilio tra Padova e Venezia",
-    "Un periodo al servizio del papa ad Avignone"
-   ],
-   "answer": 2,
-   "explain": "Esiliato nel 1433 dalla fazione degli Albizzi, Cosimo rientrò l'anno dopo e governò di fatto la città fino al 1464."
-  },
-  {
-   "q": "Quale frate domenicano dominò la vita politica fiorentina dopo la cacciata dei Medici nel 1494?",
-   "options": [
-    "Girolamo Savonarola",
-    "Antonino Pierozzi",
-    "Tommaso Campanella",
-    "Bernardino da Siena"
+    "Il David in bronzo",
+    "La Maddalena penitente",
+    "Il San Giorgio",
+    "Il Gattamelata"
    ],
    "answer": 0,
-   "explain": "Savonarola predicava contro il lusso e organizzò i 'falò delle vanità'; fu giustiziato in piazza della Signoria nel 1498."
+   "explain": "Il David in bronzo, realizzato probabilmente negli anni '40 del Quattrocento per i Medici, riprende il nudo classico."
+  },
+  {
+   "q": "Quale affresco di Masaccio in Santa Maria Novella è considerato un manifesto della prospettiva lineare?",
+   "options": [
+    "L'Annunciazione di Cortona",
+    "La Trinità",
+    "La Primavera",
+    "Il Tributo"
+   ],
+   "answer": 1,
+   "explain": "La Trinità (circa 1426-1428) crea l'illusione di una cappella che sfonda il muro. Il Tributo è nella Cappella Brancacci, la Primavera è di Botticelli."
+  },
+  {
+   "q": "In quale trattato Leon Battista Alberti codificò le regole della prospettiva?",
+   "options": [
+    "De divina proportione",
+    "De pictura",
+    "De re aedificatoria",
+    "Il libro dell'arte"
+   ],
+   "answer": 1,
+   "explain": "Il De pictura (1435) spiega la costruzione prospettica; il De re aedificatoria è il suo trattato di architettura."
+  },
+  {
+   "q": "Quale poema latino, ritrovato da Poggio Bracciolini nel 1417, riportò in circolazione le idee di Epicuro?",
+   "options": [
+    "L'Institutio oratoria di Quintiliano",
+    "Il De rerum natura di Lucrezio",
+    "Le Metamorfosi di Ovidio",
+    "L'Eneide di Virgilio"
+   ],
+   "answer": 1,
+   "explain": "Il De rerum natura descrive un universo fatto di atomi, senza intervento divino; Greenblatt racconta questa scoperta ne Il manifesto della libertà."
   }
  ],
- "createdAt": "2026-10-11T09:00:00.000Z",
+ "createdAt": "2026-10-11T13:00:00.000Z",
  "source": "seed"
 }
