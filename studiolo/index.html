@@ -732,7 +732,7 @@ function nameBox() {
     <div class="nb-body">
       <label for="my-name"><strong>${mine ? "Cambia il tuo nome" : "Come ti chiami?"}</strong></label>
       <div class="row">
-        <input type="text" id="my-name" maxlength="30" autocomplete="nickname" placeholder="Il tuo nome" value="${esc(mine)}">
+        <input type="text" id="my-name" maxlength="30" autocomplete="nickname" placeholder="Il tuo nome" value="${esc(mine || (S.isOwner ? "Luca" : "Camilla"))}">
         <button class="btn primary" type="submit">${ic("check")}Salva</button>
         ${mine ? `<button class="btn quiet" type="button" data-act="name-cancel">Annulla</button>` : ""}
       </div>
@@ -1743,11 +1743,12 @@ async function boot() {
   S.user = user; S.sample = sample;
   if (Store.mode === "cloud") {
     S.me = user ? await user.id() : null;
+    S.isOwner = user ? await user.isOwner() : false;
     const w = user ? await user.can("data.write") : null;
     S.canWrite = !!S.me && w !== false;
     if (!S.me) notice("Accedi a Claude per salvare i tuoi progressi. Per ora puoi solo consultare i programmi.");
   } else {
-    S.me = "locale";
+    S.me = "locale"; S.isOwner = true;
     notice("Stai usando Lo Studiolo fuori da Claude: i progressi restano solo in questo browser e la generazione con Claude non è disponibile.");
   }
   Store.watch("topics", rows => { S.topics = rows.filter(r => isMonth(r.id) && Array.isArray(r.chapters)).sort((a, b) => a.id.localeCompare(b.id)); S.loaded.topics = true; render(); });
