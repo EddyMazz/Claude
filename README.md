@@ -3,7 +3,7 @@
 Una web app per studiare in due un argomento nuovo ogni mese e diventare più colti.
 
 - **Argomento del mese**: il programma di studio diviso in 4 capitoli, uno per settimana, con libri consigliati e altre fonti: podcast, film, serie, documentari, video su YouTube e luoghi da visitare. Anche ogni settimana ha le sue fonti da ascoltare e guardare. I link portano a una ricerca su YouTube, su Google o sulla mappa, così funzionano sempre. Mostra i progressi di entrambi e la settimana in corso.
-- **Settimana**: concetti chiave, letture e fonti. C'è anche un tutor a cui fare domande. La lezione scritta da Claude resta salvata e segue sempre questa struttura: spiegazione approfondita, contesto storico, nomi, date, istituzioni e concetti fondamentali, esempi concreti, collegamenti con altri argomenti, una mappa di riepilogo disegnata dall'app e due domande da discutere insieme.
+- **Settimana**: concetti chiave, letture e fonti. C'è anche un tutor a cui fare domande. Ogni settimana è divisa in 3 lezioni scritte da Claude, che restano salvate e si possono segnare come lette. Ogni lezione segue sempre questa struttura: spiegazione approfondita, contesto storico, nomi, date, istituzioni e concetti fondamentali, esempi concreti, collegamenti con altri argomenti, una mappa di riepilogo disegnata dall'app e due domande da discutere insieme.
 - **Test**: ogni settimana ha il suo test conclusivo di 30 domande, uguali per entrambi. C'è poi un esame finale di 30 domande su tutto il mese. Ogni risposta ha la sua spiegazione.
 - **Allenamento libero**: un test di 10 domande quando volete, che non dà punti, con domande solo sulle settimane che avete già completato, prese dai test o scritte da Claude.
 - **La sfida**: si salvano tutti i punteggi. Ogni test vale un punto per chi ha il risultato migliore. Una tabella confronta i vostri record e mostra gli ultimi test.
@@ -28,9 +28,9 @@ Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in moda
 | Collezione | Documento | Contenuto |
 |---|---|---|
 | `topics` | `AAAA-MM` | programma del mese: capitoli, libri, extra |
-| `progress` | `AAAA-MM--<utente>` | settimane completate, libri letti, risultati e storico di test, allenamenti ed esame finale |
+| `progress` | `AAAA-MM--<utente>` | settimane completate, lezioni lette, libri letti, risultati e storico di test, allenamenti ed esame finale |
 | `quizzes` | `AAAA-MM--c1` … `AAAA-MM--final` | domande dei test |
-| `lessons` | `AAAA-MM--c1` … | lezioni scritte da Claude |
+| `lessons` | `AAAA-MM--c1--l1` … `--l3` | le tre lezioni di ogni settimana, scritte da Claude |
 | `plan` | `year` | piano annuale |
 | `votes` | `AAAA-MM` | votazione del mese: 5 candidati, stato, vincitore |
 | `ballots` | `<utente>` | voti di ciascuno; ognuno può modificare solo i propri |

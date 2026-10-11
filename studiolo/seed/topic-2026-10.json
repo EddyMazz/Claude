@@ -42,6 +42,20 @@
           "note": "Mezz'ora per ripassare la vita di Lorenzo e la congiura dei Pazzi.",
           "query": "Wikiradio Lorenzo il Magnifico"
         }
+      ],
+      "lessons": [
+        {
+          "title": "L'idea di Rinascimento: Petrarca e l'Umanesimo",
+          "focus": "Che cosa intendiamo per Rinascimento e chi ha inventato questa idea: Petrarca e la riscoperta dei classici, gli studia humanitatis, la 'rinascita' di Vasari e il Rinascimento di Burckhardt."
+        },
+        {
+          "title": "Una repubblica di mercanti: Firenze tra peste e Arti",
+          "focus": "Perché proprio Firenze: la società dopo la peste nera del 1348, le Arti e il governo della città, la cancelleria umanista di Salutati e Bruni, la Pace di Lodi e l'equilibrio tra gli stati italiani."
+        },
+        {
+          "title": "I Medici: dalla banca al potere",
+          "focus": "Dal Banco Medici di Giovanni di Bicci a Cosimo il Vecchio e Lorenzo il Magnifico: mecenatismo, congiura dei Pazzi, diplomazia, fino alla cacciata del 1494 e a Savonarola."
+        }
       ]
     },
     {
@@ -81,6 +95,20 @@
           "by": "Rai Radio 3",
           "note": "Il filosofo dell'Oratio de hominis dignitate e la Firenze di Ficino.",
           "query": "Wikiradio Pico della Mirandola"
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Brunelleschi e la cupola",
+          "focus": "Il concorso del 1401, la sfida tecnica della cupola di Santa Maria del Fiore, lo Spedale degli Innocenti e l'esperimento della prospettiva."
+        },
+        {
+          "title": "La nuova arte: Masaccio, Donatello, Alberti",
+          "focus": "La Trinità e la Cappella Brancacci, il David e il Gattamelata, le porte di Ghiberti e il De pictura: come cambia il modo di rappresentare spazio e corpo."
+        },
+        {
+          "title": "Gli umanisti: manoscritti, falsi e filosofia",
+          "focus": "Poggio Bracciolini e Lucrezio, Valla e la Donazione di Costantino, Crisolora e il greco, il Concilio del 1439, Ficino, Pico e l'Accademia neoplatonica."
         }
       ]
     },
@@ -122,6 +150,20 @@
           "note": "Chi sono i filosofi dell'affresco e perché è un manifesto del Rinascimento maturo.",
           "query": "Smarthistory Raphael School of Athens"
         }
+      ],
+      "lessons": [
+        {
+          "title": "Le corti: Urbino, Mantova, Ferrara, Milano",
+          "focus": "Federico da Montefeltro e lo studiolo, Piero della Francesca, Mantegna e i Gonzaga, gli Este e Ariosto, Isabella d'Este, Ludovico il Moro."
+        },
+        {
+          "title": "Leonardo da Vinci",
+          "focus": "La formazione da Verrocchio, gli anni milanesi e il Cenacolo, i taccuini, lo sfumato e la Gioconda, gli ultimi anni in Francia."
+        },
+        {
+          "title": "Michelangelo, Raffaello e la Roma di Giulio II",
+          "focus": "Il David e la Pietà, la volta della Sistina, le Stanze di Raffaello e la Scuola di Atene, Bramante e la nuova San Pietro."
+        }
       ]
     },
     {
@@ -161,6 +203,20 @@
           "by": "Rai Radio 3",
           "note": "Il 1527 raccontato in mezz'ora.",
           "query": "Wikiradio Sacco di Roma 1527"
+        }
+      ],
+      "lessons": [
+        {
+          "title": "Le guerre d'Italia e il Sacco di Roma",
+          "focus": "Dalla discesa di Carlo VIII nel 1494 alle battaglie di Fornovo, Agnadello e Pavia, fino al Sacco di Roma del 1527 e all'incoronazione di Carlo V a Bologna."
+        },
+        {
+          "title": "Machiavelli e Guicciardini: la politica com'è",
+          "focus": "La carriera di Machiavelli, Il Principe, virtù e fortuna, Cesare Borgia come modello; Guicciardini e la Storia d'Italia."
+        },
+        {
+          "title": "Venezia, la stampa e la fine del Rinascimento",
+          "focus": "Aldo Manuzio e il libro tascabile, Bellini, Giorgione e Tiziano, Bembo e la lingua, il Cortegiano, la Riforma, il Manierismo e il Concilio di Trento."
         }
       ]
     }

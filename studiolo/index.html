@@ -228,6 +228,13 @@ textarea { min-height: 80px; resize: vertical; }
 .cmap-branch ul { margin: 0; padding-left: 1.1em; font-size: 14.5px; color: var(--muted); display: grid; gap: 2px; }
 .prose pre { overflow-x: auto; background: var(--surface); padding: 10px; border-radius: var(--r); font-size: 13px; }
 .quiz-actions { position: sticky; bottom: env(safe-area-inset-bottom, 0px); background: var(--paper); padding: 12px 0; border-top: 1px solid var(--line); }
+.lesson-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.lesson-card { width: 100%; height: 100%; text-align: left; display: grid; gap: 3px; align-content: start; padding: 12px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); cursor: pointer; }
+.lesson-card:hover { border-color: var(--muted); }
+.lesson-card.on { border-color: var(--lapis); background: var(--lapis-soft); }
+.lesson-card .t { font-weight: 650; line-height: 1.3; }
+.lesson-card .f { font-size: 13.5px; color: var(--muted); }
+.lesson-h { font-family: var(--display); font-weight: 600; font-size: 22px; }
 .chip.now { border-color: var(--lapis); color: var(--on-accent); background: var(--lapis); }
 
 /* Vote */
@@ -332,6 +339,17 @@ function mediaList(items) {
   return `<ul class="media">${sorted.map(x => { const l = mediaLink(x);
     return `<li><span class="label">${esc(MEDIA_LABEL[x.type] || x.type)}</span><span class="t">${esc(x.title)}</span>${x.by ? `<span class="by">${esc(x.by)}</span>` : ""}${x.note ? `<span class="note">${esc(x.note)}</span>` : ""}<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a></li>`; }).join("")}</ul>`;
 }
+const LESSONS_PER_WEEK = 3;
+function lessonPlan(ch) {
+  const l = Array.isArray(ch.lessons) ? ch.lessons.filter(x => x && x.title) : [];
+  if (l.length >= LESSONS_PER_WEEK) return l.slice(0, LESSONS_PER_WEEK).map(x => ({ title: String(x.title), focus: String(x.focus || "") }));
+  const pts = ch.points || [], size = Math.ceil(pts.length / LESSONS_PER_WEEK) || 1;
+  return Array.from({ length: LESSONS_PER_WEEK }, (_, i) => {
+    const part = pts.slice(i * size, (i + 1) * size);
+    return { title: part[0] || `${ch.title}, parte ${i + 1}`, focus: part.join("; ") };
+  });
+}
+const lessonId = (topic, ch, i) => `${topic.id}--${ch.id}--l${i + 1}`;
 const currentWeek = month => month === NOW ? Math.min(3, Math.floor((new Date().getDate() - 1) / 7)) : -1;
 const shuffle = a => { const r = [...a]; for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
 const THEME_RULE = "Ogni argomento deve appartenere a uno solo di questi temi, scritto esattamente così: " + THEMES.join(", ") + ".";
@@ -451,7 +469,7 @@ function prog(month, uid) {
 function saveProg(month, mutate) {
   if (!S.me) { toast("Accedi a Claude per salvare i tuoi progressi."); return; }
   const cur = structuredClone(prog(month, S.me));
-  delete cur.id; cur.done ||= {}; cur.books ||= {}; cur.quiz ||= {};
+  delete cur.id; cur.done ||= {}; cur.books ||= {}; cur.quiz ||= {}; cur.read ||= {};
   cur.topic = month; cur.uid = S.me;
   mutate(cur); cur.updatedAt = new Date().toISOString();
   const row = { ...cur, id: progId(month, S.me) };
@@ -517,6 +535,7 @@ ${prev ? "Argomenti già studiati nei mesi precedenti (evita ripetizioni, puoi r
 Rispondi solo con un oggetto JSON con questa forma:
 {"title": string, "subtitle": string (una riga evocativa), "intro": string (3-4 frasi: di cosa si tratta e perché vale la pena studiarlo),
  "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [8 concetti chiave, frasi brevi], "reading": string (cosa leggere o guardare per questo capitolo, citando i libri consigliati e le pagine o i capitoli quando possibile), "minutes": number (minuti di studio stimati per la settimana),
+   "lessons": [esattamente 3 oggetti {"title": string, "focus": string (1-2 frasi su che cosa tratta)}: le tre lezioni in cui si divide la settimana, in ordine logico, senza sovrapposizioni, che insieme coprono tutti i concetti chiave],
    "media": [3 fonti per la settimana, con la stessa forma degli extra qui sotto: almeno un video su YouTube e almeno un podcast, film, serie o documentario]}],
  "books": [{"title": string, "author": string, "year": number, "level": "introduttivo" | "approfondimento" | "classico", "why": string (una frase)}],
  "extras": [{"type": "youtube" | "podcast" | "film" | "serie" | "documentario" | "luogo", "title": string, "by": string (canale YouTube, autore o conduttore del podcast, regista), "note": string (una frase: perché vederlo o ascoltarlo), "query": string (parole da cercare per trovarlo, in particolare su YouTube)}]}
@@ -544,18 +563,23 @@ ${AUDIENCE}
 Scrivi 10 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
 }
-function promptLesson(topic, ch) {
+function promptLesson(topic, ch, i) {
   const others = S.topics.filter(t => t.id !== topic.id).map(t => t.title).join("; ");
   const siblings = topic.chapters.filter(c => c.id !== ch.id).map(c => c.title).join("; ");
-  return `Scrivi la lezione della settimana "${ch.title}" all'interno del percorso mensile "${topic.title}".
-Sintesi della settimana: ${ch.summary}
-Concetti da coprire: ${(ch.points || []).join("; ")}.
+  const plan = lessonPlan(ch), me = plan[i];
+  return `Scrivi la lezione ${i + 1} di ${plan.length} della settimana "${ch.title}", nel percorso mensile "${topic.title}".
+Titolo di questa lezione: "${me.title}". Di che cosa tratta: ${me.focus}
+Sintesi dell'intera settimana: ${ch.summary}
+Concetti chiave della settimana: ${(ch.points || []).join("; ")}.
+Piano delle tre lezioni della settimana:
+${plan.map((l, k) => `${k + 1}. ${l.title}: ${l.focus}`).join("\n")}
+Concentrati sul contenuto di questa lezione: non ripetere quello che spetta alle altre due, al massimo richiamalo in una frase. ${i > 0 ? "Puoi dare per noti i contenuti delle lezioni precedenti." : ""}
 ${AUDIENCE}
-È il materiale di studio di un'intera settimana: deve essere approfondito, preciso e ricco di informazioni verificabili. Lunghezza: 2000-2500 parole, mappa esclusa.
+Deve essere approfondita, precisa e ricca di informazioni verificabili. Lunghezza: 1500-2000 parole, mappa esclusa.
 Usa esattamente questi titoli, in quest'ordine:
 
 ## Spiegazione approfondita
-5-7 paragrafi che spiegano a fondo i concetti della settimana: che cosa, come e perché, con un filo logico chiaro.
+5-7 paragrafi che spiegano a fondo i concetti di questa lezione: che cosa, come e perché, con un filo logico chiaro.
 
 ## Contesto storico
 Che cosa succedeva prima e intorno: situazione politica, società, economia, cultura, e come questo contesto rende possibile o spiega l'argomento.
@@ -574,7 +598,7 @@ Subito sotto il titolo, un blocco di codice con linguaggio "mappa" che contiene 
 \`\`\`mappa
 {"centro": "tema centrale in poche parole", "rami": [{"titolo": "sottotema", "voci": ["2-4 parole chiave o brevi frasi"]}]}
 \`\`\`
-Metti 4-6 rami che riassumono tutta la lezione.
+Metti 4-6 rami che riassumono questa lezione.
 
 ## Per discuterne in due
 2 domande aperte che invitano a ragionare e a confrontarsi.
@@ -612,7 +636,8 @@ function normalizeTopic(r, title, month) {
   const chapters = r.chapters.filter(c => c && c.title).slice(0, 4).map((c, i) => ({
     id: "c" + (i + 1), title: String(c.title), summary: String(c.summary || ""),
     points: Array.isArray(c.points) ? c.points.map(String).slice(0, 8) : [],
-    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90, media: normMedia(c.media, 4)
+    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90, media: normMedia(c.media, 4),
+    lessons: lessonPlan({ ...c, points: Array.isArray(c.points) ? c.points.map(String) : [] })
   }));
   if (chapters.length < 3) return null;
   const books = (Array.isArray(r.books) ? r.books : []).filter(b => b && b.title).slice(0, 8).map(b => ({
@@ -750,17 +775,17 @@ async function loadLesson(id) {
   try { S.lessons[id] = await Store.get("lessons", id); } catch (e) { S.lessons[id] = null; }
   render();
 }
-async function writeLesson(topic, ch) {
+async function writeLesson(topic, ch, i) {
   if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
-  const id = topic.id + "--" + ch.id, key = "lesson-" + id;
+  const id = lessonId(topic, ch, i), key = "lesson-" + id;
   const ctl = new AbortController();
   S.stream[key] = { text: "", ctl }; render();
   try {
-    const { text, truncated } = await S.sample(promptLesson(topic, ch), {
+    const { text, truncated } = await S.sample(promptLesson(topic, ch, i), {
       modelTier: "complex", signal: ctl.signal, cache: false,
       onText: ({ text }) => { S.stream[key].text = text; const el = document.getElementById("stream-" + key); if (el) el.innerHTML = md(text); }
     });
-    const doc = { topic: topic.id, chapter: ch.id, text, truncated: !!truncated, createdAt: new Date().toISOString(), createdBy: S.me || null };
+    const doc = { topic: topic.id, chapter: ch.id, lesson: i + 1, title: lessonPlan(ch)[i].title, text, truncated: !!truncated, createdAt: new Date().toISOString(), createdBy: S.me || null };
     delete S.stream[key]; S.lessons[id] = doc;
     await save("lessons", id, doc, "Lezione salvata");
   } catch (e) {
@@ -1017,7 +1042,7 @@ function topicView(topic) {
       <div>${wk ? `<div class="row" style="gap:8px;margin-bottom:2px"><span class="label">Settimana ${roman(i + 1)} · ${esc(weekRange(topic.id, i, topic.chapters.length))}</span>${cw ? `<span class="chip now">questa settimana</span>` : ""}</div>` : ""}<h3>${esc(c.title)}</h3><p class="sum">${esc(c.summary)}</p></div>
       <div class="meta">
         <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).done?.[c.id] ? "" : " off"))).join("")}</span>
-        <span class="label num">${typeof best === "number" ? "il tuo test " + best + "%" : wk ? "test da fare" : c.minutes ? "~" + c.minutes + " min" : ""}</span>
+        <span class="label num">${myP ? `lezioni ${lessonPlan(c).filter((_, k) => myP.read?.[c.id + "-l" + (k + 1)]).length}/${LESSONS_PER_WEEK} · ` : ""}${typeof best === "number" ? "test " + best + "%" : "test da fare"}</span>
       </div>
     </li>`;
   }).join("");
@@ -1107,20 +1132,40 @@ function chapterView(topic, chId) {
   const idx = topic.chapters.findIndex(c => c.id === chId);
   if (idx < 0) return topicView(topic);
   const ch = topic.chapters[idx];
-  const id = topic.id + "--" + ch.id, skey = "lesson-" + id;
-  if (!(id in S.lessons)) loadLesson(id);
+  const plan = lessonPlan(ch);
+  const li = Math.min(plan.length - 1, Math.max(0, S.view.lesson || 0));
+  plan.forEach((_, k) => { const lid = lessonId(topic, ch, k); if (!(lid in S.lessons)) loadLesson(lid); });
+  const id = lessonId(topic, ch, li), skey = "lesson-" + id;
   const lesson = S.lessons[id], streaming = S.stream[skey];
   const done = S.me ? !!prog(topic.id, S.me).done?.[ch.id] : false;
   const ppl = peopleFor(topic.id);
+  const readKey = k => ch.id + "-l" + (k + 1);
+  const lessonCards = plan.map((l, k) => {
+    const lid = lessonId(topic, ch, k), written = !!S.lessons[lid], writing = !!S.stream["lesson-" + lid];
+    return `<li><button type="button" class="lesson-card ${k === li ? "on" : ""}" data-act="lesson-open" data-i="${k}" aria-pressed="${k === li}">
+      <span class="label">Lezione ${k + 1} di ${plan.length}</span>
+      <span class="t">${esc(l.title)}</span>
+      ${l.focus ? `<span class="f">${esc(l.focus)}</span>` : ""}
+      <span class="row" style="gap:6px;margin-top:4px">
+        <span class="chip ${written ? "ok" : ""}">${writing ? "in scrittura" : written ? "pronta" : "da scrivere"}</span>
+        <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).read?.[readKey(k)] ? "" : " off"))).join("")}</span>
+      </span>
+    </button></li>`;
+  }).join("");
+  const myRead = S.me ? !!prog(topic.id, S.me).read?.[readKey(li)] : false;
   let lessonHTML;
   if (streaming) lessonHTML = `<div class="prose" id="stream-${esc(skey)}">${streaming.text ? md(streaming.text) : `<p class="thinking">Claude sta scrivendo la lezione</p>`}</div>
       <div class="row"><button class="btn small" type="button" data-act="stop-lesson" data-id="${esc(skey)}">Interrompi</button></div>`;
   else if (lesson === undefined) lessonHTML = `<p class="thinking">Carico la lezione</p>`;
   else if (lesson) lessonHTML = `<div class="prose">${md(lesson.text)}</div>
-      ${canAsk() ? `<div class="row"><button class="btn quiet small" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Riscrivi la lezione</button></div>` : ""}`;
+      <div class="row">
+        ${S.me ? `<button class="btn ${myRead ? "" : "primary"}" type="button" data-act="lesson-read" data-topic="${esc(topic.id)}" data-key="${esc(readKey(li))}" ${S.canWrite ? "" : "disabled"}>${myRead ? "✓ Letta · annulla" : "Segna come letta"}</button>` : ""}
+        ${li < plan.length - 1 ? `<button class="btn" type="button" data-act="lesson-open" data-i="${li + 1}">Lezione ${li + 2} →</button>` : ""}
+        ${canAsk() ? `<button class="btn quiet small" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}">Riscrivi la lezione</button>` : ""}
+      </div>`;
   else lessonHTML = canAsk()
-      ? `<p>La lezione di questo capitolo non è ancora stata scritta. Claude la prepara in un paio di minuti e resta salvata per entrambi.</p>
-         <div class="row"><button class="btn primary" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Scrivi la lezione con Claude</button></div>`
+      ? `<p>Questa lezione non è ancora stata scritta. Claude la prepara in un paio di minuti seguendo lo schema completo, e resta salvata per entrambi.</p>
+         <div class="row"><button class="btn primary" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}">Scrivi la lezione ${li + 1} con Claude</button></div>`
       : `<p>La lezione non è ancora stata scritta. Studiate dalle letture indicate qui sopra.</p>`;
   const tutor = S.tutor[ch.id];
   const prev = topic.chapters[idx - 1], next = topic.chapters[idx + 1];
@@ -1142,8 +1187,10 @@ function chapterView(topic, chId) {
         <div class="sec-head"><h2>Da ascoltare e guardare</h2><span class="label">per questa ${isWeekly(topic) ? "settimana" : "parte"}</span></div>
         ${mediaList(normMedia(ch.media, 6))}
       </section>` : ""}
-      <section class="sec">
-        <div class="sec-head"><h2>Lezione</h2>${lesson?.createdAt ? `<span class="label">scritta da Claude</span>` : ""}</div>
+      <section class="sec" id="lezioni">
+        <div class="sec-head"><h2>Le tre lezioni della settimana</h2><span class="label">spiegazione, contesto, nomi e date, esempi, collegamenti, mappa</span></div>
+        <ol class="lesson-cards">${lessonCards}</ol>
+        <div class="sec-head" style="margin-top:8px"><h3 class="lesson-h">Lezione ${li + 1} · ${esc(plan[li].title)}</h3>${lesson?.createdAt ? `<span class="label">scritta da Claude</span>` : ""}</div>
         ${lessonHTML}
       </section>
       ${canAsk() ? `<section class="sec">
@@ -1483,7 +1530,9 @@ document.addEventListener("click", e => {
     case "topic": go({ name: "topic", id: d.topic }); break;
     case "chapter": go({ name: "chapter", topicId: d.topic, chId: d.ch }); break;
     case "toggle-done": saveProg(d.topic, cur => { cur.done[d.ch] = !cur.done[d.ch]; }); break;
-    case "lesson": if (topic) writeLesson(topic, topic.chapters.find(c => c.id === d.ch)); break;
+    case "lesson": if (topic) writeLesson(topic, topic.chapters.find(c => c.id === d.ch), +d.i || 0); break;
+    case "lesson-open": S.view = { ...S.view, lesson: +d.i || 0 }; render(); document.getElementById("lezioni")?.scrollIntoView({ block: "start" }); break;
+    case "lesson-read": saveProg(d.topic, cur => { cur.read ||= {}; cur.read[d.key] = !cur.read[d.key]; }); break;
     case "stop-lesson": S.stream[d.id]?.ctl.abort(); break;
     case "ask": if (topic) askTutor(topic, topic.chapters.find(c => c.id === d.ch)); break;
     case "stop-tutor": S.tutor[d.ch]?.ctl.abort(); break;
