@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c4",
+ "questions": [
+  {
+   "q": "Quale documento Lorenzo Valla dimostrò falso, studiandone la lingua?",
+   "options": [
+    "L'Editto di Milano",
+    "La Donazione di Costantino",
+    "Il Dictatus papae",
+    "La Bolla d'oro"
+   ],
+   "answer": 1,
+   "explain": "Nel 1440 Valla mostrò che il latino del documento non poteva essere del IV secolo: nasce la filologia moderna."
+  },
+  {
+   "q": "Marsilio Ficino tradusse in latino le opere complete di:",
+   "options": [
+    "Aristotele",
+    "Lucrezio",
+    "Platone",
+    "Seneca"
+   ],
+   "answer": 2,
+   "explain": "Ficino, sostenuto da Cosimo de' Medici, tradusse tutto Platone e fu l'anima dell'Accademia neoplatonica fiorentina."
+  },
+  {
+   "q": "Chi scrisse l'Oratio de hominis dignitate (Discorso sulla dignità dell'uomo)?",
+   "options": [
+    "Marsilio Ficino",
+    "Angelo Poliziano",
+    "Leonardo Bruni",
+    "Giovanni Pico della Mirandola"
+   ],
+   "answer": 3,
+   "explain": "Pico la scrisse nel 1486: l'uomo è l'unico essere che può scegliere che cosa diventare."
+  },
+  {
+   "q": "Quale evento del 1453 contribuì a portare in Italia dotti bizantini e manoscritti greci?",
+   "options": [
+    "Il Sacco di Roma",
+    "La Pace di Lodi",
+    "Il Concilio di Costanza",
+    "La caduta di Costantinopoli"
+   ],
+   "answer": 3,
+   "explain": "La conquista ottomana di Costantinopoli accelerò l'arrivo di studiosi greci, già iniziato con il Concilio di Firenze del 1439."
+  },
+  {
+   "q": "Quale poema latino, ritrovato da Poggio Bracciolini nel 1417, riportò in circolazione le idee di Epicuro?",
+   "options": [
+    "L'Institutio oratoria di Quintiliano",
+    "Il De rerum natura di Lucrezio",
+    "Le Metamorfosi di Ovidio",
+    "L'Eneide di Virgilio"
+   ],
+   "answer": 1,
+   "explain": "Il De rerum natura descrive un universo fatto di atomi, senza intervento divino; Greenblatt racconta questa scoperta ne Il manifesto della libertà."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}

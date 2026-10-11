@@ -1,0 +1,1040 @@
+<title>Lo Studiolo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..800&family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,300..700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single study desk. Masthead with an intarsia strip, then the month's programme in two columns (reading on the left, the pair's progress on the right); stacks to one column on phones. */
+:root {
+  --paper: #edf0ec;
+  --surface: #f8f9f6;
+  --ink: #17232a;
+  --muted: #56666c;
+  --line: #c9d1ce;
+  --lapis: #24429a;
+  --lapis-soft: #dfe5f4;
+  --gold: #9c7020;
+  --gold-soft: #f1e6cf;
+  --good: #2c7449;
+  --bad: #a8382c;
+  --on-accent: #ffffff;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Literata", "Iowan Old Style", Georgia, serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1518; --surface: #162026; --ink: #e3e8e3; --muted: #93a2a5; --line: #2a373c;
+    --lapis: #93adf3; --lapis-soft: #1c2a4a; --gold: #d8ae5c; --gold-soft: #33291a;
+    --good: #6dbf8d; --bad: #ee8b7e; --on-accent: #0f1518; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1518; --surface: #162026; --ink: #e3e8e3; --muted: #93a2a5; --line: #2a373c;
+  --lapis: #93adf3; --lapis-soft: #1c2a4a; --gold: #d8ae5c; --gold-soft: #33291a;
+  --good: #6dbf8d; --bad: #ee8b7e; --on-accent: #0f1518; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--body); font-size: 16px; line-height: 1.6; padding: 0 16px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 20px 64px; }
+h1, h2, h3, h4 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+a { color: var(--lapis); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+
+.label { font-family: var(--mono); font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* Masthead */
+.mast { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+.brand { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.wordmark { font-family: var(--display); font-style: italic; font-weight: 500; font-size: clamp(30px, 5vw, 44px); line-height: 1; letter-spacing: -.01em; }
+.wordmark b { font-style: normal; font-weight: 700; }
+.motto { font-family: var(--display); font-style: italic; color: var(--muted); font-size: 15px; }
+.nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 6px 10px; cursor: pointer; font-size: 15px; color: var(--muted); }
+.nav button:hover { color: var(--ink); }
+.nav button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--gold); }
+.intarsia {
+  height: 10px; margin: 14px 0 6px; border-radius: 2px;
+  background:
+    repeating-linear-gradient(45deg, var(--gold) 0 6px, transparent 6px 12px),
+    repeating-linear-gradient(-45deg, var(--lapis) 0 6px, transparent 6px 12px);
+  opacity: .55;
+}
+.statusline { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; min-height: 28px; }
+.people { display: flex; gap: 6px; align-items: center; }
+.notice { margin-top: 14px; padding: 10px 14px; border: 1px solid var(--line); border-left: 3px solid var(--gold); background: var(--surface); border-radius: var(--r); font-size: 14.5px; }
+
+/* Avatars */
+.av { width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; font-family: var(--mono); font-size: 11px; color: var(--on-accent); background: var(--muted); flex: none; overflow: hidden; }
+.av img { width: 100%; height: 100%; object-fit: cover; }
+.av.sm { width: 20px; height: 20px; font-size: 9px; }
+.av.off { opacity: .22; filter: grayscale(1); }
+
+/* Buttons and chips */
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: var(--r); border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-size: 15px; line-height: 1.3; text-align: left; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--lapis); border-color: var(--lapis); color: var(--on-accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.gold { background: var(--gold-soft); border-color: var(--gold); }
+.btn.quiet { background: none; border-color: transparent; color: var(--lapis); padding-inline: 4px; }
+.btn.quiet:hover { text-decoration: underline; }
+.btn:disabled { opacity: .5; cursor: default; }
+.btn.small { padding: 5px 10px; font-size: 13.5px; }
+.chip { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.chip.ok { border-color: var(--good); color: var(--good); }
+.chip.gold { border-color: var(--gold); color: var(--gold); }
+.chip.lapis { border-color: var(--lapis); color: var(--lapis); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Topic page */
+main { margin-top: 28px; }
+.hero { display: grid; gap: 10px; max-width: 760px; margin-bottom: 32px; }
+.hero h1 { font-family: var(--display); font-weight: 600; font-size: clamp(34px, 6vw, 60px); line-height: 1.04; letter-spacing: -.015em; }
+.hero .sub { font-family: var(--display); font-style: italic; font-size: clamp(18px, 2.4vw, 22px); color: var(--muted); }
+.hero .intro { max-width: 65ch; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+.sec { display: grid; gap: 14px; }
+.sec + .sec { margin-top: 40px; }
+.sec h2 { font-family: var(--display); font-weight: 600; font-size: 26px; }
+.sec-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+
+.chapters { list-style: none; margin: 0; padding: 0; }
+.chap { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 4px 14px; padding: 14px 6px; border-bottom: 1px solid var(--line); cursor: pointer; align-items: start; }
+.chap:hover { background: var(--surface); }
+.chap .rn { font-family: var(--display); font-size: 24px; color: var(--gold); line-height: 1.15; text-align: right; }
+.chap h3 { font-size: 18px; font-weight: 600; line-height: 1.3; }
+.chap .sum { color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+.chap .meta { display: grid; justify-items: end; gap: 6px; }
+.ticks { display: flex; gap: 3px; }
+@media (max-width: 520px) { .chap { grid-template-columns: 34px minmax(0, 1fr); } .chap .meta { grid-column: 2; justify-items: start; grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px; } .chap .rn { font-size: 20px; } }
+
+.books { display: grid; gap: 0; }
+.book { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.book .t { font-family: var(--display); font-style: italic; font-size: 19px; line-height: 1.25; }
+.book .a { font-size: 14.5px; }
+.book .why { grid-column: 1 / -1; color: var(--muted); font-size: 14.5px; }
+.read-toggle { display: inline-flex; gap: 6px; align-items: center; font-size: 13.5px; color: var(--muted); cursor: pointer; white-space: nowrap; }
+.read-toggle input { accent-color: var(--lapis); width: 16px; height: 16px; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 16px; }
+.panel h2 { font-family: var(--display); font-weight: 600; font-size: 22px; }
+.person { display: grid; gap: 6px; }
+.person .who { display: flex; gap: 10px; align-items: center; font-weight: 600; }
+.bar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--lapis); border-radius: 99px; }
+.kv { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13.5px; color: var(--muted); }
+.kv b { color: var(--ink); font-weight: 500; }
+.extras { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.extras li { display: grid; gap: 2px; font-size: 14.5px; }
+.extras .t { font-weight: 600; }
+
+/* Chapter page */
+.back { margin-bottom: 18px; }
+.chap-hero { display: grid; gap: 8px; max-width: 760px; margin-bottom: 28px; }
+.chap-hero h1 { font-family: var(--display); font-weight: 600; font-size: clamp(30px, 5vw, 48px); line-height: 1.08; }
+.points { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+.points li::marker { color: var(--gold); }
+.prose { max-width: 68ch; display: grid; gap: 14px; }
+.prose h2, .prose h3 { font-family: var(--display); font-weight: 600; font-size: 22px; margin-top: 12px; }
+.prose h4 { font-size: 17px; margin-top: 6px; }
+.prose ul, .prose ol { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+.prose strong { font-weight: 650; }
+.reading { border-left: 3px solid var(--gold); padding: 4px 0 4px 14px; font-style: italic; }
+.thinking { color: var(--muted); font-style: italic; }
+.thinking::after { content: ""; display: inline-block; width: 1.2em; text-align: left; animation: dots 1.4s steps(4) infinite; }
+@keyframes dots { 0% { content: ""; } 25% { content: "."; } 50% { content: ".."; } 75% { content: "..."; } }
+@media (prefers-reduced-motion: reduce) { .thinking::after { animation: none; content: "..."; } }
+textarea, input[type="text"] { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; width: 100%; }
+textarea { min-height: 80px; resize: vertical; }
+.pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 16px; }
+.scores { display: grid; gap: 8px; }
+.score-line { display: flex; gap: 10px; align-items: center; font-size: 14.5px; }
+
+/* Quiz */
+.quiz { display: grid; gap: 22px; max-width: 760px; }
+.q { display: grid; gap: 10px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.q .qt { font-weight: 600; font-size: 17px; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
+.q .qt span { font-family: var(--display); color: var(--gold); font-size: 20px; line-height: 1.3; }
+.opts { display: grid; gap: 6px; padding-left: 42px; }
+@media (max-width: 520px) { .opts { padding-left: 0; } }
+.opt { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 9px 12px; cursor: pointer; text-align: left; width: 100%; }
+.opt:hover { border-color: var(--muted); }
+.opt .k { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 2px; }
+.opt[aria-pressed="true"] { border-color: var(--lapis); background: var(--lapis-soft); }
+.opt.right { border-color: var(--good); }
+.opt.right .k { color: var(--good); }
+.opt.wrong { border-color: var(--bad); }
+.opt.wrong .k { color: var(--bad); }
+.explain { padding-left: 42px; color: var(--muted); font-size: 14.5px; }
+@media (max-width: 520px) { .explain { padding-left: 0; } }
+.result { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 18px; border: 1px solid var(--gold); background: var(--gold-soft); border-radius: var(--r); }
+.result .big { font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; }
+
+/* Plan & archive */
+.plan { list-style: none; margin: 0; padding: 0; }
+.plan li { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 8px 18px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.plan .m { font-family: var(--display); font-style: italic; font-size: 18px; }
+.plan li.now .m { color: var(--gold); font-weight: 600; }
+.plan .ttl { display: grid; gap: 4px; min-width: 0; }
+.plan .ttl input { font-weight: 600; }
+.plan .ttl .s { font-size: 14px; color: var(--muted); }
+.plan .act { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.suggest { grid-column: 2 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+@media (max-width: 680px) { .plan li { grid-template-columns: minmax(0, 1fr); } .plan .act { justify-content: flex-start; } .suggest { grid-column: 1; } }
+.arch { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.arch .card { text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.arch .card:hover { border-color: var(--gold); }
+.arch .card h3 { font-family: var(--display); font-weight: 600; font-size: 21px; line-height: 1.2; }
+.empty { display: grid; gap: 14px; justify-items: start; max-width: 640px; padding: 28px; border: 1px dashed var(--line); border-radius: var(--r); }
+.empty h2 { font-family: var(--display); font-weight: 600; font-size: 28px; }
+.err { color: var(--bad); font-size: 14.5px; }
+
+#toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: var(--r); font-size: 14.5px; max-width: calc(100vw - 32px); opacity: 0; pointer-events: none; transition: opacity .2s; }
+#toast.show { opacity: 1; }
+footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="mast">
+      <div class="brand">
+        <div class="wordmark">Lo <b>Studiolo</b></div>
+        <div class="motto">un argomento al mese, in due</div>
+      </div>
+      <nav class="nav" id="nav" aria-label="Sezioni">
+        <button type="button" data-act="go" data-view="home">Mese in corso</button>
+        <button type="button" data-act="go" data-view="plan">Piano annuale</button>
+        <button type="button" data-act="go" data-view="archive">Archivio</button>
+      </nav>
+    </div>
+    <div class="intarsia" aria-hidden="true"></div>
+    <div class="statusline">
+      <span class="label" id="mode">Apro lo studiolo…</span>
+      <span class="people" id="people"></span>
+    </div>
+    <div id="notice" hidden></div>
+  </header>
+
+  <main id="main">
+    <div class="empty">
+      <h2>Apro lo studiolo…</h2>
+      <p>Sto caricando gli argomenti e i vostri progressi.</p>
+    </div>
+  </main>
+
+  <footer>Lo Studiolo · i progressi si salvano da soli, per ciascuno di voi.</footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const roman = n => { let r = ""; for (const [v, s] of [[1000,"M"],[900,"CM"],[500,"D"],[400,"CD"],[100,"C"],[90,"XC"],[50,"L"],[40,"XL"],[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]]) while (n >= v) { r += s; n -= v; } return r; };
+const monthKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+const addMonths = (k, n) => { const [y, m] = k.split("-").map(Number); return monthKey(new Date(y, m - 1 + n, 1)); };
+const monthLabel = k => { const [y, m] = k.split("-").map(Number); const s = new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" }); return s.charAt(0).toUpperCase() + s.slice(1); };
+const isMonth = k => /^\d{4}-\d{2}$/.test(String(k));
+const LETTERS = "ABCD";
+const NOW = monthKey();
+
+function toast(msg) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 3200);
+}
+function notice(msg) { const n = $("#notice"); n.className = "notice"; n.textContent = msg; n.hidden = !msg; }
+
+function md(src) {
+  const inline = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/(^|[^*])\*(?!\s)([^*]+?)\*(?!\*)/g, "$1<em>$2</em>");
+  let out = "", list = null, para = [];
+  const flushP = () => { if (para.length) { out += "<p>" + inline(para.join(" ")) + "</p>"; para = []; } };
+  const flushL = () => { if (list) { out += "</" + list + ">"; list = null; } };
+  for (const raw of String(src || "").split(/\r?\n/)) {
+    const l = raw.trim(); let m;
+    if (!l) { flushP(); flushL(); continue; }
+    if ((m = l.match(/^(#{1,4})\s+(.*)/))) { flushP(); flushL(); const lv = Math.min(4, m[1].length + 1); out += `<h${lv}>${inline(m[2])}</h${lv}>`; continue; }
+    if ((m = l.match(/^[-*•]\s+(.*)/))) { flushP(); if (list !== "ul") { flushL(); out += "<ul>"; list = "ul"; } out += "<li>" + inline(m[1]) + "</li>"; continue; }
+    if ((m = l.match(/^\d+[.)]\s+(.*)/))) { flushP(); if (list !== "ol") { flushL(); out += "<ol>"; list = "ol"; } out += "<li>" + inline(m[1]) + "</li>"; continue; }
+    flushL(); para.push(l);
+  }
+  flushP(); flushL(); return out;
+}
+
+/* ---------- storage: shared db when available, this browser otherwise ---------- */
+const LS_KEY = "studiolo-locale-v1";
+const Store = {
+  mode: "local", db: null, data: {}, subs: [], chains: {},
+  init(db) {
+    if (db) { this.mode = "cloud"; this.db = db; return; }
+    try { this.data = JSON.parse(localStorage.getItem(LS_KEY) || "{}") || {}; } catch (e) { this.data = {}; }
+  },
+  persist() { try { localStorage.setItem(LS_KEY, JSON.stringify(this.data)); } catch (e) {} },
+  rows(coll) { return Object.entries(this.data[coll] || {}).map(([id, d]) => ({ ...d, id })); },
+  watch(coll, cb) {
+    if (this.mode === "cloud") {
+      return this.db.collection(coll).onSnapshot(
+        s => cb(s.docs.map(d => ({ ...d.data(), id: d.id }))),
+        () => notice("Il collegamento ai dati salvati si è interrotto. Ricarica la pagina per riprendere.")
+      );
+    }
+    const sub = { coll, cb }; this.subs.push(sub); cb(this.rows(coll));
+    return () => { this.subs = this.subs.filter(x => x !== sub); };
+  },
+  async get(coll, id) {
+    if (this.mode === "cloud") { const s = await this.db.doc(coll + "/" + id).get(); return s.exists ? s.data() : null; }
+    return (this.data[coll] || {})[id] ?? null;
+  },
+  set(coll, id, data) {
+    const key = coll + "/" + id;
+    const run = async () => {
+      if (this.mode === "cloud") return this.db.doc(key).set(data);
+      (this.data[coll] ||= {})[id] = JSON.parse(JSON.stringify(data)); this.persist();
+      this.subs.filter(s => s.coll === coll).forEach(s => s.cb(this.rows(coll)));
+    };
+    const p = (this.chains[key] || Promise.resolve()).catch(() => {}).then(run);
+    this.chains[key] = p; return p;
+  }
+};
+
+/* ---------- state ---------- */
+const S = {
+  topics: [], progress: [], plan: null, loaded: { topics: false, progress: false, plan: false },
+  view: { name: "home" }, me: null, user: null, profiles: {}, canWrite: true,
+  sample: null, sampleOff: false,
+  lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null, suggest: {}, planGen: null
+};
+const canAsk = () => !!S.sample && !S.sampleOff;
+const topicById = id => S.topics.find(t => t.id === id);
+function currentTopic() {
+  if (topicById(NOW)) return topicById(NOW);
+  const past = S.topics.filter(t => t.id <= NOW);
+  return past[past.length - 1] || S.topics[0] || null;
+}
+
+async function save(coll, id, data, okMsg) {
+  if (!S.canWrite) { toast("Il tuo accesso è in sola lettura: non posso salvare."); return false; }
+  try { await Store.set(coll, id, data); if (okMsg) toast(okMsg); return true; }
+  catch (e) {
+    if (e && e.code === "invalid_argument") { S.canWrite = false; render(); toast("Salvataggio rifiutato: il tuo accesso a Lo Studiolo è in sola lettura."); }
+    else if (e && e.code === "quota_exceeded") toast("Lo spazio di salvataggio è pieno: elimina qualche contenuto vecchio.");
+    else toast("Salvataggio non riuscito. Riprova tra poco.");
+    return false;
+  }
+}
+
+/* ---------- people & progress ---------- */
+const progId = (month, uid) => month + "--" + uid;
+function prog(month, uid) {
+  return S.progress.find(p => p.id === progId(month, uid)) || { topic: month, uid, done: {}, books: {}, quiz: {} };
+}
+function saveProg(month, mutate) {
+  if (!S.me) { toast("Accedi a Claude per salvare i tuoi progressi."); return; }
+  const cur = structuredClone(prog(month, S.me));
+  delete cur.id; cur.done ||= {}; cur.books ||= {}; cur.quiz ||= {};
+  cur.topic = month; cur.uid = S.me;
+  mutate(cur); cur.updatedAt = new Date().toISOString();
+  const row = { ...cur, id: progId(month, S.me) };
+  const i = S.progress.findIndex(p => p.id === row.id);
+  if (i >= 0) S.progress[i] = row; else S.progress.push(row);
+  render();
+  return save("progress", row.id, cur);
+}
+function peopleFor(month) {
+  const ids = new Set();
+  if (S.me) ids.add(S.me);
+  S.progress.forEach(p => { if ((!month || p.topic === month) && p.uid) ids.add(p.uid); });
+  return [...ids];
+}
+function personName(uid) {
+  const n = S.profiles[uid]?.name;
+  if (uid === S.me) return n ? n + " (tu)" : "Tu";
+  return n || "Compagna o compagno di studio";
+}
+function avatar(uid, cls = "") {
+  const p = S.profiles[uid];
+  const label = esc(personName(uid));
+  if (p?.avatarUrl) return `<span class="av ${cls}" title="${label}" style="background:${esc(p.color || "")}"><img src="${esc(p.avatarUrl)}" alt=""></span>`;
+  const init = uid === S.me ? "TU" : "··";
+  return `<span class="av ${cls}" title="${label}">${init}</span>`;
+}
+async function refreshProfiles() {
+  if (!S.user) return;
+  const ids = peopleFor(null);
+  if (!ids.length) return;
+  try { S.profiles = await S.user.profiles(ids); render(); } catch (e) {}
+}
+function stats(topic, uid) {
+  const p = prog(topic.id, uid), n = topic.chapters.length;
+  const done = topic.chapters.filter(c => p.done?.[c.id]).length;
+  const sc = topic.chapters.map(c => p.quiz?.[c.id]?.best).filter(x => typeof x === "number");
+  const avg = sc.length ? Math.round(sc.reduce((a, b) => a + b, 0) / sc.length) : null;
+  const fin = typeof p.quiz?.final?.best === "number" ? p.quiz.final.best : null;
+  const books = Object.values(p.books || {}).filter(Boolean).length;
+  return { n, done, avg, fin, books, pct: n ? Math.round(done / n * 100) : 0 };
+}
+
+/* ---------- Claude ---------- */
+function sampleErr(e) {
+  switch (e && e.code) {
+    case "not_granted": case "sampling_disabled": case "not_declared": case "capability_disabled": case "capability_removed":
+      S.sampleOff = true;
+      return "Claude non è disponibile qui: il permesso è stato negato oppure il tuo account non lo consente.";
+    case "rate_limited": return "Troppe richieste a Claude in poco tempo, o limite di utilizzo raggiunto. Riprova più tardi.";
+    case "invalid_json": return "La risposta di Claude non era nel formato previsto. Riprova.";
+    case "refused": return "Claude ha rifiutato questa richiesta. Prova a riformularla.";
+    case "session_expired": return "La sessione è scaduta: accedi di nuovo a Claude e riprova.";
+    default: return "La risposta di Claude si è interrotta. Riprova.";
+  }
+}
+const AUDIENCE = "Il pubblico sono due adulti italiani curiosi, non specialisti, che studiano insieme un argomento al mese per diventare più colti. Scrivi in italiano chiaro e preciso, con nomi, date e luoghi concreti.";
+
+function promptCurriculum(title, note, prev) {
+  return `Sei un docente universitario e un ottimo divulgatore. Prepara il programma di studio di un mese sull'argomento: "${title}".
+${note ? "Indicazioni: " + note + "\n" : ""}${AUDIENCE}
+${prev ? "Argomenti già studiati nei mesi precedenti (evita ripetizioni, puoi richiamarli): " + prev + "\n" : ""}
+Rispondi solo con un oggetto JSON con questa forma:
+{"title": string, "subtitle": string (una riga evocativa), "intro": string (3-4 frasi: di cosa si tratta e perché vale la pena studiarlo),
+ "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [5 concetti chiave, frasi brevi], "reading": string (cosa leggere o guardare per questo capitolo, citando i libri consigliati e le pagine o i capitoli quando possibile), "minutes": number (minuti di studio stimati)}],
+ "books": [{"title": string, "author": string, "year": number, "level": "introduttivo" | "approfondimento" | "classico", "why": string (una frase)}],
+ "extras": [{"type": "film" | "documentario" | "podcast" | "luogo", "title": string, "note": string}]}
+Regole: esattamente 8 capitoli in ordine logico (circa due a settimana); 5-7 libri che esistono davvero e si trovano in italiano, senza inventare titoli o autori (se non sei sicuro di un titolo, non includerlo); 2-4 extra reali.`;
+}
+function promptQuiz(topic, ch) {
+  if (ch) return `Crea un test di verifica sul capitolo "${ch.title}" del percorso "${topic.title}".
+Contenuto del capitolo: ${ch.summary} Concetti chiave: ${(ch.points || []).join("; ")}.
+${AUDIENCE}
+Scrivi 6 domande a scelta multipla, di difficoltà crescente: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi che spiegano la risposta)}]}`;
+  return `Crea l'esame finale del percorso mensile "${topic.title}".
+Capitoli studiati:
+${topic.chapters.map((c, i) => `${i + 1}. ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
+${AUDIENCE}
+Scrivi 12 domande a scelta multipla che coprano tutti i capitoli, con almeno 4 domande che chiedono di collegare capitoli diversi. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
+}
+function promptLesson(topic, ch) {
+  return `Scrivi la lezione del capitolo "${ch.title}" all'interno del percorso mensile "${topic.title}".
+Sintesi del capitolo: ${ch.summary}
+Concetti da coprire: ${(ch.points || []).join("; ")}.
+${AUDIENCE}
+Lunghezza: circa 1000 parole. Struttura: un breve paragrafo d'apertura che aggancia la curiosità; 3-4 sezioni con un titolo ciascuna; esempi concreti, date e nomi precisi; chiudi con una sezione "## Da ricordare" con 5 punti e una sezione "## Per discuterne in due" con 2 domande aperte.
+Usa Markdown semplice: titoli con ##, elenchi con -, grassetto con **. Nessun preambolo: inizia direttamente con il testo.`;
+}
+function promptTutor(topic, ch, q) {
+  return `Sei il tutor del percorso "${topic.title}", capitolo "${ch.title}" (${ch.summary}).
+${AUDIENCE}
+Rispondi alla domanda in modo chiaro, in 150-250 parole, con un esempio concreto. Se la domanda esce dall'argomento, rispondi comunque brevemente e poi riportala al capitolo. Usa Markdown semplice.
+Domanda: ${q}`;
+}
+function promptPlan(start, existing) {
+  return `Proponi un piano di studio di 12 mesi, un argomento al mese, a partire da ${monthLabel(start)}.
+${AUDIENCE}
+Varia le discipline: storia, arte, scienze naturali, fisica e astronomia, filosofia, letteratura, musica, economia, psicologia, geografia e geopolitica, storia delle idee. Alterna argomenti più impegnativi e più leggeri; d'estate preferisci temi adatti al viaggio o alla lettura all'aperto.
+${existing ? "Argomenti già studiati, da non ripetere: " + existing + "\n" : ""}Rispondi solo con JSON: {"items": [{"month": "AAAA-MM", "title": string (breve), "subtitle": string (una riga)}]} con 12 elementi in ordine, il primo con month "${start}".`;
+}
+function promptSuggest(month, taken) {
+  return `Suggerisci 5 argomenti alternativi da studiare in un mese (${monthLabel(month)}).
+${AUDIENCE}
+Argomenti già nel piano o già studiati, da evitare: ${taken || "nessuno"}.
+Proponi discipline diverse tra loro. Rispondi solo con JSON: [{"title": string (breve), "subtitle": string (una riga)}]`;
+}
+
+function cleanQuestions(r, min) {
+  const qs = (r && Array.isArray(r.questions) ? r.questions : []).filter(q =>
+    q && typeof q.q === "string" && Array.isArray(q.options) && q.options.length === 4 &&
+    Number.isInteger(Number(q.answer)) && Number(q.answer) >= 0 && Number(q.answer) < 4
+  ).map(q => ({ q: String(q.q), options: q.options.map(String), answer: Number(q.answer), explain: String(q.explain || "") }));
+  return qs.length >= min ? qs : null;
+}
+function normalizeTopic(r, title, month) {
+  if (!r || !Array.isArray(r.chapters)) return null;
+  const chapters = r.chapters.filter(c => c && c.title).slice(0, 12).map((c, i) => ({
+    id: "c" + (i + 1), title: String(c.title), summary: String(c.summary || ""),
+    points: Array.isArray(c.points) ? c.points.map(String).slice(0, 8) : [],
+    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90
+  }));
+  if (chapters.length < 3) return null;
+  const books = (Array.isArray(r.books) ? r.books : []).filter(b => b && b.title).slice(0, 8).map(b => ({
+    title: String(b.title), author: String(b.author || ""), year: Number(b.year) || null,
+    level: ["introduttivo", "approfondimento", "classico"].includes(b.level) ? b.level : "approfondimento", why: String(b.why || "")
+  }));
+  const extras = (Array.isArray(r.extras) ? r.extras : []).filter(x => x && x.title).slice(0, 5).map(x => ({
+    type: String(x.type || "extra"), title: String(x.title), note: String(x.note || "")
+  }));
+  return { month, title: String(r.title || title), subtitle: String(r.subtitle || ""), intro: String(r.intro || ""),
+    chapters, books, extras, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
+}
+
+async function generateTopic(month, title, note) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  if (!title.trim()) { toast("Scrivi prima il titolo dell'argomento."); return; }
+  const ctl = new AbortController();
+  S.gen = { month, ctl }; render();
+  try {
+    const prev = S.topics.filter(t => t.id !== month).map(t => t.title).join("; ");
+    const r = await S.sample.json(promptCurriculum(title, note, prev), { modelTier: "complex", signal: ctl.signal, cache: false });
+    const topic = normalizeTopic(r, title, month);
+    if (!topic) throw { code: "invalid_json" };
+    S.gen = null;
+    if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto")) {
+      S.view = { name: "topic", id: month };
+      window.scrollTo(0, 0);
+    }
+    render();
+  } catch (e) {
+    S.gen = e && e.code === "cancelled" ? null : { month, error: sampleErr(e) };
+    render();
+  }
+}
+
+/* ---------- quizzes ---------- */
+async function finalFromChapters(topic) {
+  const pool = [];
+  for (const c of topic.chapters) {
+    const q = S.quizCache[topic.id + "--" + c.id] || await Store.get("quizzes", topic.id + "--" + c.id);
+    if (q?.questions?.length) {
+      const shuffled = [...q.questions].sort(() => Math.random() - .5);
+      pool.push(...shuffled.slice(0, 2));
+    }
+  }
+  return pool.length >= 4 ? { questions: pool, source: "capitoli" } : null;
+}
+async function loadQuiz(topic, key, fresh) {
+  const id = topic.id + "--" + key;
+  if (!fresh) {
+    if (S.quizCache[id]) return S.quizCache[id];
+    const q = await Store.get("quizzes", id);
+    if (q?.questions?.length) { S.quizCache[id] = q; return q; }
+  }
+  if (!canAsk()) {
+    if (key === "final") return finalFromChapters(topic);
+    return null;
+  }
+  const ch = key === "final" ? null : topic.chapters.find(c => c.id === key);
+  const ctl = new AbortController(); S.quiz.ctl = ctl;
+  const r = await S.sample.json(promptQuiz(topic, ch), { modelTier: "default", signal: ctl.signal, cache: false });
+  const questions = cleanQuestions(r, key === "final" ? 6 : 3);
+  if (!questions) throw { code: "invalid_json" };
+  const doc = { topic: topic.id, key, questions, createdAt: new Date().toISOString(), source: "claude" };
+  S.quizCache[id] = doc;
+  await save("quizzes", id, doc);
+  return doc;
+}
+async function openQuiz(topicId, key, fresh) {
+  const topic = topicById(topicId); if (!topic) return;
+  S.view = { name: "quiz", topicId, key };
+  S.quiz = { topicId, key, data: null, answers: {}, submitted: false, loading: true, error: null };
+  window.scrollTo(0, 0); render();
+  try {
+    const data = await loadQuiz(topic, key, fresh);
+    if (S.quiz?.topicId !== topicId || S.quiz.key !== key) return;
+    S.quiz.data = data; S.quiz.loading = false;
+    if (!data) S.quiz.error = "Questo test non è ancora stato preparato e Claude non è disponibile in questa vista per scriverlo.";
+  } catch (e) {
+    if (!S.quiz) return;
+    S.quiz.loading = false;
+    S.quiz.error = e && e.code === "cancelled" ? "Preparazione del test annullata." : sampleErr(e);
+  }
+  render();
+}
+function submitQuiz() {
+  const z = S.quiz; if (!z?.data) return;
+  const qs = z.data.questions;
+  if (Object.keys(z.answers).length < qs.length) { toast("Rispondi a tutte le domande prima di consegnare."); return; }
+  const right = qs.filter((q, i) => z.answers[i] === q.answer).length;
+  const pct = Math.round(right / qs.length * 100);
+  z.submitted = true; z.score = { right, total: qs.length, pct };
+  saveProg(z.topicId, cur => {
+    const prev = cur.quiz[z.key] || {};
+    const hist = [...(prev.history || []), { pct, right, total: qs.length, at: new Date().toISOString() }].slice(-8);
+    cur.quiz[z.key] = { best: Math.max(prev.best ?? 0, pct), last: pct, attempts: (prev.attempts || 0) + 1, history: hist };
+  });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- lessons & tutor ---------- */
+async function loadLesson(id) {
+  if (id in S.lessons) return;
+  S.lessons[id] = undefined;
+  try { S.lessons[id] = await Store.get("lessons", id); } catch (e) { S.lessons[id] = null; }
+  render();
+}
+async function writeLesson(topic, ch) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  const id = topic.id + "--" + ch.id, key = "lesson-" + id;
+  const ctl = new AbortController();
+  S.stream[key] = { text: "", ctl }; render();
+  try {
+    const { text, truncated } = await S.sample(promptLesson(topic, ch), {
+      modelTier: "default", signal: ctl.signal, cache: false,
+      onText: ({ text }) => { S.stream[key].text = text; const el = document.getElementById("stream-" + key); if (el) el.innerHTML = md(text); }
+    });
+    const doc = { topic: topic.id, chapter: ch.id, text, truncated: !!truncated, createdAt: new Date().toISOString(), createdBy: S.me || null };
+    delete S.stream[key]; S.lessons[id] = doc;
+    await save("lessons", id, doc, "Lezione salvata");
+  } catch (e) {
+    delete S.stream[key];
+    if (!(e && e.code === "cancelled")) toast(sampleErr(e));
+  }
+  render();
+}
+async function askTutor(topic, ch) {
+  const ta = document.getElementById("ask-" + ch.id);
+  const q = (ta?.value || "").trim();
+  if (!q) { toast("Scrivi prima la tua domanda."); return; }
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  const ctl = new AbortController();
+  S.tutor[ch.id] = { q, text: "", busy: true, ctl }; render();
+  try {
+    await S.sample(promptTutor(topic, ch, q), {
+      modelTier: "default", signal: ctl.signal, cache: false,
+      onText: ({ text }) => { S.tutor[ch.id].text = text; const el = document.getElementById("tutor-" + ch.id); if (el) el.innerHTML = md(text); }
+    });
+    S.tutor[ch.id].busy = false;
+    if (ta) ta.value = "";
+  } catch (e) {
+    S.tutor[ch.id].busy = false;
+    S.tutor[ch.id].error = e && e.code === "cancelled" ? "" : sampleErr(e);
+    if (e && e.text) S.tutor[ch.id].text = e.text;
+  }
+  render();
+}
+
+/* ---------- plan ---------- */
+function planItems() { return [...(S.plan?.items || [])].filter(i => isMonth(i.month)).sort((a, b) => a.month.localeCompare(b.month)); }
+function savePlan(items, msg) {
+  const doc = { items: items.map(i => ({ month: i.month, title: String(i.title || ""), subtitle: String(i.subtitle || "") })), updatedAt: new Date().toISOString() };
+  S.plan = doc; render();
+  return save("plan", "year", doc, msg);
+}
+async function generatePlan() {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  const ctl = new AbortController(); S.planGen = { ctl }; render();
+  try {
+    const r = await S.sample.json(promptPlan(NOW, S.topics.map(t => t.title).join("; ")), { modelTier: "default", signal: ctl.signal, cache: false });
+    const items = (r && Array.isArray(r.items) ? r.items : []).filter(i => i && i.title).slice(0, 12)
+      .map((i, n) => ({ month: addMonths(NOW, n), title: String(i.title), subtitle: String(i.subtitle || "") }));
+    if (items.length < 3) throw { code: "invalid_json" };
+    const keep = planItems().filter(i => i.month < NOW);
+    S.planGen = null;
+    await savePlan([...keep, ...items], "Piano annuale pronto");
+  } catch (e) {
+    S.planGen = e && e.code === "cancelled" ? null : { error: sampleErr(e) };
+    render();
+  }
+}
+async function suggestFor(month) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  S.suggest[month] = { busy: true }; render();
+  try {
+    const taken = [...planItems().map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
+    const r = await S.sample.json(promptSuggest(month, taken), { modelTier: "quick", cache: false });
+    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title).slice(0, 6).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || "") }));
+    S.suggest[month] = list.length ? { list } : { error: "Nessun suggerimento ricevuto. Riprova." };
+  } catch (e) { S.suggest[month] = { error: sampleErr(e) }; }
+  render();
+}
+
+/* ---------- views ---------- */
+function personPanel(topic) {
+  const ppl = peopleFor(topic.id);
+  if (!ppl.length) return `<p class="kv">Accedi per tenere traccia dei tuoi progressi.</p>`;
+  return ppl.map(uid => {
+    const s = stats(topic, uid);
+    return `<div class="person">
+      <div class="who">${avatar(uid)}<span>${esc(personName(uid))}</span></div>
+      <div class="bar" aria-label="Capitoli studiati: ${s.done} su ${s.n}"><i style="width:${s.pct}%"></i></div>
+      <div class="kv"><span>Capitoli <b class="num">${s.done}/${s.n}</b></span>
+        <span>Media test <b class="num">${s.avg == null ? "—" : s.avg + "%"}</b></span>
+        <span>Esame finale <b class="num">${s.fin == null ? "—" : s.fin + "%"}</b></span>
+        <span>Libri letti <b class="num">${s.books}</b></span></div>
+    </div>`;
+  }).join("");
+}
+
+function topicView(topic) {
+  if (!topic) return homeEmpty();
+  const isNow = topic.id === NOW;
+  const ppl = peopleFor(topic.id);
+  const myP = S.me ? prog(topic.id, S.me) : null;
+  const chapters = topic.chapters.map((c, i) => {
+    const best = myP?.quiz?.[c.id]?.best;
+    return `<li class="chap" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(c.id)}" tabindex="0" role="link" aria-label="Capitolo ${roman(i + 1)}: ${esc(c.title)}">
+      <div class="rn">${roman(i + 1)}</div>
+      <div><h3>${esc(c.title)}</h3><p class="sum">${esc(c.summary)}</p></div>
+      <div class="meta">
+        <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).done?.[c.id] ? "" : " off"))).join("")}</span>
+        <span class="label num">${c.minutes ? "~" + c.minutes + " min" : ""}${typeof best === "number" ? " · test " + best + "%" : ""}</span>
+      </div>
+    </li>`;
+  }).join("");
+  const books = (topic.books || []).map((b, i) => `
+    <div class="book">
+      <div><div class="t">${esc(b.title)}</div><div class="a">${esc(b.author)}${b.year ? `, <span class="num">${esc(b.year)}</span>` : ""}</div></div>
+      <div class="row" style="justify-content:flex-end;align-items:start">
+        <span class="chip ${b.level === "classico" ? "gold" : b.level === "introduttivo" ? "lapis" : ""}">${esc(b.level)}</span>
+        ${S.me ? `<label class="read-toggle"><input type="checkbox" id="book-${esc(topic.id)}-${i}" data-act="book" data-topic="${esc(topic.id)}" data-i="${i}" ${myP?.books?.[i] ? "checked" : ""} ${S.canWrite ? "" : "disabled"}> letto</label>` : ""}
+      </div>
+      <p class="why">${esc(b.why)}</p>
+    </div>`).join("");
+  const extras = (topic.extras || []).map(x => `<li><span class="label">${esc(x.type)}</span><span class="t">${esc(x.title)}</span><span>${esc(x.note)}</span></li>`).join("");
+  const myFinal = myP?.quiz?.final;
+  return `
+  <section class="hero">
+    <span class="label">${esc(monthLabel(topic.id))} · ${isNow ? "argomento del mese" : topic.id < NOW ? "dall'archivio" : "in programma"}</span>
+    <h1>${esc(topic.title)}</h1>
+    ${topic.subtitle ? `<p class="sub">${esc(topic.subtitle)}</p>` : ""}
+    ${topic.intro ? `<p class="intro">${esc(topic.intro)}</p>` : ""}
+  </section>
+  <div class="grid">
+    <div>
+      <section class="sec">
+        <div class="sec-head"><h2>Capitoli</h2><span class="label">${topic.chapters.length} capitoli · circa due a settimana</span></div>
+        <ol class="chapters">${chapters}</ol>
+      </section>
+      ${books ? `<section class="sec">
+        <div class="sec-head"><h2>Libri consigliati</h2><span class="label">dal più accessibile al più impegnativo</span></div>
+        <div class="books">${books}</div>
+      </section>` : ""}
+    </div>
+    <aside class="sec">
+      <div class="panel">
+        <h2>A che punto siamo</h2>
+        ${personPanel(topic)}
+      </div>
+      <div class="panel">
+        <h2>Esame finale</h2>
+        <p>Domande su tutto il mese, comprese quelle che collegano capitoli diversi. Fatelo entrambi alla fine del mese e confrontate i risultati.</p>
+        ${myFinal ? `<p class="kv">Il tuo miglior risultato: <b class="num">${myFinal.best}%</b> · tentativi <b class="num">${myFinal.attempts}</b></p>` : ""}
+        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="final">Fai l'esame finale</button></div>
+      </div>
+      ${extras ? `<div class="panel"><h2>Oltre i libri</h2><ul class="extras">${extras}</ul></div>` : ""}
+    </aside>
+  </div>`;
+}
+
+function homeEmpty() {
+  const item = planItems().find(i => i.month === NOW);
+  const busy = S.gen?.month === NOW && !S.gen.error;
+  return `<div class="empty">
+    <span class="label">${esc(monthLabel(NOW))}</span>
+    <h2>${item ? esc(item.title) : "Nessun argomento per questo mese"}</h2>
+    <p>${item ? "È l'argomento previsto dal vostro piano. Claude può prepararne il programma: otto capitoli, libri consigliati e altri spunti." : "Scegliete un argomento e Claude ne preparerà il programma: otto capitoli, libri consigliati e test per verificare cosa avete imparato."}</p>
+    ${S.gen?.month === NOW && S.gen.error ? `<p class="err">${esc(S.gen.error)}</p>` : ""}
+    <div class="row">
+      ${item && canAsk() ? (busy ? `<span class="thinking">Claude sta scrivendo il programma, può volerci un minuto</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${NOW}">Prepara il programma</button>`) : ""}
+      <button class="btn" type="button" data-act="go" data-view="plan">Apri il piano annuale</button>
+    </div>
+  </div>`;
+}
+
+function chapterView(topic, chId) {
+  const idx = topic.chapters.findIndex(c => c.id === chId);
+  if (idx < 0) return topicView(topic);
+  const ch = topic.chapters[idx];
+  const id = topic.id + "--" + ch.id, skey = "lesson-" + id;
+  if (!(id in S.lessons)) loadLesson(id);
+  const lesson = S.lessons[id], streaming = S.stream[skey];
+  const done = S.me ? !!prog(topic.id, S.me).done?.[ch.id] : false;
+  const ppl = peopleFor(topic.id);
+  let lessonHTML;
+  if (streaming) lessonHTML = `<div class="prose" id="stream-${esc(skey)}">${streaming.text ? md(streaming.text) : `<p class="thinking">Claude sta scrivendo la lezione</p>`}</div>
+      <div class="row"><button class="btn small" type="button" data-act="stop-lesson" data-id="${esc(skey)}">Interrompi</button></div>`;
+  else if (lesson === undefined) lessonHTML = `<p class="thinking">Carico la lezione</p>`;
+  else if (lesson) lessonHTML = `<div class="prose">${md(lesson.text)}</div>
+      ${canAsk() ? `<div class="row"><button class="btn quiet small" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Riscrivi la lezione</button></div>` : ""}`;
+  else lessonHTML = canAsk()
+      ? `<p>La lezione di questo capitolo non è ancora stata scritta. Claude la prepara in un paio di minuti e resta salvata per entrambi.</p>
+         <div class="row"><button class="btn primary" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Scrivi la lezione con Claude</button></div>`
+      : `<p>La lezione non è ancora stata scritta. Studiate dalle letture indicate qui sopra.</p>`;
+  const tutor = S.tutor[ch.id];
+  const prev = topic.chapters[idx - 1], next = topic.chapters[idx + 1];
+  return `
+  <div class="back"><button class="btn quiet" type="button" data-act="topic" data-topic="${esc(topic.id)}">← ${esc(topic.title)}</button></div>
+  <section class="chap-hero">
+    <span class="label">Capitolo ${roman(idx + 1)} di ${roman(topic.chapters.length)}${ch.minutes ? ` · circa ${ch.minutes} minuti` : ""}</span>
+    <h1>${esc(ch.title)}</h1>
+    <p class="intro">${esc(ch.summary)}</p>
+  </section>
+  <div class="grid">
+    <div>
+      <section class="sec">
+        <div class="sec-head"><h2>Concetti chiave</h2></div>
+        <ul class="points">${(ch.points || []).map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+        ${ch.reading ? `<p class="reading">${esc(ch.reading)}</p>` : ""}
+      </section>
+      <section class="sec">
+        <div class="sec-head"><h2>Lezione</h2>${lesson?.createdAt ? `<span class="label">scritta da Claude</span>` : ""}</div>
+        ${lessonHTML}
+      </section>
+      ${canAsk() ? `<section class="sec">
+        <div class="sec-head"><h2>Chiedi al tutor</h2><span class="label">la risposta non viene salvata</span></div>
+        <label class="label" for="ask-${esc(ch.id)}">La tua domanda su questo capitolo</label>
+        <textarea id="ask-${esc(ch.id)}" data-draft="1" placeholder="Per esempio: perché proprio Firenze e non Milano o Venezia?"></textarea>
+        <div class="row">${tutor?.busy
+          ? `<span class="thinking">Il tutor sta rispondendo</span><button class="btn small" type="button" data-act="stop-tutor" data-ch="${esc(ch.id)}">Interrompi</button>`
+          : `<button class="btn" type="button" data-act="ask" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Chiedi</button>`}</div>
+        ${tutor ? `<div class="panel"><span class="label">${esc(tutor.q)}</span><div class="prose" id="tutor-${esc(ch.id)}">${tutor.text ? md(tutor.text) : `<p class="thinking">Sto pensando</p>`}</div>${tutor.error ? `<p class="err">${esc(tutor.error)}</p>` : ""}</div>` : ""}
+      </section>` : ""}
+    </div>
+    <aside class="sec">
+      <div class="panel">
+        <h2>Il tuo capitolo</h2>
+        ${S.me ? `<button class="btn ${done ? "" : "primary"}" type="button" data-act="toggle-done" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" ${S.canWrite ? "" : "disabled"}>${done ? "✓ Studiato · annulla" : "Segna come studiato"}</button>` : `<p class="kv">Accedi per segnare i capitoli studiati.</p>`}
+        <div class="scores">
+          ${ppl.map(uid => { const q = prog(topic.id, uid).quiz?.[ch.id]; const d = prog(topic.id, uid).done?.[ch.id];
+            return `<div class="score-line">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span><span class="label num" style="margin-left:auto">${d ? "studiato" : "da studiare"}${q ? " · test " + q.best + "%" : ""}</span></div>`; }).join("")}
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Mettiti alla prova</h2>
+        <p>Domande a scelta multipla su questo capitolo, con la spiegazione di ogni risposta.</p>
+        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="${esc(ch.id)}">Fai il test</button></div>
+      </div>
+    </aside>
+  </div>
+  <nav class="pager" aria-label="Capitoli">
+    ${prev ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(prev.id)}">← ${roman(idx)}. ${esc(prev.title)}</button>` : "<span></span>"}
+    ${next ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(next.id)}">${roman(idx + 2)}. ${esc(next.title)} →</button>` : ""}
+  </nav>`;
+}
+
+function quizView() {
+  const z = S.quiz, topic = z && topicById(z.topicId);
+  if (!topic) return topicView(currentTopic());
+  const ch = z.key === "final" ? null : topic.chapters.find(c => c.id === z.key);
+  const chIdx = ch ? topic.chapters.indexOf(ch) : -1;
+  const head = `
+    <div class="back"><button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">← ${esc(ch ? ch.title : topic.title)}</button></div>
+    <section class="chap-hero">
+      <span class="label">${ch ? "Test · capitolo " + roman(chIdx + 1) : "Esame finale · " + esc(monthLabel(topic.id))}</span>
+      <h1>${esc(ch ? ch.title : topic.title)}</h1>
+    </section>`;
+  if (z.loading) return head + `<div class="quiz"><p class="thinking">${canAsk() ? "Preparo le domande, può volerci un minuto" : "Carico le domande"}</p>
+    ${z.ctl ? `<div class="row"><button class="btn small" type="button" data-act="stop-quiz">Interrompi</button></div>` : ""}</div>`;
+  if (z.error || !z.data) return head + `<div class="quiz"><p class="err">${esc(z.error || "Test non disponibile.")}</p>
+    <div class="row">${canAsk() ? `<button class="btn" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="${esc(z.key)}">Riprova</button>` : ""}</div></div>`;
+  const qs = z.data.questions;
+  const answered = Object.keys(z.answers).length;
+  const result = z.submitted ? `<div class="result">
+      <span class="big num">${z.score.pct}%</span>
+      <span>${z.score.right} risposte giuste su ${z.score.total}. ${z.score.pct >= 85 ? "Ottimo: questo capitolo lo padroneggi." : z.score.pct >= 60 ? "Buona base: rileggi le spiegazioni delle risposte sbagliate." : "Conviene ripassare il capitolo e ritentare tra qualche giorno."}</span>
+    </div>` : "";
+  const items = qs.map((q, i) => {
+    const pick = z.answers[i];
+    return `<div class="q">
+      <div class="qt"><span>${roman(i + 1)}</span><div>${esc(q.q)}</div></div>
+      <div class="opts" role="group" aria-label="Opzioni della domanda ${i + 1}">
+        ${q.options.map((o, j) => {
+          let cls = "";
+          if (z.submitted) { if (j === q.answer) cls = "right"; else if (j === pick) cls = "wrong"; }
+          return `<button type="button" class="opt ${cls}" data-act="pick" data-q="${i}" data-o="${j}" aria-pressed="${pick === j}" ${z.submitted ? "disabled" : ""}><span class="k">${LETTERS[j]}</span><span>${esc(o)}</span></button>`;
+        }).join("")}
+      </div>
+      ${z.submitted && q.explain ? `<p class="explain">${pick === q.answer ? "Giusto. " : "La risposta corretta è " + LETTERS[q.answer] + ". "}${esc(q.explain)}</p>` : ""}
+    </div>`;
+  }).join("");
+  return head + `<div class="quiz">
+    ${result}
+    ${items}
+    <div class="row">
+      ${z.submitted
+        ? `<button class="btn" type="button" data-act="quiz-retry">Rifai lo stesso test</button>
+           ${canAsk() ? `<button class="btn" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="${esc(z.key)}">Nuove domande con Claude</button>` : ""}
+           <button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">Torna ${ch ? "al capitolo" : "al programma"}</button>`
+        : `<button class="btn primary" type="button" data-act="submit-quiz" ${answered < qs.length ? "aria-disabled=\"true\"" : ""}>Consegna</button>
+           <span class="label num">${answered}/${qs.length} risposte</span>`}
+    </div>
+  </div>`;
+}
+
+function planView() {
+  const items = planItems();
+  const pg = S.planGen;
+  const header = `<section class="hero">
+    <span class="label">Piano annuale</span>
+    <h1>Dodici mesi, dodici argomenti</h1>
+    <p class="intro">Il piano è una traccia: cambiate i titoli quando volete. Quando arriva il mese, chiedete a Claude di preparare il programma completo.</p>
+  </section>`;
+  if (!items.length) return header + `<div class="empty">
+    <h2>Il piano è ancora vuoto</h2>
+    <p>Claude può proporre dodici argomenti di discipline diverse, a partire da ${esc(monthLabel(NOW).toLowerCase())}. Oppure aggiungete i mesi uno alla volta.</p>
+    ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
+    <div class="row">
+      ${canAsk() ? (pg && !pg.error ? `<span class="thinking">Claude sta componendo il piano</span><button class="btn small" type="button" data-act="stop-plan">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-plan" ${S.canWrite ? "" : "disabled"}>Proponi un piano con Claude</button>`) : ""}
+      <button class="btn" type="button" data-act="plan-add" ${S.canWrite ? "" : "disabled"}>Aggiungi un mese</button>
+    </div>
+  </div>`;
+  const rows = items.map(it => {
+    const t = topicById(it.month);
+    const gen = S.gen?.month === it.month ? S.gen : null;
+    const sug = S.suggest[it.month];
+    let act;
+    if (t) act = `<span class="chip ok">pronto</span><button class="btn small" type="button" data-act="topic" data-topic="${esc(it.month)}">Apri</button>`;
+    else if (gen && !gen.error) act = `<span class="thinking">Claude scrive il programma</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>`;
+    else act = `${it.month < NOW ? `<span class="chip">non svolto</span>` : ""}
+      ${canAsk() ? `<button class="btn small primary" type="button" data-act="gen-topic" data-month="${esc(it.month)}" ${S.canWrite ? "" : "disabled"}>Prepara il programma</button>
+      <button class="btn small" type="button" data-act="suggest" data-month="${esc(it.month)}">Altre idee</button>` : ""}
+      ${S.canWrite ? `<button class="btn small quiet" type="button" data-act="plan-remove" data-month="${esc(it.month)}">Togli</button>` : ""}`;
+    return `<li class="${it.month === NOW ? "now" : ""}">
+      <div class="m">${esc(monthLabel(it.month))}</div>
+      <div class="ttl">
+        ${t ? `<strong>${esc(t.title)}</strong>` : S.canWrite
+          ? `<label class="label" for="plan-${esc(it.month)}" hidden>Argomento di ${esc(monthLabel(it.month))}</label><input type="text" id="plan-${esc(it.month)}" value="${esc(it.title)}" data-act="plan-title" data-month="${esc(it.month)}">`
+          : `<strong>${esc(it.title)}</strong>`}
+        <span class="s">${esc(t ? t.subtitle : it.subtitle)}</span>
+        ${gen?.error ? `<span class="err">${esc(gen.error)}</span>` : ""}
+      </div>
+      <div class="act">${act}</div>
+      ${sug ? `<div class="suggest">${sug.busy ? `<span class="thinking">Cerco idee</span>` : sug.error ? `<span class="err">${esc(sug.error)}</span>` :
+        sug.list.map((s, k) => `<button class="btn small" type="button" data-act="use-suggest" data-month="${esc(it.month)}" data-k="${k}" title="${esc(s.subtitle)}">${esc(s.title)}</button>`).join("")}</div>` : ""}
+    </li>`;
+  }).join("");
+  return header + `<section class="sec">
+    <div class="sec-head"><h2>Il vostro anno</h2>
+      <div class="row">
+        ${S.canWrite ? `<button class="btn small" type="button" data-act="plan-add">Aggiungi un mese</button>` : ""}
+        ${canAsk() && S.canWrite ? (pg && !pg.error ? `<span class="thinking">Claude ricompone il piano</span>` : `<button class="btn small quiet" type="button" data-act="gen-plan-confirm">Rifai il piano con Claude</button>`) : ""}
+      </div>
+    </div>
+    ${S.busy.planConfirm ? `<div class="notice">Claude sostituirà gli argomenti da ${esc(monthLabel(NOW).toLowerCase())} in poi. I mesi già preparati restano salvati nell'archivio.
+      <div class="row" style="margin-top:8px"><button class="btn small primary" type="button" data-act="gen-plan">Sì, rifai il piano</button><button class="btn small" type="button" data-act="gen-plan-cancel">Annulla</button></div></div>` : ""}
+    ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
+    <ol class="plan">${rows}</ol>
+  </section>`;
+}
+
+function archiveView() {
+  const list = [...S.topics].reverse();
+  const header = `<section class="hero"><span class="label">Archivio</span><h1>Tutto quello che avete studiato</h1></section>`;
+  if (!list.length) return header + `<div class="empty"><h2>L'archivio è vuoto</h2><p>Gli argomenti preparati compariranno qui, mese per mese, con i vostri risultati.</p></div>`;
+  return header + `<div class="arch">${list.map(t => `
+    <button class="card" type="button" data-act="topic" data-topic="${esc(t.id)}">
+      <span class="label">${esc(monthLabel(t.id))}${t.id === NOW ? " · in corso" : ""}</span>
+      <h3>${esc(t.title)}</h3>
+      ${t.subtitle ? `<span class="kv">${esc(t.subtitle)}</span>` : ""}
+      ${peopleFor(t.id).map(uid => { const s = stats(t, uid);
+        return `<span class="score-line">${avatar(uid, "sm")}<span class="label num">${s.done}/${s.n} capitoli · finale ${s.fin == null ? "—" : s.fin + "%"}</span></span>`; }).join("")}
+    </button>`).join("")}</div>`;
+}
+
+function viewHTML() {
+  if (!S.loaded.topics) return `<div class="empty"><h2>Apro lo studiolo…</h2><p>Sto caricando gli argomenti e i vostri progressi.</p></div>`;
+  const v = S.view;
+  if (v.name === "plan") return planView();
+  if (v.name === "archive") return archiveView();
+  if (v.name === "quiz") return quizView();
+  if (v.name === "chapter") { const t = topicById(v.topicId); return t ? chapterView(t, v.chId) : topicView(currentTopic()); }
+  if (v.name === "topic") return topicView(topicById(v.id) || currentTopic());
+  return topicView(currentTopic());
+}
+
+function render() {
+  const main = $("#main");
+  const act = document.activeElement;
+  const fid = act && main.contains(act) && act.id ? act.id : null;
+  const sel = fid && typeof act.selectionStart === "number" ? [act.selectionStart, act.selectionEnd] : null;
+  const keep = {};
+  main.querySelectorAll("[data-draft]").forEach(el => { if (el.id) keep[el.id] = el.value; });
+  if (fid && (act.tagName === "INPUT" && act.type === "text")) keep[fid] = act.value;
+  main.innerHTML = viewHTML();
+  for (const [id, v] of Object.entries(keep)) { const el = document.getElementById(id); if (el) el.value = v; }
+  if (fid) { const el = document.getElementById(fid); if (el) { el.focus({ preventScroll: true }); if (sel) try { el.setSelectionRange(sel[0], sel[1]); } catch (e) {} } }
+  const tab = S.view.name === "plan" ? "plan" : S.view.name === "archive" ? "archive" : "home";
+  document.querySelectorAll("#nav button").forEach(b => { if (b.dataset.view === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+  const ppl = peopleFor(null);
+  $("#people").innerHTML = ppl.map(uid => avatar(uid)).join("");
+  $("#mode").textContent = Store.mode === "cloud"
+    ? (S.canWrite ? "Salvataggio condiviso attivo" : "Sola lettura")
+    : "Salvataggio solo su questo dispositivo";
+}
+
+/* ---------- events ---------- */
+function go(view) { S.view = view; window.scrollTo(0, 0); render(); }
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-act]"); if (!el || el.tagName === "INPUT") return;
+  const d = el.dataset, topic = d.topic ? topicById(d.topic) : null;
+  switch (d.act) {
+    case "go": go({ name: d.view }); break;
+    case "topic": go({ name: "topic", id: d.topic }); break;
+    case "chapter": go({ name: "chapter", topicId: d.topic, chId: d.ch }); break;
+    case "toggle-done": saveProg(d.topic, cur => { cur.done[d.ch] = !cur.done[d.ch]; }); break;
+    case "lesson": if (topic) writeLesson(topic, topic.chapters.find(c => c.id === d.ch)); break;
+    case "stop-lesson": S.stream[d.id]?.ctl.abort(); break;
+    case "ask": if (topic) askTutor(topic, topic.chapters.find(c => c.id === d.ch)); break;
+    case "stop-tutor": S.tutor[d.ch]?.ctl.abort(); break;
+    case "quiz": openQuiz(d.topic, d.key, false); break;
+    case "quiz-new": openQuiz(d.topic, d.key, true); break;
+    case "stop-quiz": S.quiz?.ctl?.abort(); break;
+    case "pick": if (S.quiz && !S.quiz.submitted) { S.quiz.answers[+d.q] = +d.o; render(); } break;
+    case "submit-quiz": submitQuiz(); break;
+    case "quiz-retry": if (S.quiz) { S.quiz.answers = {}; S.quiz.submitted = false; window.scrollTo(0, 0); render(); } break;
+    case "gen-topic": {
+      const item = planItems().find(i => i.month === d.month);
+      const input = document.getElementById("plan-" + d.month);
+      generateTopic(d.month, input ? input.value : (item?.title || ""), item?.subtitle || "");
+      break;
+    }
+    case "stop-gen": S.gen?.ctl?.abort(); break;
+    case "gen-plan-confirm": S.busy.planConfirm = true; render(); break;
+    case "gen-plan-cancel": S.busy.planConfirm = false; render(); break;
+    case "gen-plan": S.busy.planConfirm = false; generatePlan(); break;
+    case "stop-plan": S.planGen?.ctl?.abort(); break;
+    case "suggest": suggestFor(d.month); break;
+    case "use-suggest": {
+      const s = S.suggest[d.month]?.list?.[+d.k]; if (!s) break;
+      delete S.suggest[d.month];
+      savePlan(planItems().map(i => i.month === d.month ? { ...i, title: s.title, subtitle: s.subtitle } : i), "Piano aggiornato");
+      break;
+    }
+    case "plan-add": {
+      const items = planItems();
+      const last = items.length ? items[items.length - 1].month : addMonths(NOW, -1);
+      savePlan([...items, { month: addMonths(last, 1), title: "", subtitle: "" }]);
+      break;
+    }
+    case "plan-remove": savePlan(planItems().filter(i => i.month !== d.month), "Mese tolto dal piano"); break;
+  }
+});
+document.addEventListener("keydown", e => {
+  if ((e.key === "Enter" || e.key === " ") && e.target.matches(".chap")) { e.preventDefault(); e.target.click(); }
+});
+document.addEventListener("change", e => {
+  const el = e.target, d = el.dataset;
+  if (d.act === "book") saveProg(d.topic, cur => { cur.books[d.i] = el.checked; });
+  if (d.act === "plan-title") {
+    const v = el.value.trim();
+    savePlan(planItems().map(i => i.month === d.month ? { ...i, title: v, subtitle: i.title === v ? i.subtitle : "" } : i), "Piano aggiornato");
+  }
+});
+
+/* ---------- boot ---------- */
+async function boot() {
+  render();
+  const use = name => (window.claude && typeof window.claude.use === "function") ? window.claude.use(name).catch(() => null) : Promise.resolve(null);
+  const [db, user, sample] = await Promise.all([use("db"), use("user"), use("sample")]);
+  Store.init(db);
+  S.user = user; S.sample = sample;
+  if (Store.mode === "cloud") {
+    S.me = user ? await user.id() : null;
+    const w = user ? await user.can("data.write") : null;
+    S.canWrite = !!S.me && w !== false;
+    if (!S.me) notice("Accedi a Claude per salvare i tuoi progressi. Per ora puoi solo consultare i programmi.");
+  } else {
+    S.me = "locale";
+    notice("Stai usando Lo Studiolo fuori da Claude: i progressi restano solo in questo browser e la generazione con Claude non è disponibile.");
+  }
+  Store.watch("topics", rows => { S.topics = rows.filter(r => isMonth(r.id) && Array.isArray(r.chapters)).sort((a, b) => a.id.localeCompare(b.id)); S.loaded.topics = true; render(); });
+  Store.watch("progress", rows => { S.progress = rows; S.loaded.progress = true; render(); refreshProfiles(); });
+  Store.watch("plan", rows => { S.plan = rows.find(r => r.id === "year") || null; S.loaded.plan = true; render(); });
+  refreshProfiles();
+}
+boot();
+</script>

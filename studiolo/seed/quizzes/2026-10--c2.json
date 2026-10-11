@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c2",
+ "questions": [
+  {
+   "q": "Su quale attività si fondava soprattutto la ricchezza dei Medici?",
+   "options": [
+    "Le miniere d'argento",
+    "La costruzione di navi",
+    "Il commercio delle spezie",
+    "La banca"
+   ],
+   "answer": 3,
+   "explain": "Il Banco Medici, fondato nel 1397 da Giovanni di Bicci, aveva filiali in tutta Europa ed era il banchiere del papato."
+  },
+  {
+   "q": "In quale anno avvenne la congiura dei Pazzi, in cui fu ucciso Giuliano de' Medici?",
+   "options": [
+    "1453",
+    "1492",
+    "1478",
+    "1434"
+   ],
+   "answer": 2,
+   "explain": "Il 26 aprile 1478, durante la messa in Duomo, i congiurati uccisero Giuliano; Lorenzo, ferito, si salvò."
+  },
+  {
+   "q": "Chi era chiamato 'il Magnifico'?",
+   "options": [
+    "Giovanni dalle Bande Nere",
+    "Cosimo il Vecchio",
+    "Lorenzo de' Medici",
+    "Piero il Gottoso"
+   ],
+   "answer": 2,
+   "explain": "Lorenzo (1449-1492) fu poeta, diplomatico e mecenate; mantenne l'equilibrio tra gli stati italiani fino alla morte."
+  },
+  {
+   "q": "Nel 1434 Cosimo il Vecchio tornò a Firenze dopo:",
+   "options": [
+    "Una crociata in Oriente",
+    "Gli studi all'Università di Parigi",
+    "Un anno di esilio tra Padova e Venezia",
+    "Un periodo al servizio del papa ad Avignone"
+   ],
+   "answer": 2,
+   "explain": "Esiliato nel 1433 dalla fazione degli Albizzi, Cosimo rientrò l'anno dopo e governò di fatto la città fino al 1464."
+  },
+  {
+   "q": "Quale frate domenicano dominò la vita politica fiorentina dopo la cacciata dei Medici nel 1494?",
+   "options": [
+    "Girolamo Savonarola",
+    "Antonino Pierozzi",
+    "Tommaso Campanella",
+    "Bernardino da Siena"
+   ],
+   "answer": 0,
+   "explain": "Savonarola predicava contro il lusso e organizzò i 'falò delle vanità'; fu giustiziato in piazza della Signoria nel 1498."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}

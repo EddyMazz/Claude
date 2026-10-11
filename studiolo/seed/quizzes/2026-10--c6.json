@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c6",
+ "questions": [
+  {
+   "q": "In quali anni Michelangelo affrescò la volta della Cappella Sistina?",
+   "options": [
+    "1536-1541",
+    "1508-1512",
+    "1520-1527",
+    "1475-1481"
+   ],
+   "answer": 1,
+   "explain": "La volta fu dipinta tra il 1508 e il 1512 per Giulio II; il Giudizio Universale sulla parete d'altare è invece del 1536-1541."
+  },
+  {
+   "q": "Dove si trova la Scuola di Atene di Raffaello?",
+   "options": [
+    "Galleria degli Uffizi",
+    "Stanza della Segnatura, nei Palazzi Vaticani",
+    "Galleria Borghese",
+    "Museo del Louvre"
+   ],
+   "answer": 1,
+   "explain": "Raffaello la affrescò tra il 1509 e il 1511; tra i filosofi ritrasse anche Leonardo, Michelangelo e se stesso."
+  },
+  {
+   "q": "Quale papa commissionò sia la volta della Sistina sia le Stanze di Raffaello?",
+   "options": [
+    "Sisto IV",
+    "Alessandro VI",
+    "Giulio II",
+    "Leone X"
+   ],
+   "answer": 2,
+   "explain": "Giulio II della Rovere, il 'papa guerriero', volle trasformare Roma nella capitale del Rinascimento."
+  },
+  {
+   "q": "Lo 'sfumato', il passaggio graduale tra luce e ombra senza contorni netti, è associato soprattutto a:",
+   "options": [
+    "Raffaello",
+    "Michelangelo",
+    "Botticelli",
+    "Leonardo da Vinci"
+   ],
+   "answer": 3,
+   "explain": "Leonardo lo usò per dare morbidezza e mistero ai volti, come nella Gioconda."
+  },
+  {
+   "q": "In quali anni Michelangelo scolpì il David?",
+   "options": [
+    "1501-1504",
+    "1491-1494",
+    "1512-1516",
+    "1530-1534"
+   ],
+   "answer": 0,
+   "explain": "Lo ricavò da un grande blocco di marmo già lavorato e abbandonato da altri scultori; fu collocato davanti a Palazzo Vecchio nel 1504."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}

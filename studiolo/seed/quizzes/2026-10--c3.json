@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c3",
+ "questions": [
+  {
+   "q": "Chi progettò e costruì la cupola di Santa Maria del Fiore a Firenze?",
+   "options": [
+    "Michelozzo",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi",
+    "Leon Battista Alberti"
+   ],
+   "answer": 2,
+   "explain": "Brunelleschi la costruì tra il 1420 e il 1436 senza le tradizionali impalcature di sostegno (centine), con una doppia calotta e mattoni a spina di pesce."
+  },
+  {
+   "q": "Quale affresco di Masaccio in Santa Maria Novella è considerato un manifesto della prospettiva lineare?",
+   "options": [
+    "L'Annunciazione di Cortona",
+    "La Trinità",
+    "La Primavera",
+    "Il Tributo"
+   ],
+   "answer": 1,
+   "explain": "La Trinità (circa 1426-1428) crea l'illusione di una cappella che sfonda il muro. Il Tributo è nella Cappella Brancacci, la Primavera è di Botticelli."
+  },
+  {
+   "q": "In quale trattato Leon Battista Alberti codificò le regole della prospettiva?",
+   "options": [
+    "De divina proportione",
+    "De pictura",
+    "De re aedificatoria",
+    "Il libro dell'arte"
+   ],
+   "answer": 1,
+   "explain": "Il De pictura (1435) spiega la costruzione prospettica; il De re aedificatoria è il suo trattato di architettura."
+  },
+  {
+   "q": "Quale opera di Donatello è considerata il primo nudo maschile a tutto tondo dall'antichità?",
+   "options": [
+    "Il David in bronzo",
+    "La Maddalena penitente",
+    "Il San Giorgio",
+    "Il Gattamelata"
+   ],
+   "answer": 0,
+   "explain": "Il David in bronzo, realizzato probabilmente negli anni '40 del Quattrocento per i Medici, riprende il nudo classico."
+  },
+  {
+   "q": "Chi vinse nel 1401 il concorso per la porta nord del Battistero di Firenze?",
+   "options": [
+    "Jacopo della Quercia",
+    "Donatello",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi"
+   ],
+   "answer": 2,
+   "explain": "Ghiberti vinse con la formella del Sacrificio di Isacco; Brunelleschi, sconfitto, si dedicò all'architettura."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}

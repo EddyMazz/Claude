@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c1",
+ "questions": [
+  {
+   "q": "Chi è considerato il padre dell'Umanesimo per la sua passione nel ritrovare e studiare i classici latini?",
+   "options": [
+    "Angelo Poliziano",
+    "Francesco Petrarca",
+    "Dante Alighieri",
+    "Giovanni Boccaccio"
+   ],
+   "answer": 1,
+   "explain": "Petrarca (1304-1374) cercò e copiò manoscritti antichi: nel 1345 ritrovò a Verona le lettere di Cicerone ad Attico."
+  },
+  {
+   "q": "Quale storico svizzero pubblicò nel 1860 'La civiltà del Rinascimento in Italia', rendendo il Rinascimento una categoria storica?",
+   "options": [
+    "Erwin Panofsky",
+    "Jacob Burckhardt",
+    "Jules Michelet",
+    "Johan Huizinga"
+   ],
+   "answer": 1,
+   "explain": "Il saggio di Burckhardt descrisse l'Italia del Quattrocento come culla dell'individuo moderno e fissò l'idea di Rinascimento."
+  },
+  {
+   "q": "Quale parola usò Giorgio Vasari nelle Vite per descrivere il rifiorire delle arti dopo il Medioevo?",
+   "options": [
+    "Rinascita",
+    "Risveglio",
+    "Illuminazione",
+    "Riforma"
+   ],
+   "answer": 0,
+   "explain": "Vasari parla di 'rinascita' delle arti, iniziata secondo lui con Cimabue e Giotto e culminata con Michelangelo."
+  },
+  {
+   "q": "Quale evento del 1348 sconvolse l'Europa pochi decenni prima della stagione umanistica?",
+   "options": [
+    "La scoperta dell'America",
+    "Il Grande Scisma d'Occidente",
+    "La caduta di Costantinopoli",
+    "La peste nera"
+   ],
+   "answer": 3,
+   "explain": "La peste nera uccise forse un terzo degli europei; Boccaccio la descrive all'inizio del Decameron."
+  },
+  {
+   "q": "Che cosa comprendevano gli studia humanitatis?",
+   "options": [
+    "Grammatica, retorica, storia, poesia e filosofia morale",
+    "Teologia e diritto canonico",
+    "Aritmetica, geometria, astronomia e musica",
+    "Medicina, alchimia e astrologia"
+   ],
+   "answer": 0,
+   "explain": "Erano le discipline che formano l'uomo come cittadino e oratore; aritmetica, geometria, astronomia e musica formavano invece il quadrivio medievale."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}

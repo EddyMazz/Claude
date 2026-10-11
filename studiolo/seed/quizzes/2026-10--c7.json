@@ -1,0 +1,63 @@
+{
+ "topic": "2026-10",
+ "key": "c7",
+ "questions": [
+  {
+   "q": "In che anno Machiavelli scrisse Il Principe?",
+   "options": [
+    "1559",
+    "1513",
+    "1527",
+    "1492"
+   ],
+   "answer": 1,
+   "explain": "Lo scrisse nel 1513 durante l'esilio all'Albergaccio, vicino a San Casciano; fu pubblicato dopo la sua morte, nel 1532."
+  },
+  {
+   "q": "Quale re di Francia scese in Italia nel 1494, aprendo le guerre d'Italia?",
+   "options": [
+    "Luigi XII",
+    "Francesco I",
+    "Carlo VIII",
+    "Enrico II"
+   ],
+   "answer": 2,
+   "explain": "Carlo VIII attraversò la penisola quasi senza combattere per rivendicare il Regno di Napoli."
+  },
+  {
+   "q": "Il Sacco di Roma del 1527 fu compiuto da truppe al servizio di:",
+   "options": [
+    "La Repubblica di Venezia",
+    "L'imperatore Carlo V",
+    "Francesco I di Francia",
+    "Il sultano Solimano"
+   ],
+   "answer": 1,
+   "explain": "I lanzichenecchi e le truppe imperiali, senza paga e fuori controllo, saccheggiarono Roma per mesi."
+  },
+  {
+   "q": "Quale opera fu scritta da Francesco Guicciardini?",
+   "options": [
+    "Storia d'Italia",
+    "Discorsi sopra la prima deca di Tito Livio",
+    "Istorie fiorentine",
+    "Il libro del Cortegiano"
+   ],
+   "answer": 0,
+   "explain": "La Storia d'Italia racconta gli anni 1492-1534; Istorie fiorentine e Discorsi sono invece di Machiavelli."
+  },
+  {
+   "q": "Che cosa intende Machiavelli con 'verità effettuale della cosa'?",
+   "options": [
+    "Il diritto naturale valido per tutti",
+    "Il modo in cui la politica funziona davvero, non come dovrebbe essere",
+    "La verità rivelata dalla Chiesa",
+    "La verità che emerge dai processi"
+   ],
+   "answer": 1,
+   "explain": "Machiavelli rompe con la tradizione degli 'specchi dei principi' e descrive il potere com'è nella realtà."
+  }
+ ],
+ "createdAt": "2026-10-11T09:00:00.000Z",
+ "source": "seed"
+}
