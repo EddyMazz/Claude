@@ -3,70 +3,37 @@
  "key": "c3",
  "questions": [
   {
-   "q": "Quale pittore di Sansepolcro, attivo anche a Urbino, scrisse il trattato De prospectiva pingendi?",
+   "q": "Quale papa commissionò sia la volta della Sistina sia le Stanze di Raffaello?",
    "options": [
-    "Luca Signorelli",
-    "Paolo Uccello",
-    "Melozzo da Forlì",
-    "Piero della Francesca"
-   ],
-   "answer": 3,
-   "explain": "Piero della Francesca fu anche matematico; a Urbino dipinse il doppio ritratto dei duchi di Montefeltro."
-  },
-  {
-   "q": "A chi apparteneva il celebre studiolo decorato a tarsie lignee del Palazzo Ducale di Urbino?",
-   "options": [
-    "Ludovico il Moro",
-    "Isabella d'Este",
-    "Federico da Montefeltro",
-    "Sigismondo Pandolfo Malatesta"
+    "Sisto IV",
+    "Alessandro VI",
+    "Giulio II",
+    "Leone X"
    ],
    "answer": 2,
-   "explain": "Federico, condottiero e mecenate, fece realizzare lo studiolo negli anni '70 del Quattrocento: le tarsie creano armadi e libri in finta prospettiva."
+   "explain": "Giulio II della Rovere, il 'papa guerriero', volle trasformare Roma nella capitale del Rinascimento."
   },
   {
-   "q": "Per quale signore Leonardo dipinse l'Ultima Cena a Milano?",
+   "q": "In che anni Michelangelo scolpì la Pietà di San Pietro?",
    "options": [
-    "Gian Galeazzo Visconti",
-    "Galeazzo Maria Sforza",
-    "Ludovico Sforza detto il Moro",
-    "Francesco Sforza"
+    "1508-1512",
+    "1498-1499",
+    "1550-1555",
+    "1527-1530"
    ],
-   "answer": 2,
-   "explain": "Leonardo dipinse il Cenacolo in Santa Maria delle Grazie tra il 1494 e il 1498, su commissione di Ludovico il Moro."
+   "answer": 1,
+   "explain": "Aveva poco più di vent'anni; è l'unica opera che firmò, sulla fascia che attraversa il petto della Vergine."
   },
   {
-   "q": "Chi affrescò la Camera degli Sposi nel Palazzo Ducale di Mantova?",
+   "q": "In quale bottega si formò Leonardo?",
    "options": [
-    "Piero della Francesca",
-    "Giulio Romano",
-    "Pisanello",
-    "Andrea Mantegna"
-   ],
-   "answer": 3,
-   "explain": "Mantegna la dipinse tra il 1465 e il 1474 per i Gonzaga; il finto oculo sul soffitto è un capolavoro di illusione prospettica."
-  },
-  {
-   "q": "Di quale città fu marchesa, per matrimonio, la collezionista Isabella d'Este?",
-   "options": [
-    "Mantova",
-    "Ferrara",
-    "Urbino",
-    "Milano"
-   ],
-   "answer": 0,
-   "explain": "Nata a Ferrara, sposò Francesco II Gonzaga e trasformò Mantova in uno dei centri culturali più vivaci d'Italia."
-  },
-  {
-   "q": "Lo 'sfumato', il passaggio graduale tra luce e ombra senza contorni netti, è associato soprattutto a:",
-   "options": [
-    "Raffaello",
-    "Michelangelo",
-    "Botticelli",
-    "Leonardo da Vinci"
+    "Quella di Pietro Perugino",
+    "Quella di Domenico Ghirlandaio",
+    "Quella di Filippo Lippi",
+    "Quella di Andrea del Verrocchio"
    ],
    "answer": 3,
-   "explain": "Leonardo lo usò per dare morbidezza e mistero ai volti, come nella Gioconda."
+   "explain": "Nel Battesimo di Cristo di Verrocchio, agli Uffizi, l'angelo di sinistra è attribuito al giovane Leonardo."
   },
   {
    "q": "In quali anni Michelangelo affrescò la volta della Cappella Sistina?",
@@ -80,15 +47,15 @@
    "explain": "La volta fu dipinta tra il 1508 e il 1512 per Giulio II; il Giudizio Universale sulla parete d'altare è invece del 1536-1541."
   },
   {
-   "q": "Quale papa commissionò sia la volta della Sistina sia le Stanze di Raffaello?",
+   "q": "Per quale signore Leonardo dipinse l'Ultima Cena a Milano?",
    "options": [
-    "Sisto IV",
-    "Alessandro VI",
-    "Giulio II",
-    "Leone X"
+    "Gian Galeazzo Visconti",
+    "Galeazzo Maria Sforza",
+    "Ludovico Sforza detto il Moro",
+    "Francesco Sforza"
    ],
    "answer": 2,
-   "explain": "Giulio II della Rovere, il 'papa guerriero', volle trasformare Roma nella capitale del Rinascimento."
+   "explain": "Leonardo dipinse il Cenacolo in Santa Maria delle Grazie tra il 1494 e il 1498, su commissione di Ludovico il Moro."
   },
   {
    "q": "Dove si trova la Scuola di Atene di Raffaello?",
@@ -102,6 +69,127 @@
    "explain": "Raffaello la affrescò tra il 1509 e il 1511; tra i filosofi ritrasse anche Leonardo, Michelangelo e se stesso."
   },
   {
+   "q": "Quale famiglia governava Mantova nel Rinascimento?",
+   "options": [
+    "I Montefeltro",
+    "I Gonzaga",
+    "Gli Este",
+    "Gli Sforza"
+   ],
+   "answer": 1,
+   "explain": "I Gonzaga governarono Mantova dal 1328 al 1707 e ne fecero una delle corti più raffinate d'Europa."
+  },
+  {
+   "q": "In che anno morì Raffaello?",
+   "options": [
+    "1520",
+    "1512",
+    "1527",
+    "1519"
+   ],
+   "answer": 0,
+   "explain": "Morì a Roma a 37 anni, il 6 aprile 1520; è sepolto nel Pantheon."
+  },
+  {
+   "q": "In quale bottega si formò giovanissimo Michelangelo?",
+   "options": [
+    "Quella di Pietro Perugino",
+    "Quella di Andrea del Verrocchio",
+    "Quella di Sandro Botticelli",
+    "Quella di Domenico Ghirlandaio"
+   ],
+   "answer": 3,
+   "explain": "Poi passò al giardino di San Marco, dove Lorenzo il Magnifico raccoglieva sculture antiche."
+  },
+  {
+   "q": "Nella lettera di presentazione a Ludovico il Moro, come si descriveva soprattutto Leonardo?",
+   "options": [
+    "Come ingegnere militare",
+    "Come musicista",
+    "Come ritrattista",
+    "Come architetto di chiese"
+   ],
+   "answer": 0,
+   "explain": "Elencava ponti, macchine d'assedio e bombarde; solo alla fine diceva di saper fare anche scultura e pittura."
+  },
+  {
+   "q": "Quale famiglia governava Ferrara?",
+   "options": [
+    "I Visconti",
+    "I Malatesta",
+    "Gli Este",
+    "I Gonzaga"
+   ],
+   "answer": 2,
+   "explain": "Gli Este fecero di Ferrara un centro di letteratura e di urbanistica, con l'Addizione Erculea di fine Quattrocento."
+  },
+  {
+   "q": "Dove era nato Raffaello?",
+   "options": [
+    "Roma",
+    "Firenze",
+    "Perugia",
+    "Urbino"
+   ],
+   "answer": 3,
+   "explain": "Nacque nel 1483 nella Urbino dei Montefeltro, dove il padre Giovanni Santi era pittore di corte."
+  },
+  {
+   "q": "Quale poema cavalleresco nacque alla corte estense di Ferrara?",
+   "options": [
+    "L'Orlando furioso di Ariosto",
+    "Il Decameron",
+    "La Divina Commedia",
+    "Il Morgante di Pulci"
+   ],
+   "answer": 0,
+   "explain": "Ariosto lo pubblicò nel 1516 e lo rielaborò fino al 1532; il Morgante nacque invece nella Firenze di Lorenzo."
+  },
+  {
+   "q": "Perché Federico da Montefeltro è ritratto di profilo sinistro da Piero della Francesca?",
+   "options": [
+    "Era mancino",
+    "Era tradizione ritrarre i duchi solo così",
+    "Aveva perso l'occhio destro in un torneo",
+    "Voleva imitare le monete romane del lato sinistro"
+   ],
+   "answer": 2,
+   "explain": "Nello stesso incidente si ruppe il setto nasale: il profilo con il naso spezzato è diventato la sua immagine più famosa."
+  },
+  {
+   "q": "Dove si trova oggi la Gioconda?",
+   "options": [
+    "Alla Pinacoteca di Brera",
+    "Agli Uffizi di Firenze",
+    "Al Louvre di Parigi",
+    "Alla National Gallery di Londra"
+   ],
+   "answer": 2,
+   "explain": "Leonardo la portò con sé in Francia; entrò nelle collezioni del re e poi del Louvre."
+  },
+  {
+   "q": "Presso quale sovrano Leonardo trascorse gli ultimi anni, morendo ad Amboise nel 1519?",
+   "options": [
+    "Francesco I di Francia",
+    "Carlo VIII di Francia",
+    "Luigi XII di Francia",
+    "Carlo V d'Asburgo"
+   ],
+   "answer": 0,
+   "explain": "Francesco I gli offrì il maniero di Clos-Lucé, vicino al castello di Amboise."
+  },
+  {
+   "q": "Che cosa fu il 'Cavallo' progettato da Leonardo per gli Sforza?",
+   "options": [
+    "Un automa meccanico",
+    "Un enorme monumento equestre a Francesco Sforza, mai fuso in bronzo",
+    "Una macchina da guerra",
+    "Un affresco nel Castello Sforzesco"
+   ],
+   "answer": 1,
+   "explain": "Il modello in argilla fu distrutto dopo l'arrivo dei francesi nel 1499; il bronzo era stato usato per i cannoni."
+  },
+  {
    "q": "In quali anni Michelangelo scolpì il David?",
    "options": [
     "1501-1504",
@@ -111,8 +199,140 @@
    ],
    "answer": 0,
    "explain": "Lo ricavò da un grande blocco di marmo già lavorato e abbandonato da altri scultori; fu collocato davanti a Palazzo Vecchio nel 1504."
+  },
+  {
+   "q": "Per quale edificio furono commissionate a Leonardo e Michelangelo la Battaglia di Anghiari e la Battaglia di Cascina?",
+   "options": [
+    "La Cappella Sistina",
+    "Palazzo Vecchio, nella Sala del Gran Consiglio",
+    "Il Palazzo Ducale di Urbino",
+    "Il Duomo di Milano"
+   ],
+   "answer": 1,
+   "explain": "Le due opere, mai completate, avrebbero dovuto fronteggiarsi nella sala oggi detta dei Cinquecento."
+  },
+  {
+   "q": "Di chi è tradizionalmente riconosciuto il volto nel Platone della Scuola di Atene?",
+   "options": [
+    "Giulio II",
+    "Michelangelo",
+    "Leonardo da Vinci",
+    "Bramante"
+   ],
+   "answer": 2,
+   "explain": "Raffaello rese omaggio ai maestri: Michelangelo è riconosciuto in Eraclito, Bramante in Euclide."
+  },
+  {
+   "q": "Di quale città fu marchesa, per matrimonio, la collezionista Isabella d'Este?",
+   "options": [
+    "Mantova",
+    "Ferrara",
+    "Urbino",
+    "Milano"
+   ],
+   "answer": 0,
+   "explain": "Nata a Ferrara, sposò Francesco II Gonzaga e trasformò Mantova in uno dei centri culturali più vivaci d'Italia."
+  },
+  {
+   "q": "Quale pittore di Sansepolcro, attivo anche a Urbino, scrisse il trattato De prospectiva pingendi?",
+   "options": [
+    "Luca Signorelli",
+    "Paolo Uccello",
+    "Melozzo da Forlì",
+    "Piero della Francesca"
+   ],
+   "answer": 3,
+   "explain": "Piero della Francesca fu anche matematico; a Urbino dipinse il doppio ritratto dei duchi di Montefeltro."
+  },
+  {
+   "q": "Nella Scuola di Atene Platone indica il cielo. Che gesto fa Aristotele?",
+   "options": [
+    "Legge un libro",
+    "Scrive su una tavoletta",
+    "Indica anche lui il cielo",
+    "Tende la mano aperta verso la terra"
+   ],
+   "answer": 3,
+   "explain": "I due gesti riassumono le filosofie: Platone guarda al mondo delle idee, Aristotele alla realtà concreta."
+  },
+  {
+   "q": "Chi affrescò la Camera degli Sposi nel Palazzo Ducale di Mantova?",
+   "options": [
+    "Piero della Francesca",
+    "Giulio Romano",
+    "Pisanello",
+    "Andrea Mantegna"
+   ],
+   "answer": 3,
+   "explain": "Mantegna la dipinse tra il 1465 e il 1474 per i Gonzaga; il finto oculo sul soffitto è un capolavoro di illusione prospettica."
+  },
+  {
+   "q": "A chi apparteneva il celebre studiolo decorato a tarsie lignee del Palazzo Ducale di Urbino?",
+   "options": [
+    "Ludovico il Moro",
+    "Isabella d'Este",
+    "Federico da Montefeltro",
+    "Sigismondo Pandolfo Malatesta"
+   ],
+   "answer": 2,
+   "explain": "Federico, condottiero e mecenate, fece realizzare lo studiolo negli anni '70 del Quattrocento: le tarsie creano armadi e libri in finta prospettiva."
+  },
+  {
+   "q": "Lo 'sfumato', il passaggio graduale tra luce e ombra senza contorni netti, è associato soprattutto a:",
+   "options": [
+    "Raffaello",
+    "Michelangelo",
+    "Botticelli",
+    "Leonardo da Vinci"
+   ],
+   "answer": 3,
+   "explain": "Leonardo lo usò per dare morbidezza e mistero ai volti, come nella Gioconda."
+  },
+  {
+   "q": "Quale grande opera di architettura progettò Michelangelo in Vaticano?",
+   "options": [
+    "Castel Sant'Angelo",
+    "La cupola di San Pietro",
+    "La Cappella Sistina",
+    "Il Cortile del Belvedere"
+   ],
+   "answer": 1,
+   "explain": "Michelangelo diresse il cantiere dal 1546; la cupola fu completata dopo la sua morte. La Cappella Sistina fu costruita sotto Sisto IV."
+  },
+  {
+   "q": "Chi fu il primo architetto della nuova basilica di San Pietro voluta da Giulio II nel 1506?",
+   "options": [
+    "Donato Bramante",
+    "Antonio da Sangallo",
+    "Raffaello",
+    "Michelangelo"
+   ],
+   "answer": 0,
+   "explain": "Bramante progettò una pianta centrale; dopo di lui lavorarono Raffaello, Sangallo e infine Michelangelo, autore della cupola."
+  },
+  {
+   "q": "Chi fu il maestro di Raffaello?",
+   "options": [
+    "Andrea Mantegna",
+    "Domenico Ghirlandaio",
+    "Andrea del Verrocchio",
+    "Pietro Perugino"
+   ],
+   "answer": 3,
+   "explain": "Le prime opere di Raffaello, come lo Sposalizio della Vergine, mostrano chiaramente lo stile di Perugino."
+  },
+  {
+   "q": "Quando Michelangelo dipinse il Giudizio universale nella Cappella Sistina?",
+   "options": [
+    "1481-1483",
+    "1508-1512",
+    "1536-1541",
+    "1520-1525"
+   ],
+   "answer": 2,
+   "explain": "Lo dipinse sulla parete dell'altare per Clemente VII e Paolo III, più di vent'anni dopo la volta."
   }
  ],
- "createdAt": "2026-10-11T13:00:00.000Z",
+ "createdAt": "2026-10-11T14:00:00.000Z",
  "source": "seed"
 }

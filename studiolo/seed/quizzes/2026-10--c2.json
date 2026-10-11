@@ -3,59 +3,59 @@
  "key": "c2",
  "questions": [
   {
-   "q": "Chi vinse nel 1401 il concorso per la porta nord del Battistero di Firenze?",
+   "q": "Quale poema latino, ritrovato da Poggio Bracciolini nel 1417, riportò in circolazione le idee di Epicuro?",
    "options": [
-    "Jacopo della Quercia",
-    "Donatello",
-    "Lorenzo Ghiberti",
-    "Filippo Brunelleschi"
-   ],
-   "answer": 2,
-   "explain": "Ghiberti vinse con la formella del Sacrificio di Isacco; Brunelleschi, sconfitto, si dedicò all'architettura."
-  },
-  {
-   "q": "Marsilio Ficino tradusse in latino le opere complete di:",
-   "options": [
-    "Aristotele",
-    "Lucrezio",
-    "Platone",
-    "Seneca"
-   ],
-   "answer": 2,
-   "explain": "Ficino, sostenuto da Cosimo de' Medici, tradusse tutto Platone e fu l'anima dell'Accademia neoplatonica fiorentina."
-  },
-  {
-   "q": "Quale documento Lorenzo Valla dimostrò falso, studiandone la lingua?",
-   "options": [
-    "L'Editto di Milano",
-    "La Donazione di Costantino",
-    "Il Dictatus papae",
-    "La Bolla d'oro"
+    "L'Institutio oratoria di Quintiliano",
+    "Il De rerum natura di Lucrezio",
+    "Le Metamorfosi di Ovidio",
+    "L'Eneide di Virgilio"
    ],
    "answer": 1,
-   "explain": "Nel 1440 Valla mostrò che il latino del documento non poteva essere del IV secolo: nasce la filologia moderna."
+   "explain": "Il De rerum natura descrive un universo fatto di atomi, senza intervento divino; Greenblatt racconta questa scoperta ne Il manifesto della libertà."
   },
   {
-   "q": "Chi progettò e costruì la cupola di Santa Maria del Fiore a Firenze?",
+   "q": "Che cosa sostiene, in sintesi, il neoplatonismo di Ficino?",
    "options": [
-    "Michelozzo",
-    "Lorenzo Ghiberti",
-    "Filippo Brunelleschi",
-    "Leon Battista Alberti"
+    "Che amore e bellezza elevano l'anima verso Dio",
+    "Che la conoscenza viene solo dai sensi",
+    "Che il mondo è fatto solo di atomi",
+    "Che la ragione deve sottomettersi al principe"
    ],
-   "answer": 2,
-   "explain": "Brunelleschi la costruì tra il 1420 e il 1436 senza le tradizionali impalcature di sostegno (centine), con una doppia calotta e mattoni a spina di pesce."
+   "answer": 0,
+   "explain": "Per Ficino la bellezza terrena è un riflesso di quella divina: un'idea che influenzò Botticelli e Michelangelo."
   },
   {
-   "q": "Chi scrisse l'Oratio de hominis dignitate (Discorso sulla dignità dell'uomo)?",
+   "q": "Su che cosa si basava il metodo filologico di Lorenzo Valla?",
    "options": [
-    "Marsilio Ficino",
-    "Angelo Poliziano",
-    "Leonardo Bruni",
-    "Giovanni Pico della Mirandola"
+    "L'analisi storica della lingua e dello stile dei testi",
+    "Il confronto con i testi arabi",
+    "L'autorità dei padri della Chiesa",
+    "Le rivelazioni dei mistici"
+   ],
+   "answer": 0,
+   "explain": "Valla mostrò che ogni epoca ha la sua lingua: un testo che usa parole anacronistiche non può essere autentico."
+  },
+  {
+   "q": "Dove si riuniva il circolo di Marsilio Ficino, grazie alla villa donata da Cosimo?",
+   "options": [
+    "Poggio a Caiano",
+    "Cafaggiolo",
+    "Fiesole",
+    "Careggi"
    ],
    "answer": 3,
-   "explain": "Pico la scrisse nel 1486: l'uomo è l'unico essere che può scegliere che cosa diventare."
+   "explain": "Cosimo diede a Ficino una casa presso la sua villa di Careggi, dove nacque l'Accademia neoplatonica."
+  },
+  {
+   "q": "Quale pittore lavorò accanto a Masaccio nella Cappella Brancacci?",
+   "options": [
+    "Andrea del Castagno",
+    "Masolino da Panicale",
+    "Paolo Uccello",
+    "Beato Angelico"
+   ],
+   "answer": 1,
+   "explain": "Masolino, più anziano e legato al gotico internazionale, rende evidente per contrasto la novità di Masaccio."
   },
   {
    "q": "Quale evento del 1453 contribuì a portare in Italia dotti bizantini e manoscritti greci?",
@@ -69,6 +69,105 @@
    "explain": "La conquista ottomana di Costantinopoli accelerò l'arrivo di studiosi greci, già iniziato con il Concilio di Firenze del 1439."
   },
   {
+   "q": "Chi progettò e costruì la cupola di Santa Maria del Fiore a Firenze?",
+   "options": [
+    "Michelozzo",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi",
+    "Leon Battista Alberti"
+   ],
+   "answer": 2,
+   "explain": "Brunelleschi la costruì tra il 1420 e il 1436 senza le tradizionali impalcature di sostegno (centine), con una doppia calotta e mattoni a spina di pesce."
+  },
+  {
+   "q": "Marsilio Ficino tradusse in latino le opere complete di:",
+   "options": [
+    "Aristotele",
+    "Lucrezio",
+    "Platone",
+    "Seneca"
+   ],
+   "answer": 2,
+   "explain": "Ficino, sostenuto da Cosimo de' Medici, tradusse tutto Platone e fu l'anima dell'Accademia neoplatonica fiorentina."
+  },
+  {
+   "q": "Durante quale concilio Poggio Bracciolini, segretario papale, andò a caccia di manoscritti nei monasteri?",
+   "options": [
+    "Il Concilio di Trento",
+    "Il Concilio Lateranense V",
+    "Il Concilio di Costanza",
+    "Il Concilio di Firenze"
+   ],
+   "answer": 2,
+   "explain": "Il Concilio di Costanza (1414-1418) lasciò a Poggio il tempo di esplorare le biblioteche monastiche d'Oltralpe."
+  },
+  {
+   "q": "Per che cosa è famoso Paolo Uccello?",
+   "options": [
+    "Per le Madonne dolcissime e luminose",
+    "Per lo studio quasi ossessivo della prospettiva, come nella Battaglia di San Romano",
+    "Per i monumenti equestri in bronzo",
+    "Per i ritratti di profilo dei duchi di Urbino"
+   ],
+   "answer": 1,
+   "explain": "Vasari racconta che passava le notti sulla prospettiva; la Battaglia di San Romano è divisa tra Uffizi, Londra e Louvre."
+  },
+  {
+   "q": "Quale scena di Masaccio mostra Adamo ed Eva disperati mentre lasciano il paradiso terrestre?",
+   "options": [
+    "Il Diluvio universale",
+    "Il Peccato originale",
+    "La Cacciata dei progenitori",
+    "La Creazione di Adamo"
+   ],
+   "answer": 2,
+   "explain": "La Cacciata, nella Cappella Brancacci, colpisce per la forza dei corpi e dell'espressione del dolore."
+  },
+  {
+   "q": "Quale documento Lorenzo Valla dimostrò falso, studiandone la lingua?",
+   "options": [
+    "L'Editto di Milano",
+    "La Donazione di Costantino",
+    "Il Dictatus papae",
+    "La Bolla d'oro"
+   ],
+   "answer": 1,
+   "explain": "Nel 1440 Valla mostrò che il latino del documento non poteva essere del IV secolo: nasce la filologia moderna."
+  },
+  {
+   "q": "Che cosa raffigurava la tavoletta con cui Brunelleschi dimostrò la prospettiva?",
+   "options": [
+    "La collina di Fiesole",
+    "Il Battistero visto dalla porta del Duomo",
+    "La basilica di Santa Croce",
+    "Il Ponte Vecchio"
+   ],
+   "answer": 1,
+   "explain": "Lo spettatore guardava da un foro sul retro della tavola un'immagine riflessa in uno specchio: il dipinto coincideva con la realtà."
+  },
+  {
+   "q": "Chi insegnò il greco a Firenze dal 1397, facendo rinascere lo studio della lingua?",
+   "options": [
+    "Giovanni Argiropulo",
+    "Basilio Bessarione",
+    "Manuele Crisolora",
+    "Giorgio Gemisto Pletone"
+   ],
+   "answer": 2,
+   "explain": "Crisolora fu chiamato da Coluccio Salutati; tra i suoi allievi c'era Leonardo Bruni."
+  },
+  {
+   "q": "Di quale chiesa Leon Battista Alberti progettò la facciata in marmi bianchi e verdi?",
+   "options": [
+    "Santa Maria Novella",
+    "Santa Croce",
+    "San Lorenzo",
+    "Santa Maria del Fiore"
+   ],
+   "answer": 0,
+   "explain": "Alberti completò la facciata gotica con forme classiche, usando proporzioni geometriche precise."
+  },
+  {
    "q": "Quale opera di Donatello è considerata il primo nudo maschile a tutto tondo dall'antichità?",
    "options": [
     "Il David in bronzo",
@@ -80,15 +179,70 @@
    "explain": "Il David in bronzo, realizzato probabilmente negli anni '40 del Quattrocento per i Medici, riprende il nudo classico."
   },
   {
-   "q": "Quale affresco di Masaccio in Santa Maria Novella è considerato un manifesto della prospettiva lineare?",
+   "q": "Che cos'è il Gattamelata di Donatello a Padova?",
    "options": [
-    "L'Annunciazione di Cortona",
-    "La Trinità",
-    "La Primavera",
-    "Il Tributo"
+    "Un ciclo di affreschi",
+    "Una pala d'altare dipinta",
+    "Un monumento equestre in bronzo",
+    "Un pulpito in marmo"
+   ],
+   "answer": 2,
+   "explain": "Il monumento al condottiero Erasmo da Narni riprende il modello del Marco Aurelio romano."
+  },
+  {
+   "q": "Chi scrisse l'Oratio de hominis dignitate (Discorso sulla dignità dell'uomo)?",
+   "options": [
+    "Marsilio Ficino",
+    "Angelo Poliziano",
+    "Leonardo Bruni",
+    "Giovanni Pico della Mirandola"
+   ],
+   "answer": 3,
+   "explain": "Pico la scrisse nel 1486: l'uomo è l'unico essere che può scegliere che cosa diventare."
+  },
+  {
+   "q": "Che cosa cercò di ottenere il Concilio di Firenze del 1439?",
+   "options": [
+    "La riunificazione tra Chiesa cattolica e Chiesa ortodossa",
+    "La condanna di Lutero",
+    "La crociata contro Venezia",
+    "L'elezione di un papa fiorentino"
+   ],
+   "answer": 0,
+   "explain": "L'unione durò poco, ma la presenza a Firenze dei dotti bizantini diede un grande impulso agli studi greci."
+  },
+  {
+   "q": "Che cosa racconta il Tributo di Masaccio?",
+   "options": [
+    "L'incoronazione della Vergine",
+    "L'episodio evangelico della moneta del tributo pagata da Pietro",
+    "La cacciata dei mercanti dal tempio",
+    "La consegna delle chiavi a Pietro"
    ],
    "answer": 1,
-   "explain": "La Trinità (circa 1426-1428) crea l'illusione di una cappella che sfonda il muro. Il Tributo è nella Cappella Brancacci, la Primavera è di Botticelli."
+   "explain": "Nella stessa scena compaiono tre momenti del racconto: la richiesta, Pietro che prende la moneta dal pesce e il pagamento."
+  },
+  {
+   "q": "In quale chiesa di Firenze si trova la Cappella Brancacci?",
+   "options": [
+    "Santa Maria Novella",
+    "Santa Maria del Carmine",
+    "San Lorenzo",
+    "Santa Croce"
+   ],
+   "answer": 1,
+   "explain": "La cappella, affrescata da Masolino e Masaccio negli anni '20 del Quattrocento, fu poi completata da Filippino Lippi."
+  },
+  {
+   "q": "Chi vinse nel 1401 il concorso per la porta nord del Battistero di Firenze?",
+   "options": [
+    "Jacopo della Quercia",
+    "Donatello",
+    "Lorenzo Ghiberti",
+    "Filippo Brunelleschi"
+   ],
+   "answer": 2,
+   "explain": "Ghiberti vinse con la formella del Sacrificio di Isacco; Brunelleschi, sconfitto, si dedicò all'architettura."
   },
   {
    "q": "In quale trattato Leon Battista Alberti codificò le regole della prospettiva?",
@@ -102,17 +256,83 @@
    "explain": "Il De pictura (1435) spiega la costruzione prospettica; il De re aedificatoria è il suo trattato di architettura."
   },
   {
-   "q": "Quale poema latino, ritrovato da Poggio Bracciolini nel 1417, riportò in circolazione le idee di Epicuro?",
+   "q": "Secondo la tradizione, chi ispirò Cosimo de' Medici a rifondare un'Accademia platonica?",
    "options": [
-    "L'Institutio oratoria di Quintiliano",
-    "Il De rerum natura di Lucrezio",
-    "Le Metamorfosi di Ovidio",
-    "L'Eneide di Virgilio"
+    "Giorgio Gemisto Pletone",
+    "Leon Battista Alberti",
+    "Girolamo Savonarola",
+    "Manuele Crisolora"
+   ],
+   "answer": 0,
+   "explain": "Pletone, filosofo bizantino presente al Concilio del 1439, tenne a Firenze lezioni su Platone che entusiasmarono gli umanisti."
+  },
+  {
+   "q": "Come chiamò Michelangelo la seconda porta di Ghiberti per il Battistero?",
+   "options": [
+    "Porta della Gloria",
+    "Porta d'Oro",
+    "Porta del Paradiso",
+    "Porta Santa"
+   ],
+   "answer": 2,
+   "explain": "Ghiberti vi lavorò dal 1425 al 1452; le dieci formelle usano la prospettiva per raccontare storie dell'Antico Testamento."
+  },
+  {
+   "q": "Quante tesi voleva discutere pubblicamente Pico della Mirandola a Roma nel 1486?",
+   "options": [
+    "95",
+    "900",
+    "1000",
+    "99"
    ],
    "answer": 1,
-   "explain": "Il De rerum natura descrive un universo fatto di atomi, senza intervento divino; Greenblatt racconta questa scoperta ne Il manifesto della libertà."
+   "explain": "Le 900 tesi univano filosofia, teologia e cabala; il papa ne condannò alcune e la disputa non si tenne mai."
+  },
+  {
+   "q": "Quale di questi edifici fiorentini è opera di Brunelleschi?",
+   "options": [
+    "Palazzo Strozzi",
+    "Palazzo Rucellai",
+    "La facciata di Santa Maria Novella",
+    "Lo Spedale degli Innocenti"
+   ],
+   "answer": 3,
+   "explain": "Il portico degli Innocenti, iniziato nel 1419, è considerato il primo edificio rinascimentale; facciata di Santa Maria Novella e Palazzo Rucellai sono di Alberti."
+  },
+  {
+   "q": "Su che cosa si basa la prospettiva lineare?",
+   "options": [
+    "Ombre proiettate da più fonti di luce",
+    "Figure più grandi se più importanti",
+    "Linee parallele che sembrano convergere in un unico punto di fuga",
+    "Colori che sbiadiscono con la distanza"
+   ],
+   "answer": 2,
+   "explain": "Le linee che si allontanano dall'osservatore convergono in un punto all'altezza dei suoi occhi; lo sbiadire dei colori è invece la prospettiva aerea."
+  },
+  {
+   "q": "Quale opera scrisse Angelo Poliziano, poeta della cerchia di Lorenzo?",
+   "options": [
+    "Gli Asolani",
+    "L'Arcadia",
+    "Le Stanze per la giostra",
+    "L'Orlando furioso"
+   ],
+   "answer": 2,
+   "explain": "Le Stanze celebrano la giostra vinta da Giuliano de' Medici nel 1475; l'Arcadia è di Sannazaro, gli Asolani di Bembo."
+  },
+  {
+   "q": "Quale affresco di Masaccio in Santa Maria Novella è considerato un manifesto della prospettiva lineare?",
+   "options": [
+    "L'Annunciazione di Cortona",
+    "La Trinità",
+    "La Primavera",
+    "Il Tributo"
+   ],
+   "answer": 1,
+   "explain": "La Trinità (circa 1426-1428) crea l'illusione di una cappella che sfonda il muro. Il Tributo è nella Cappella Brancacci, la Primavera è di Botticelli."
   }
  ],
- "createdAt": "2026-10-11T13:00:00.000Z",
+ "createdAt": "2026-10-11T14:00:00.000Z",
  "source": "seed"
 }

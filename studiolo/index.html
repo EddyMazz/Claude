@@ -161,10 +161,10 @@ textarea { min-height: 80px; resize: vertical; }
 /* Quiz */
 .quiz { display: grid; gap: 22px; max-width: 760px; }
 .q { display: grid; gap: 10px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
-.q .qt { font-weight: 600; font-size: 17px; display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 8px; }
+.q .qt { font-weight: 600; font-size: 17px; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px; }
 .q .qt span { font-family: var(--display); color: var(--gold); font-size: 20px; line-height: 1.3; }
-.opts { display: grid; gap: 6px; padding-left: 42px; }
-@media (max-width: 520px) { .opts { padding-left: 0; } }
+.opts { display: grid; gap: 6px; padding-left: 66px; }
+@media (max-width: 520px) { .opts { padding-left: 0; } .q .qt { grid-template-columns: 46px minmax(0, 1fr); } }
 .opt { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 9px 12px; cursor: pointer; text-align: left; width: 100%; }
 .opt:hover { border-color: var(--muted); }
 .opt .k { font-family: var(--mono); font-size: 13px; color: var(--muted); padding-top: 2px; }
@@ -173,7 +173,7 @@ textarea { min-height: 80px; resize: vertical; }
 .opt.right .k { color: var(--good); }
 .opt.wrong { border-color: var(--bad); }
 .opt.wrong .k { color: var(--bad); }
-.explain { padding-left: 42px; color: var(--muted); font-size: 14.5px; }
+.explain { padding-left: 66px; color: var(--muted); font-size: 14.5px; }
 @media (max-width: 520px) { .explain { padding-left: 0; } }
 .result { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 18px; border: 1px solid var(--gold); background: var(--gold-soft); border-radius: var(--r); }
 .result .big { font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; }
@@ -218,6 +218,16 @@ textarea { min-height: 80px; resize: vertical; }
 .media .by { font-style: italic; }
 .media .note { color: var(--muted); }
 .media a { font-size: 13.5px; margin-top: 2px; }
+.cmap { margin: 6px 0 0; display: grid; justify-items: center; }
+.cmap-center { position: relative; background: var(--lapis); color: var(--on-accent); font-family: var(--display); font-weight: 600; font-size: 20px; padding: 10px 22px; border-radius: 99px; text-align: center; max-width: 100%; }
+.cmap-center::after { content: ""; position: absolute; left: 50%; top: 100%; width: 2px; height: 18px; background: var(--line); }
+.cmap-branches { margin-top: 18px; width: 100%; justify-content: center; border-top: 2px solid var(--line); padding-top: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 220px)); gap: 14px; }
+.cmap-branch { position: relative; background: var(--surface); border: 1px solid var(--line); border-top: 3px solid var(--gold); border-radius: var(--r); padding: 10px 12px; min-width: 0; }
+.cmap-branch::before { content: ""; position: absolute; left: 50%; bottom: 100%; width: 2px; height: 16px; background: var(--line); }
+.cmap-title { font-weight: 650; margin-bottom: 4px; }
+.cmap-branch ul { margin: 0; padding-left: 1.1em; font-size: 14.5px; color: var(--muted); display: grid; gap: 2px; }
+.prose pre { overflow-x: auto; background: var(--surface); padding: 10px; border-radius: var(--r); font-size: 13px; }
+.quiz-actions { position: sticky; bottom: env(safe-area-inset-bottom, 0px); background: var(--paper); padding: 12px 0; border-top: 1px solid var(--line); }
 .chip.now { border-color: var(--lapis); color: var(--on-accent); background: var(--lapis); }
 
 /* Vote */
@@ -302,16 +312,6 @@ function weekRange(month, i, n) {
   const a = 1 + 7 * i, b = i === n - 1 ? last : Math.min(last, 7 * i + 7);
   return `${a}–${b} ${new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long" })}`;
 }
-function weekOfDate(month, iso) {
-  const d = new Date(iso);
-  if (isNaN(d) || monthKey(d) !== month) return -1;
-  return Math.min(3, Math.floor((d.getDate() - 1) / 7));
-}
-function weekEnded(month, i) {
-  const [y, m] = month.split("-").map(Number), last = new Date(y, m, 0).getDate();
-  const end = i === 3 ? last : Math.min(last, 7 * i + 7);
-  return new Date() >= new Date(y, m - 1, end + 1);
-}
 const MEDIA_TYPES = ["youtube", "podcast", "film", "serie", "documentario", "luogo"];
 const MEDIA_LABEL = { youtube: "Video su YouTube", podcast: "Podcast", film: "Film", serie: "Serie", documentario: "Documentario", luogo: "Luogo" };
 function normMedia(list, max) {
@@ -348,15 +348,36 @@ function md(src) {
   let out = "", list = null, para = [];
   const flushP = () => { if (para.length) { out += "<p>" + inline(para.join(" ")) + "</p>"; para = []; } };
   const flushL = () => { if (list) { out += "</" + list + ">"; list = null; } };
+  let fence = null, fenceBuf = [];
   for (const raw of String(src || "").split(/\r?\n/)) {
     const l = raw.trim(); let m;
+    if (fence !== null) {
+      if (l.startsWith("```")) { out += fence === "mappa" ? conceptMap(fenceBuf.join("\n")) : "<pre>" + esc(fenceBuf.join("\n")) + "</pre>"; fence = null; fenceBuf = []; }
+      else fenceBuf.push(raw);
+      continue;
+    }
+    if ((m = l.match(/^```\s*([a-zA-Z]*)/))) { flushP(); flushL(); fence = m[1].toLowerCase(); continue; }
     if (!l) { flushP(); flushL(); continue; }
     if ((m = l.match(/^(#{1,4})\s+(.*)/))) { flushP(); flushL(); const lv = Math.min(4, m[1].length + 1); out += `<h${lv}>${inline(m[2])}</h${lv}>`; continue; }
     if ((m = l.match(/^[-*•]\s+(.*)/))) { flushP(); if (list !== "ul") { flushL(); out += "<ul>"; list = "ul"; } out += "<li>" + inline(m[1]) + "</li>"; continue; }
     if ((m = l.match(/^\d+[.)]\s+(.*)/))) { flushP(); if (list !== "ol") { flushL(); out += "<ol>"; list = "ol"; } out += "<li>" + inline(m[1]) + "</li>"; continue; }
     flushL(); para.push(l);
   }
-  flushP(); flushL(); return out;
+  flushP(); flushL();
+  if (fence !== null) out += fence === "mappa" ? `<p class="thinking">Disegno la mappa di riepilogo</p>` : "<pre>" + esc(fenceBuf.join("\n")) + "</pre>";
+  return out;
+}
+function conceptMap(src) {
+  let m;
+  try { m = JSON.parse(src); } catch (e) { m = null; }
+  if (!m || !Array.isArray(m.rami) || !m.rami.length) return "<pre>" + esc(src) + "</pre>";
+  return `<figure class="cmap" aria-label="Mappa di riepilogo">
+    <div class="cmap-center">${esc(m.centro || "")}</div>
+    <div class="cmap-branches">${m.rami.slice(0, 8).map(r => `
+      <div class="cmap-branch"><div class="cmap-title">${esc(r.titolo || "")}</div>
+      <ul>${(Array.isArray(r.voci) ? r.voci : []).slice(0, 6).map(v => `<li>${esc(v)}</li>`).join("")}</ul></div>`).join("")}
+    </div>
+  </figure>`;
 }
 
 /* ---------- storage: shared db when available, this browser otherwise ---------- */
@@ -505,13 +526,13 @@ function promptQuiz(topic, ch) {
   if (ch) return `Crea il test conclusivo della settimana dedicata a "${ch.title}" nel percorso "${topic.title}".
 Contenuto del capitolo: ${ch.summary} Concetti chiave: ${(ch.points || []).join("; ")}.
 ${AUDIENCE}
-Scrivi 10 domande a scelta multipla, di difficoltà crescente, che coprano tutti i concetti della settimana: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi 30 domande a scelta multipla, di difficoltà crescente, che coprano tutti i concetti della settimana senza ripetersi: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi che spiegano la risposta)}]}`;
   return `Crea l'esame finale del percorso mensile "${topic.title}".
 Capitoli studiati:
 ${topic.chapters.map((c, i) => `${i + 1}. ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
 ${AUDIENCE}
-Scrivi 12 domande a scelta multipla che coprano tutti i capitoli, con almeno 4 domande che chiedono di collegare capitoli diversi. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi 30 domande a scelta multipla che coprano in modo equilibrato tutte le settimane, con almeno 8 domande che chiedono di collegare settimane diverse. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
 }
 function promptPractice(topic, chapters) {
@@ -520,16 +541,45 @@ Le domande devono riguardare SOLO questi argomenti, già studiati:
 ${chapters.map(c => `- ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
 Non fare domande su altri argomenti del percorso, anche se li conosci.
 ${AUDIENCE}
-Scrivi 8 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi 10 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
 }
 function promptLesson(topic, ch) {
-  return `Scrivi la lezione del capitolo "${ch.title}" all'interno del percorso mensile "${topic.title}".
-Sintesi del capitolo: ${ch.summary}
+  const others = S.topics.filter(t => t.id !== topic.id).map(t => t.title).join("; ");
+  const siblings = topic.chapters.filter(c => c.id !== ch.id).map(c => c.title).join("; ");
+  return `Scrivi la lezione della settimana "${ch.title}" all'interno del percorso mensile "${topic.title}".
+Sintesi della settimana: ${ch.summary}
 Concetti da coprire: ${(ch.points || []).join("; ")}.
 ${AUDIENCE}
-Lunghezza: circa 1500 parole (è il materiale di una settimana di studio). Struttura: un breve paragrafo d'apertura che aggancia la curiosità; 3-4 sezioni con un titolo ciascuna; esempi concreti, date e nomi precisi; chiudi con una sezione "## Da ricordare" con 5 punti e una sezione "## Per discuterne in due" con 2 domande aperte.
-Usa Markdown semplice: titoli con ##, elenchi con -, grassetto con **. Nessun preambolo: inizia direttamente con il testo.`;
+È il materiale di studio di un'intera settimana: deve essere approfondito, preciso e ricco di informazioni verificabili. Lunghezza: 2000-2500 parole, mappa esclusa.
+Usa esattamente questi titoli, in quest'ordine:
+
+## Spiegazione approfondita
+5-7 paragrafi che spiegano a fondo i concetti della settimana: che cosa, come e perché, con un filo logico chiaro.
+
+## Contesto storico
+Che cosa succedeva prima e intorno: situazione politica, società, economia, cultura, e come questo contesto rende possibile o spiega l'argomento.
+
+## Nomi, date, istituzioni e concetti fondamentali
+Quattro sottosezioni con questi titoli: "### Persone", "### Date", "### Istituzioni e luoghi", "### Concetti". In ognuna un elenco puntato di 4-8 voci nella forma "- **Nome, data o termine** — spiegazione in una riga". Le date in ordine cronologico.
+
+## Esempi concreti
+3-4 esempi (un'opera, un documento, un episodio, un dato, un esperimento), ciascuno con un titoletto in grassetto seguito da un paragrafo che lo descrive e spiega che cosa dimostra.
+
+## Collegamenti con altri argomenti
+4-5 collegamenti in elenco puntato: con le altre settimane del mese (${siblings}), con altre discipline, con altre epoche e con il mondo di oggi${others ? `, e dove possibile con gli argomenti già studiati nei mesi precedenti (${others})` : ""}.
+
+## Mappa di riepilogo
+Subito sotto il titolo, un blocco di codice con linguaggio "mappa" che contiene SOLO un oggetto JSON con questa forma:
+\`\`\`mappa
+{"centro": "tema centrale in poche parole", "rami": [{"titolo": "sottotema", "voci": ["2-4 parole chiave o brevi frasi"]}]}
+\`\`\`
+Metti 4-6 rami che riassumono tutta la lezione.
+
+## Per discuterne in due
+2 domande aperte che invitano a ragionare e a confrontarsi.
+
+Usa Markdown semplice: titoli con ## e ###, elenchi con -, grassetto con **. Nessun preambolo: inizia direttamente con "## Spiegazione approfondita".`;
 }
 function promptTutor(topic, ch, q) {
   return `Sei il tutor del percorso "${topic.title}", capitolo "${ch.title}" (${ch.summary}).
@@ -604,10 +654,10 @@ async function finalFromChapters(topic) {
     const q = S.quizCache[topic.id + "--" + c.id] || await Store.get("quizzes", topic.id + "--" + c.id);
     if (q?.questions?.length) {
       const shuffled = [...q.questions].sort(() => Math.random() - .5);
-      pool.push(...shuffled.slice(0, Math.ceil(12 / topic.chapters.length)));
+      pool.push(...shuffled.slice(0, Math.ceil(30 / topic.chapters.length)));
     }
   }
-  return pool.length >= 4 ? { questions: pool, source: "capitoli" } : null;
+  return pool.length >= 10 ? { questions: shuffle(pool).slice(0, 30), source: "capitoli" } : null;
 }
 function studiedChapters(topic) {
   const p = S.me ? prog(topic.id, S.me) : null;
@@ -620,7 +670,7 @@ async function practiceQuiz(topic, withClaude) {
   if (withClaude) {
     const ctl = new AbortController(); S.quiz.ctl = ctl;
     const r = await S.sample.json(promptPractice(topic, studied), { modelTier: "default", signal: ctl.signal, cache: false });
-    const questions = cleanQuestions(r, 4);
+    const questions = cleanQuestions(r, 6);
     if (!questions) throw { code: "invalid_json" };
     return { questions, chapters, source: "claude" };
   }
@@ -632,7 +682,7 @@ async function practiceQuiz(topic, withClaude) {
   }
   if (!banks.length) return canAsk() ? practiceQuiz(topic, true) : { error: "Non ci sono ancora domande per gli argomenti che hai studiato. Apri il test conclusivo di una settimana per prepararle." };
   const out = [];
-  for (let i = 0; out.length < 8 && banks.some(b => b.length); i++) { const b = banks[i % banks.length]; if (b.length) out.push(b.pop()); }
+  for (let i = 0; out.length < 10 && banks.some(b => b.length); i++) { const b = banks[i % banks.length]; if (b.length) out.push(b.pop()); }
   return { questions: shuffle(out), chapters, source: "banca" };
 }
 async function loadQuiz(topic, key, fresh) {
@@ -650,7 +700,7 @@ async function loadQuiz(topic, key, fresh) {
   const ch = key === "final" ? null : topic.chapters.find(c => c.id === key);
   const ctl = new AbortController(); S.quiz.ctl = ctl;
   const r = await S.sample.json(promptQuiz(topic, ch), { modelTier: "default", signal: ctl.signal, cache: false });
-  const questions = cleanQuestions(r, key === "final" ? 6 : 3);
+  const questions = cleanQuestions(r, 20);
   if (!questions) throw { code: "invalid_json" };
   const doc = { topic: topic.id, key, questions, createdAt: new Date().toISOString(), source: "claude" };
   S.quizCache[id] = doc;
@@ -707,7 +757,7 @@ async function writeLesson(topic, ch) {
   S.stream[key] = { text: "", ctl }; render();
   try {
     const { text, truncated } = await S.sample(promptLesson(topic, ch), {
-      modelTier: "default", signal: ctl.signal, cache: false,
+      modelTier: "complex", signal: ctl.signal, cache: false,
       onText: ({ text }) => { S.stream[key].text = text; const el = document.getElementById("stream-" + key); if (el) el.innerHTML = md(text); }
     });
     const doc = { topic: topic.id, chapter: ch.id, text, truncated: !!truncated, createdAt: new Date().toISOString(), createdBy: S.me || null };
@@ -893,10 +943,6 @@ function quizLabel(topic, key) {
   const i = topic.chapters.findIndex(c => c.id === key);
   return i >= 0 ? (isWeekly(topic) ? "Test settimana " : "Test capitolo ") + roman(i + 1) : "Test";
 }
-function practiceAnswered(topic, uid, w) {
-  return (prog(topic.id, uid).quiz?.practice?.history || [])
-    .filter(h => weekOfDate(topic.id, h.at) === w).reduce((a, h) => a + (Number(h.total) || 0), 0);
-}
 function challenge(topic) {
   const ppl = peopleFor(topic.id);
   const pts = Object.fromEntries(ppl.map(u => [u, 0]));
@@ -909,21 +955,12 @@ function challenge(topic) {
     }
     return { key, label: quizLabel(topic, key), scores, lead };
   });
-  const practiceWeeks = [0, 1, 2, 3].map(w => {
-    const counts = ppl.map(u => practiceAnswered(topic, u, w));
-    const ended = weekEnded(topic.id, w);
-    let lead = null;
-    if (ended && ppl.length >= 2) {
-      const mx = Math.max(...counts), top = ppl.filter((u, i) => counts[i] === mx);
-      if (mx > 0 && top.length === 1) { lead = top[0]; pts[lead]++; }
-    }
-    return { w, counts, ended, current: currentWeek(topic.id) === w, lead };
-  });
+  const practice = ppl.map(u => (prog(topic.id, u).quiz?.practice?.history || []).length);
   const log = [];
   ppl.forEach(u => Object.entries(prog(topic.id, u).quiz || {}).forEach(([key, q]) =>
     (q.history || []).forEach(h => log.push({ uid: u, key, ...h }))));
   log.sort((a, b) => String(b.at).localeCompare(String(a.at)));
-  return { ppl, pts, rows, practiceWeeks, log: log.slice(0, 10) };
+  return { ppl, pts, rows, practice, log: log.slice(0, 10) };
 }
 function challengeSection(topic) {
   const c = challenge(topic);
@@ -933,11 +970,10 @@ function challengeSection(topic) {
   const score = two ? `<div class="duel-score" aria-label="Punteggio della sfida">
       ${c.ppl.map((u, i) => `${i ? `<span class="vs">contro</span>` : ""}<span class="side">${avatar(u)}<span>${esc(personName(u))}</span><span class="pts">${c.pts[u]}</span></span>`).join("")}
     </div>
-    <p class="kv">Ogni test vale un punto per chi ha il miglior risultato, quando lo avete fatto entrambi. Per gli allenamenti, alla fine di ogni settimana un punto va a chi ha risposto a più domande in quella settimana. A pari punteggio il punto non va a nessuno. Potete ripetere i test per migliorare.</p>`
+    <p class="kv">Ogni test vale un punto per chi ha il miglior risultato, quando lo avete fatto entrambi. Gli allenamenti servono solo a prepararsi e non danno punti. A pari punteggio il punto non va a nessuno. Potete ripetere i test per migliorare.</p>`
     : `<p class="kv">Quando anche l'altra persona farà i test, qui vedrete chi è in vantaggio, test per test.</p>`;
   const rows = c.rows.map(r => `<tr><td>${esc(r.label)}</td>${r.scores.map((x, i) => `<td class="n ${r.lead === c.ppl[i] ? "lead" : ""}">${x == null ? "—" : x + "%"}${r.lead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`).join("");
-  const prac = c.practiceWeeks.map(pw => `<tr><td>Allenamento sett. ${roman(pw.w + 1)}${pw.current ? ` <span class="label">in corso</span>` : ""}</td>${pw.counts.map((n, i) =>
-    `<td class="n ${pw.lead === c.ppl[i] ? "lead" : ""}">${n || pw.ended || pw.current ? n + " domande" : "—"}${pw.lead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`).join("");
+  const prac = `<tr><td>Allenamenti <span class="label">nessun punto</span></td>${c.practice.map(n => `<td class="n">${n ? n + (n === 1 ? " test" : " test") : "—"}</td>`).join("")}</tr>`;
   const log = c.log.length ? `<ul class="log">${c.log.map(l => `<li>${avatar(l.uid, "sm")}<span>${esc(personName(l.uid))} · ${esc(quizLabel(topic, l.key))}</span><span class="label num">${l.pct}% · ${esc(fmt(l.at))}</span></li>`).join("")}</ul>` : `<p class="kv">Nessun test ancora: il primo punto è in palio.</p>`;
   return `<section class="sec">
     <div class="sec-head"><h2>La sfida</h2><span class="label">migliori risultati del mese</span></div>
@@ -1028,7 +1064,7 @@ function topicView(topic) {
       ${votePanel()}
       <div class="panel">
         <h2>Esame finale</h2>
-        <p>Domande su tutto il mese, comprese quelle che collegano ${isWeekly(topic) ? "settimane" : "capitoli"} diversi. Fatelo entrambi alla fine del mese e confrontate i risultati.</p>
+        <p>30 domande su tutto il mese, comprese quelle che collegano ${isWeekly(topic) ? "settimane" : "capitoli"} diversi. Fatelo entrambi alla fine del mese e confrontate i risultati.</p>
         ${myFinal ? `<p class="kv">Il tuo miglior risultato: <b class="num">${myFinal.best}%</b> · tentativi <b class="num">${myFinal.attempts}</b></p>` : ""}
         <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="final">Fai l'esame finale</button></div>
       </div>
@@ -1043,8 +1079,7 @@ function practicePanel(topic) {
   const names = studied.map(c => roman(topic.chapters.indexOf(c) + 1)).join(", ");
   return `<div class="panel">
     <h2>Allenamento libero</h2>
-    <p>Un test quando volete, con domande solo su ${isWeekly(topic) ? "le settimane" : "i capitoli"} che hai già completato. Alla fine di ogni settimana, un punto della sfida va a chi ha risposto a più domande di allenamento.</p>
-    ${currentWeek(topic.id) >= 0 ? `<p class="kv">Questa settimana: ${peopleFor(topic.id).map(u => `${esc(u === S.me ? "tu" : personName(u))} <b class="num">${practiceAnswered(topic, u, currentWeek(topic.id))}</b>`).join(" · ")} domande</p>` : ""}
+    <p>Un test di 10 domande quando volete, solo su ${isWeekly(topic) ? "le settimane" : "i capitoli"} che hai già completato. Serve a prepararsi: non dà punti nella sfida.</p>
     <p class="kv">${studied.length ? `Domande su: <b>${isWeekly(topic) ? "settimana" : "capitolo"} ${esc(names)}</b>` : `Segna come ${isWeekly(topic) ? "completata la prima settimana" : "studiato il primo capitolo"} per sbloccarlo.`}${myPr ? ` · ${myPr.attempts} allenamenti in tutto` : ""}</p>
     <div class="row">
       <button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>Allenati</button>
@@ -1132,7 +1167,7 @@ function chapterView(topic, chId) {
       </div>
       <div class="panel">
         <h2>${isWeekly(topic) ? "Test conclusivo" : "Mettiti alla prova"}</h2>
-        <p>Domande a scelta multipla su ${isWeekly(topic) ? "tutta la settimana" : "questo capitolo"}, con la spiegazione di ogni risposta. Le domande sono le stesse per entrambi: vince la sfida chi fa meglio.</p>
+        <p>30 domande a scelta multipla su ${isWeekly(topic) ? "tutta la settimana" : "questo capitolo"}, con la spiegazione di ogni risposta. Le domande sono le stesse per entrambi: vince la sfida chi fa meglio.</p>
         <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="${esc(ch.id)}">Fai il test</button></div>
       </div>
     </aside>
@@ -1149,9 +1184,7 @@ function rivalLine(topic, key, pct) {
   return others.map(u => {
     const q = prog(topic.id, u).quiz?.[key];
     const name = esc(personName(u));
-    if (key === "practice") { const w = currentWeek(topic.id); if (w < 0) return "";
-      const mine = practiceAnswered(topic, S.me, w), theirs = practiceAnswered(topic, u, w);
-      return `<span class="rival">Domande di allenamento questa settimana: tu <b class="num">${mine}</b>, ${name} <b class="num">${theirs}</b>. ${mine > theirs ? "Per ora il punto della settimana è tuo." : mine === theirs ? "Siete pari." : "Te ne mancano " + (theirs - mine + 1) + " per passare in vantaggio."}</span>`; }
+    if (key === "practice") return "";
     if (typeof q?.best !== "number") return `<span class="rival">${name} non ha ancora fatto questo test: il tuo risultato è il primo da battere.</span>`;
     const me = Math.max(pct, prog(topic.id, S.me).quiz?.[key]?.best ?? 0);
     return `<span class="rival">Record di ${name}: <b class="num">${q.best}%</b>. ${me > q.best ? "Sei in vantaggio su questo test." : me === q.best ? "Siete pari." : "Ti mancano " + (q.best - me) + " punti per raggiungere il record."}</span>`;
@@ -1199,7 +1232,7 @@ function quizView() {
   return head + `<div class="quiz">
     ${result}
     ${items}
-    <div class="row">
+    <div class="row ${z.submitted ? "" : "quiz-actions"}">
       ${z.submitted
         ? `${z.key === "practice"
             ? `<button class="btn" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice">Un altro allenamento</button>

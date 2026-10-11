@@ -3,6 +3,61 @@
  "key": "c4",
  "questions": [
   {
+   "q": "Che cosa consiglia Machiavelli al principe, se non può essere insieme amato e temuto?",
+   "options": [
+    "Lasciare il potere",
+    "Farsi odiare per imporre rispetto",
+    "Essere amato a ogni costo",
+    "Essere temuto piuttosto che amato"
+   ],
+   "answer": 3,
+   "explain": "Ma il principe deve evitare l'odio: la paura tiene legati i sudditi, l'odio li spinge alla ribellione."
+  },
+  {
+   "q": "Quali caratteristiche ha il Manierismo, lo stile che segue il Rinascimento maturo?",
+   "options": [
+    "Fondi oro e figure piatte",
+    "Figure allungate, colori acidi e composizioni artificiose",
+    "Paesaggi realistici e scene di vita quotidiana",
+    "Proporzioni rigorose e calma classica"
+   ],
+   "answer": 1,
+   "explain": "Pontormo, Rosso Fiorentino e Parmigianino esasperarono la 'maniera' dei grandi maestri."
+  },
+  {
+   "q": "Di chi è l'enigmatico dipinto noto come La Tempesta?",
+   "options": [
+    "Giorgione",
+    "Tiziano",
+    "Lorenzo Lotto",
+    "Vittore Carpaccio"
+   ],
+   "answer": 0,
+   "explain": "Giorgione lo dipinse intorno al 1505-1508; il suo significato è ancora discusso. Si trova alle Gallerie dell'Accademia di Venezia."
+  },
+  {
+   "q": "Chi dipinse le grandi tele della Scuola Grande di San Rocco a Venezia?",
+   "options": [
+    "Giovanni Bellini",
+    "Tiziano",
+    "Jacopo Tintoretto",
+    "Paolo Veronese"
+   ],
+   "answer": 2,
+   "explain": "Tintoretto vi lavorò per oltre vent'anni, dal 1564: è il suo capolavoro, con luci drammatiche e scorci arditi."
+  },
+  {
+   "q": "Quale evento del 1517 avviò la Riforma protestante?",
+   "options": [
+    "La pace di Augusta",
+    "Il Concilio di Trento",
+    "Il Sacco di Roma",
+    "La pubblicazione delle 95 tesi di Lutero"
+   ],
+   "answer": 3,
+   "explain": "Le tesi contro la vendita delle indulgenze aprirono la frattura religiosa a cui rispose il Concilio di Trento."
+  },
+  {
    "q": "Quale opera fu scritta da Francesco Guicciardini?",
    "options": [
     "Storia d'Italia",
@@ -12,6 +67,83 @@
    ],
    "answer": 0,
    "explain": "La Storia d'Italia racconta gli anni 1492-1534; Istorie fiorentine e Discorsi sono invece di Machiavelli."
+  },
+  {
+   "q": "Quale pittore veneziano fu, secondo la tradizione, maestro di Giorgione e di Tiziano?",
+   "options": [
+    "Giovanni Bellini",
+    "Vittore Carpaccio",
+    "Jacopo Tintoretto",
+    "Paolo Veronese"
+   ],
+   "answer": 0,
+   "explain": "Bellini rinnovò la pittura veneziana con il colore e la luce, aprendo la strada alla generazione successiva."
+  },
+  {
+   "q": "Che cos'è la 'sprezzatura' descritta nel Cortegiano di Castiglione?",
+   "options": [
+    "Il disprezzo per chi non è nobile",
+    "L'abitudine di parlare in latino",
+    "La capacità di fare cose difficili con apparente naturalezza",
+    "La passione per la guerra"
+   ],
+   "answer": 2,
+   "explain": "Il perfetto cortigiano nasconde lo sforzo: l'eleganza deve sembrare spontanea."
+  },
+  {
+   "q": "Dove fu incoronato imperatore Carlo V da Clemente VII nel 1530?",
+   "options": [
+    "A Milano",
+    "A Roma",
+    "A Bologna",
+    "A Vienna"
+   ],
+   "answer": 2,
+   "explain": "L'incoronazione di Bologna sancì il predominio spagnolo e imperiale sull'Italia."
+  },
+  {
+   "q": "Contro quale stato si formò nel 1508 la Lega di Cambrai?",
+   "options": [
+    "Milano",
+    "Venezia",
+    "Firenze",
+    "Lo Stato della Chiesa"
+   ],
+   "answer": 1,
+   "explain": "Papa, Francia, Impero e Spagna si allearono contro Venezia, che fu sconfitta ad Agnadello nel 1509."
+  },
+  {
+   "q": "Quale incarico ebbe Machiavelli nella Repubblica di Firenze dal 1498?",
+   "options": [
+    "Segretario della Seconda Cancelleria",
+    "Vescovo di Firenze",
+    "Capitano delle milizie pontificie",
+    "Gonfaloniere di giustizia"
+   ],
+   "answer": 0,
+   "explain": "Come segretario curò missioni diplomatiche in Francia, presso Cesare Borgia e l'imperatore, e organizzò una milizia cittadina."
+  },
+  {
+   "q": "In che anno Machiavelli scrisse Il Principe?",
+   "options": [
+    "1559",
+    "1513",
+    "1527",
+    "1492"
+   ],
+   "answer": 1,
+   "explain": "Lo scrisse nel 1513 durante l'esilio all'Albergaccio, vicino a San Casciano; fu pubblicato dopo la sua morte, nel 1532."
+  },
+  {
+   "q": "Il Libro del Cortegiano di Baldassarre Castiglione, pubblicato nel 1528, è ambientato alla corte di:",
+   "options": [
+    "Urbino",
+    "Ferrara",
+    "Roma",
+    "Mantova"
+   ],
+   "answer": 0,
+   "explain": "I dialoghi si immaginano nel 1507 alla corte di Guidobaldo da Montefeltro e Elisabetta Gonzaga."
   },
   {
    "q": "Il Sacco di Roma del 1527 fu compiuto da truppe al servizio di:",
@@ -25,15 +157,15 @@
    "explain": "I lanzichenecchi e le truppe imperiali, senza paga e fuori controllo, saccheggiarono Roma per mesi."
   },
   {
-   "q": "Che cosa intende Machiavelli con 'verità effettuale della cosa'?",
+   "q": "Contro chi fu combattuta la battaglia di Fornovo nel 1495?",
    "options": [
-    "Il diritto naturale valido per tutti",
-    "Il modo in cui la politica funziona davvero, non come dovrebbe essere",
-    "La verità rivelata dalla Chiesa",
-    "La verità che emerge dai processi"
+    "Contro Venezia",
+    "Contro gli Svizzeri",
+    "Contro Carlo VIII in ritirata dall'Italia",
+    "Contro i Turchi"
    ],
-   "answer": 1,
-   "explain": "Machiavelli rompe con la tradizione degli 'specchi dei principi' e descrive il potere com'è nella realtà."
+   "answer": 2,
+   "explain": "La lega degli stati italiani non riuscì a fermare il re, che riportò l'esercito in Francia."
   },
   {
    "q": "Quale pittore dipinse la Venere di Urbino?",
@@ -45,6 +177,50 @@
    ],
    "answer": 2,
    "explain": "Tiziano la dipinse nel 1538 per Guidobaldo della Rovere; oggi è agli Uffizi."
+  },
+  {
+   "q": "Per Machiavelli, di quanta parte delle nostre azioni è arbitra la fortuna?",
+   "options": [
+    "Circa la metà",
+    "Un decimo",
+    "Tutte",
+    "Nessuna"
+   ],
+   "answer": 0,
+   "explain": "L'altra metà dipende dalla virtù: la fortuna è come un fiume in piena, contro cui si possono costruire argini."
+  },
+  {
+   "q": "In quale battaglia del 1525 fu catturato il re di Francia Francesco I?",
+   "options": [
+    "Marignano",
+    "Pavia",
+    "Agnadello",
+    "Fornovo"
+   ],
+   "answer": 1,
+   "explain": "A Pavia vinsero le truppe di Carlo V; Marignano (1515) era stata invece una vittoria di Francesco I."
+  },
+  {
+   "q": "Che cosa intende Machiavelli con 'verità effettuale della cosa'?",
+   "options": [
+    "Il diritto naturale valido per tutti",
+    "Il modo in cui la politica funziona davvero, non come dovrebbe essere",
+    "La verità rivelata dalla Chiesa",
+    "La verità che emerge dai processi"
+   ],
+   "answer": 1,
+   "explain": "Machiavelli rompe con la tradizione degli 'specchi dei principi' e descrive il potere com'è nella realtà."
+  },
+  {
+   "q": "Chi era papa al tempo del Sacco di Roma del 1527?",
+   "options": [
+    "Paolo III",
+    "Leone X",
+    "Giulio II",
+    "Clemente VII"
+   ],
+   "answer": 3,
+   "explain": "Clemente VII, Giulio de' Medici, si rifugiò in Castel Sant'Angelo mentre la città veniva saccheggiata."
   },
   {
    "q": "Per che cosa è famoso il tipografo veneziano Aldo Manuzio?",
@@ -69,28 +245,6 @@
    "explain": "Il Concilio (1545-1563) fu la risposta cattolica alla Riforma protestante e cambiò anche le regole dell'arte sacra."
   },
   {
-   "q": "Il Libro del Cortegiano di Baldassarre Castiglione, pubblicato nel 1528, è ambientato alla corte di:",
-   "options": [
-    "Urbino",
-    "Ferrara",
-    "Roma",
-    "Mantova"
-   ],
-   "answer": 0,
-   "explain": "I dialoghi si immaginano nel 1507 alla corte di Guidobaldo da Montefeltro e Elisabetta Gonzaga."
-  },
-  {
-   "q": "In che anno Machiavelli scrisse Il Principe?",
-   "options": [
-    "1559",
-    "1513",
-    "1527",
-    "1492"
-   ],
-   "answer": 1,
-   "explain": "Lo scrisse nel 1513 durante l'esilio all'Albergaccio, vicino a San Casciano; fu pubblicato dopo la sua morte, nel 1532."
-  },
-  {
    "q": "Quale re di Francia scese in Italia nel 1494, aprendo le guerre d'Italia?",
    "options": [
     "Luigi XII",
@@ -102,17 +256,83 @@
    "explain": "Carlo VIII attraversò la penisola quasi senza combattere per rivendicare il Regno di Napoli."
   },
   {
-   "q": "Di chi è l'enigmatico dipinto noto come La Tempesta?",
+   "q": "Di chi sono l'Assunta e la Pala Pesaro nella basilica dei Frari a Venezia?",
    "options": [
-    "Giorgione",
-    "Tiziano",
     "Lorenzo Lotto",
-    "Vittore Carpaccio"
+    "Giorgione",
+    "Tintoretto",
+    "Tiziano"
+   ],
+   "answer": 3,
+   "explain": "L'Assunta, svelata nel 1518, impose Tiziano come il primo pittore di Venezia."
+  },
+  {
+   "q": "Quali modelli di lingua propose Pietro Bembo nelle Prose della volgar lingua (1525)?",
+   "options": [
+    "Il toscano parlato del suo tempo",
+    "Dante per tutto",
+    "Il latino di Cicerone",
+    "Petrarca per la poesia e Boccaccio per la prosa"
+   ],
+   "answer": 3,
+   "explain": "La proposta di Bembo vinse e fissò per secoli la norma dell'italiano letterario."
+  },
+  {
+   "q": "Chi commissionò a Machiavelli le Istorie fiorentine?",
+   "options": [
+    "La Repubblica di Venezia",
+    "Lorenzo il Magnifico",
+    "Il cardinale Giulio de' Medici, futuro Clemente VII",
+    "Cesare Borgia"
+   ],
+   "answer": 2,
+   "explain": "La commissione, del 1520, segnò il parziale ritorno di Machiavelli nelle grazie dei Medici."
+  },
+  {
+   "q": "Chi incise il carattere corsivo usato da Aldo Manuzio?",
+   "options": [
+    "Nicolas Jenson",
+    "Johannes Gutenberg",
+    "Francesco Griffo",
+    "Giambattista Bodoni"
+   ],
+   "answer": 2,
+   "explain": "Griffo, orafo bolognese, incise il corsivo usato per i classici in piccolo formato dal 1501. Bodoni visse tre secoli dopo."
+  },
+  {
+   "q": "Perché Machiavelli perse il suo incarico nel 1512?",
+   "options": [
+    "Perché i Medici tornarono al potere a Firenze",
+    "Perché fu accusato di eresia",
+    "Perché si trasferì a Venezia",
+    "Perché fu eletto papa un suo nemico"
    ],
    "answer": 0,
-   "explain": "Giorgione lo dipinse intorno al 1505-1508; il suo significato è ancora discusso. Si trova alle Gallerie dell'Accademia di Venezia."
+   "explain": "Con il ritorno dei Medici fu destituito, arrestato e torturato per un sospetto di congiura, poi confinato all'Albergaccio."
+  },
+  {
+   "q": "A chi è dedicato Il Principe nella versione che conosciamo?",
+   "options": [
+    "A Lorenzo il Magnifico",
+    "A Lorenzo di Piero de' Medici, duca di Urbino",
+    "A papa Giulio II",
+    "A Cesare Borgia"
+   ],
+   "answer": 1,
+   "explain": "Machiavelli sperava di tornare al servizio dei Medici dedicando l'opera al nipote del Magnifico."
+  },
+  {
+   "q": "Quale personaggio porta Machiavelli come esempio di 'principe nuovo' abile e spregiudicato?",
+   "options": [
+    "Carlo VIII",
+    "Cesare Borgia, detto il Valentino",
+    "Lorenzo il Magnifico",
+    "Federico da Montefeltro"
+   ],
+   "answer": 1,
+   "explain": "Il figlio di papa Alessandro VI conquistò la Romagna con astuzia e violenza; la sua caduta, per Machiavelli, fu colpa della sfortuna."
   }
  ],
- "createdAt": "2026-10-11T13:00:00.000Z",
+ "createdAt": "2026-10-11T14:00:00.000Z",
  "source": "seed"
 }

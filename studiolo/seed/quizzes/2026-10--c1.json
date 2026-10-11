@@ -3,6 +3,83 @@
  "key": "c1",
  "questions": [
   {
+   "q": "Chi scrisse il Decameron, che si apre con la descrizione della peste del 1348 a Firenze?",
+   "options": [
+    "Franco Sacchetti",
+    "Giovanni Boccaccio",
+    "Francesco Petrarca",
+    "Dante Alighieri"
+   ],
+   "answer": 1,
+   "explain": "Nel Decameron dieci giovani fuggono dalla città appestata e si raccontano cento novelle in dieci giornate."
+  },
+  {
+   "q": "Quali erano i cinque principali stati italiani del Quattrocento?",
+   "options": [
+    "Milano, Genova, Firenze, Savoia, Sicilia",
+    "Firenze, Siena, Pisa, Lucca, Arezzo",
+    "Milano, Venezia, Firenze, Stato della Chiesa, Regno di Napoli",
+    "Venezia, Ferrara, Mantova, Urbino, Roma"
+   ],
+   "answer": 2,
+   "explain": "Erano le potenze che si bilanciavano a vicenda; le corti minori come Mantova, Ferrara e Urbino gravitavano intorno a loro."
+  },
+  {
+   "q": "Con quale titolo fu onorato Cosimo il Vecchio dopo la morte, nel 1464?",
+   "options": [
+    "Il Gottoso",
+    "Pater patriae",
+    "Il Magnifico",
+    "Il Moro"
+   ],
+   "answer": 1,
+   "explain": "Il titolo di 'padre della patria', di origine romana, fu inciso sulla sua tomba in San Lorenzo."
+  },
+  {
+   "q": "Quale papa fu coinvolto nella congiura dei Pazzi del 1478?",
+   "options": [
+    "Alessandro VI",
+    "Leone X",
+    "Sisto IV",
+    "Giulio II"
+   ],
+   "answer": 2,
+   "explain": "Sisto IV della Rovere appoggiò i nemici dei Medici; dopo il fallimento scomunicò Lorenzo e mosse guerra a Firenze."
+  },
+  {
+   "q": "Come si chiama la raccolta delle poesie in volgare di Petrarca?",
+   "options": [
+    "Canzoniere (Rerum vulgarium fragmenta)",
+    "Africa",
+    "De viris illustribus",
+    "Secretum"
+   ],
+   "answer": 0,
+   "explain": "Il Canzoniere, 366 componimenti dedicati soprattutto a Laura, diventò il modello della lirica europea per secoli."
+  },
+  {
+   "q": "Che cosa comprendevano gli studia humanitatis?",
+   "options": [
+    "Grammatica, retorica, storia, poesia e filosofia morale",
+    "Teologia e diritto canonico",
+    "Aritmetica, geometria, astronomia e musica",
+    "Medicina, alchimia e astrologia"
+   ],
+   "answer": 0,
+   "explain": "Erano le discipline che formano l'uomo come cittadino e oratore; aritmetica, geometria, astronomia e musica formavano invece il quadrivio medievale."
+  },
+  {
+   "q": "Quale opera storica scrisse l'umanista e cancelliere Leonardo Bruni?",
+   "options": [
+    "Historiae Florentini populi",
+    "Il Principe",
+    "Le Vite",
+    "Il Cortegiano"
+   ],
+   "answer": 0,
+   "explain": "Bruni raccontò la storia di Firenze sul modello di Livio, celebrandone la libertà repubblicana."
+  },
+  {
    "q": "Quale parola usò Giorgio Vasari nelle Vite per descrivere il rifiorire delle arti dopo il Medioevo?",
    "options": [
     "Rinascita",
@@ -12,6 +89,39 @@
    ],
    "answer": 0,
    "explain": "Vasari parla di 'rinascita' delle arti, iniziata secondo lui con Cimabue e Giotto e culminata con Michelangelo."
+  },
+  {
+   "q": "Secondo Burckhardt, che cosa nasce soprattutto nell'Italia del Rinascimento?",
+   "options": [
+    "Il sistema feudale",
+    "L'individuo moderno, consapevole di sé",
+    "Il metodo scientifico sperimentale",
+    "La monarchia assoluta"
+   ],
+   "answer": 1,
+   "explain": "Per Burckhardt gli italiani del Quattrocento furono i primi a pensarsi come individui; oggi gli storici sfumano molto questa tesi."
+  },
+  {
+   "q": "Chi è considerato il padre dell'Umanesimo per la sua passione nel ritrovare e studiare i classici latini?",
+   "options": [
+    "Angelo Poliziano",
+    "Francesco Petrarca",
+    "Dante Alighieri",
+    "Giovanni Boccaccio"
+   ],
+   "answer": 1,
+   "explain": "Petrarca (1304-1374) cercò e copiò manoscritti antichi: nel 1345 ritrovò a Verona le lettere di Cicerone ad Attico."
+  },
+  {
+   "q": "In che anno fu giustiziato Girolamo Savonarola?",
+   "options": [
+    "1492",
+    "1494",
+    "1498",
+    "1512"
+   ],
+   "answer": 2,
+   "explain": "Scomunicato da Alessandro VI e caduto in disgrazia, fu impiccato e bruciato in piazza della Signoria il 23 maggio 1498."
   },
   {
    "q": "In quale anno avvenne la congiura dei Pazzi, in cui fu ucciso Giuliano de' Medici?",
@@ -25,15 +135,103 @@
    "explain": "Il 26 aprile 1478, durante la messa in Duomo, i congiurati uccisero Giuliano; Lorenzo, ferito, si salvò."
   },
   {
-   "q": "Chi è considerato il padre dell'Umanesimo per la sua passione nel ritrovare e studiare i classici latini?",
+   "q": "Quale palazzo fece costruire Cosimo il Vecchio come residenza di famiglia, su progetto di Michelozzo?",
    "options": [
-    "Angelo Poliziano",
-    "Francesco Petrarca",
-    "Dante Alighieri",
-    "Giovanni Boccaccio"
+    "Palazzo Medici, in via Larga",
+    "Palazzo Pitti",
+    "Palazzo Strozzi",
+    "Palazzo Vecchio"
+   ],
+   "answer": 0,
+   "explain": "Il palazzo, oggi Medici Riccardi, diventò il modello del palazzo rinascimentale fiorentino."
+  },
+  {
+   "q": "Che cosa stabilì la Pace di Lodi del 1454?",
+   "options": [
+    "Un equilibrio tra i principali stati italiani",
+    "Un'alleanza tra Firenze e la Francia",
+    "L'unificazione dell'Italia sotto Milano",
+    "La fine delle guerre d'Italia"
+   ],
+   "answer": 0,
+   "explain": "La pace e la successiva Lega italica garantirono circa quarant'anni di relativa stabilità, uno dei presupposti della fioritura artistica."
+  },
+  {
+   "q": "Che cos'era il 'falò delle vanità' voluto da Savonarola?",
+   "options": [
+    "Una festa di carnevale dei Medici",
+    "Un incendio accidentale di Palazzo Vecchio",
+    "Una processione con le reliquie",
+    "Un rogo pubblico di oggetti di lusso, libri e dipinti ritenuti immorali"
+   ],
+   "answer": 3,
+   "explain": "Il più famoso si tenne in piazza della Signoria nel febbraio 1497."
+  },
+  {
+   "q": "Che ruolo ebbe Coluccio Salutati nella Firenze di fine Trecento?",
+   "options": [
+    "Vescovo di Firenze",
+    "Architetto del Palazzo Vecchio",
+    "Primo banchiere dei Medici",
+    "Cancelliere della Repubblica e promotore degli studi umanistici"
+   ],
+   "answer": 3,
+   "explain": "Salutati fu cancelliere dal 1375 al 1406: usò lo stile ciceroniano per la propaganda politica e protesse i giovani umanisti."
+  },
+  {
+   "q": "In che anno morì Lorenzo il Magnifico?",
+   "options": [
+    "1478",
+    "1464",
+    "1492",
+    "1494"
+   ],
+   "answer": 2,
+   "explain": "Lorenzo morì l'8 aprile 1492 nella villa di Careggi: con lui finì l'equilibrio tra gli stati italiani, e pochi mesi dopo Colombo raggiunse l'America."
+  },
+  {
+   "q": "Quale frate domenicano dominò la vita politica fiorentina dopo la cacciata dei Medici nel 1494?",
+   "options": [
+    "Girolamo Savonarola",
+    "Antonino Pierozzi",
+    "Tommaso Campanella",
+    "Bernardino da Siena"
+   ],
+   "answer": 0,
+   "explain": "Savonarola predicava contro il lusso e organizzò i 'falò delle vanità'; fu giustiziato in piazza della Signoria nel 1498."
+  },
+  {
+   "q": "Quale di queste era un'Arte maggiore, legata ai banchieri come i Medici?",
+   "options": [
+    "Arte dei Fabbri",
+    "Arte dei Fornai",
+    "Arte dei Calzolai",
+    "Arte del Cambio"
+   ],
+   "answer": 3,
+   "explain": "L'Arte del Cambio riuniva banchieri e cambiavalute; le altre tre opzioni erano Arti minori."
+  },
+  {
+   "q": "Quale poema epico in latino scrisse Petrarca su Scipione l'Africano?",
+   "options": [
+    "Africa",
+    "Eneide",
+    "Thebais",
+    "Pharsalia"
+   ],
+   "answer": 0,
+   "explain": "Petrarca considerava l'Africa la sua opera più importante, ma la lasciò incompiuta; la fama gli venne dal Canzoniere."
+  },
+  {
+   "q": "Dopo la congiura, Lorenzo andò di persona a Napoli (1479-1480) per trattare la pace con:",
+   "options": [
+    "Federico da Montefeltro",
+    "Il re Ferrante d'Aragona",
+    "Carlo VIII di Francia",
+    "Ludovico il Moro"
    ],
    "answer": 1,
-   "explain": "Petrarca (1304-1374) cercò e copiò manoscritti antichi: nel 1345 ritrovò a Verona le lettere di Cicerone ad Attico."
+   "explain": "Il viaggio, rischiosissimo, fu un capolavoro diplomatico: Lorenzo tornò con la pace e il suo prestigio crebbe."
   },
   {
    "q": "Quale storico svizzero pubblicò nel 1860 'La civiltà del Rinascimento in Italia', rendendo il Rinascimento una categoria storica?",
@@ -58,15 +256,15 @@
    "explain": "Il Banco Medici, fondato nel 1397 da Giovanni di Bicci, aveva filiali in tutta Europa ed era il banchiere del papato."
   },
   {
-   "q": "Che cosa comprendevano gli studia humanitatis?",
+   "q": "Nel 1434 Cosimo il Vecchio tornò a Firenze dopo:",
    "options": [
-    "Grammatica, retorica, storia, poesia e filosofia morale",
-    "Teologia e diritto canonico",
-    "Aritmetica, geometria, astronomia e musica",
-    "Medicina, alchimia e astrologia"
+    "Una crociata in Oriente",
+    "Gli studi all'Università di Parigi",
+    "Un anno di esilio tra Padova e Venezia",
+    "Un periodo al servizio del papa ad Avignone"
    ],
-   "answer": 0,
-   "explain": "Erano le discipline che formano l'uomo come cittadino e oratore; aritmetica, geometria, astronomia e musica formavano invece il quadrivio medievale."
+   "answer": 2,
+   "explain": "Esiliato nel 1433 dalla fazione degli Albizzi, Cosimo rientrò l'anno dopo e governò di fatto la città fino al 1464."
   },
   {
    "q": "Quale evento del 1348 sconvolse l'Europa pochi decenni prima della stagione umanistica?",
@@ -80,26 +278,37 @@
    "explain": "La peste nera uccise forse un terzo degli europei; Boccaccio la descrive all'inizio del Decameron."
   },
   {
-   "q": "Quale frate domenicano dominò la vita politica fiorentina dopo la cacciata dei Medici nel 1494?",
+   "q": "Chi affrescò la Cappella dei Magi in Palazzo Medici?",
    "options": [
-    "Girolamo Savonarola",
-    "Antonino Pierozzi",
-    "Tommaso Campanella",
-    "Bernardino da Siena"
+    "Filippo Lippi",
+    "Sandro Botticelli",
+    "Domenico Ghirlandaio",
+    "Benozzo Gozzoli"
    ],
-   "answer": 0,
-   "explain": "Savonarola predicava contro il lusso e organizzò i 'falò delle vanità'; fu giustiziato in piazza della Signoria nel 1498."
+   "answer": 3,
+   "explain": "Gozzoli vi dipinse intorno al 1459 il corteo dei Magi, con ritratti dei Medici e dei loro ospiti."
   },
   {
-   "q": "Nel 1434 Cosimo il Vecchio tornò a Firenze dopo:",
+   "q": "Che cos'erano le Arti nella Firenze medievale e rinascimentale?",
    "options": [
-    "Una crociata in Oriente",
-    "Gli studi all'Università di Parigi",
-    "Un anno di esilio tra Padova e Venezia",
-    "Un periodo al servizio del papa ad Avignone"
+    "Le corporazioni di mestiere che partecipavano al governo della città",
+    "I tribunali ecclesiastici",
+    "Le accademie letterarie degli umanisti",
+    "Le scuole di pittura delle botteghe"
+   ],
+   "answer": 0,
+   "explain": "Per ricoprire cariche pubbliche bisognava essere iscritti a un'Arte: il potere politico era legato al lavoro e al commercio."
+  },
+  {
+   "q": "Chi fondò il Banco Medici nel 1397?",
+   "options": [
+    "Piero il Gottoso",
+    "Lorenzo il Magnifico",
+    "Giovanni di Bicci de' Medici",
+    "Cosimo il Vecchio"
    ],
    "answer": 2,
-   "explain": "Esiliato nel 1433 dalla fazione degli Albizzi, Cosimo rientrò l'anno dopo e governò di fatto la città fino al 1464."
+   "explain": "Giovanni di Bicci, padre di Cosimo, fece della banca di famiglia la tesoreria del papato."
   },
   {
    "q": "Chi era chiamato 'il Magnifico'?",
@@ -111,8 +320,19 @@
    ],
    "answer": 2,
    "explain": "Lorenzo (1449-1492) fu poeta, diplomatico e mecenate; mantenne l'equilibrio tra gli stati italiani fino alla morte."
+  },
+  {
+   "q": "Chi era il padre di Lorenzo il Magnifico?",
+   "options": [
+    "Giovanni di Bicci",
+    "Piero de' Medici, detto il Gottoso",
+    "Cosimo il Vecchio",
+    "Giuliano de' Medici"
+   ],
+   "answer": 1,
+   "explain": "Piero governò dal 1464 al 1469, tormentato dalla gotta; Cosimo era il nonno di Lorenzo."
   }
  ],
- "createdAt": "2026-10-11T13:00:00.000Z",
+ "createdAt": "2026-10-11T14:00:00.000Z",
  "source": "seed"
 }
