@@ -261,6 +261,149 @@ textarea { min-height: 80px; resize: vertical; }
 #toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: var(--r); font-size: 14.5px; max-width: calc(100vw - 32px); opacity: 0; pointer-events: none; transition: opacity .2s; }
 #toast.show { opacity: 1; }
 footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
+
+/* ---------- Refresh: icons, cards, less text ---------- */
+:root { --r: 12px; --shadow: 0 1px 2px rgba(23, 35, 42, .06), 0 4px 14px rgba(23, 35, 42, .05); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25); } }
+:root[data-theme="dark"] { --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25); }
+.ic { width: 1.15em; height: 1.15em; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; vertical-align: -.2em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.label { display: inline-flex; align-items: center; gap: 6px; }
+.btn { gap: 8px; border-radius: 99px; padding: 8px 16px; }
+.btn.small { padding: 5px 12px; }
+.btn.icon-only { padding: 6px; width: 32px; height: 32px; justify-content: center; }
+.btn.quiet { border-radius: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; }
+.chip .ic { width: 1.05em; height: 1.05em; }
+
+/* nav */
+.nav { gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 4px; box-shadow: var(--shadow); }
+.nav button { display: inline-flex; align-items: center; gap: 7px; border: 0; border-radius: 99px; padding: 7px 14px; font-size: 14.5px; }
+.nav button[aria-current="page"] { background: var(--lapis); color: var(--on-accent); border: 0; }
+@media (max-width: 600px) {
+  .mast { align-items: center; }
+  .nav { width: 100%; justify-content: space-between; }
+  .nav button { flex: 1; flex-direction: column; gap: 2px; padding: 6px 4px; font-size: 11.5px; }
+  .nav button .ic { width: 20px; height: 20px; }
+  .motto { display: none; }
+}
+.intarsia { height: 6px; margin: 14px 0 8px; opacity: .45; }
+
+/* headings with icon badge */
+.hic { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--gold-soft); color: var(--gold); flex: none; }
+.hic .ic { width: 18px; height: 18px; }
+.sec-head { align-items: center; border-bottom: 0; padding-bottom: 0; }
+.sec-head h2, .ph { display: flex; align-items: center; gap: 10px; }
+.panel .ph { font-size: 19px; }
+.panel { border: 0; box-shadow: var(--shadow); gap: 12px; }
+.panel .hic { width: 30px; height: 30px; }
+.big-ic { width: 40px; height: 40px; color: var(--gold); stroke-width: 1.4; }
+
+/* hero */
+.hero { gap: 12px; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.facts span { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 99px; background: var(--surface); box-shadow: var(--shadow); font-size: 14px; color: var(--muted); }
+.facts .ic { color: var(--gold); }
+.facts b { color: var(--ink); font-weight: 600; }
+.intro-more summary { cursor: pointer; color: var(--lapis); font-size: 14.5px; list-style: none; display: inline-flex; gap: 6px; align-items: center; }
+.intro-more summary::-webkit-details-marker { display: none; }
+.intro-more summary::after { content: "+"; font-family: var(--mono); }
+.intro-more[open] summary::after { content: "–"; }
+.intro-more .intro { margin-top: 8px; }
+.theme-strip { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* weeks as cards */
+.chapters { display: grid; gap: 10px; }
+.chap { grid-template-columns: 52px minmax(0, 1fr) auto; align-items: center; background: var(--surface); border: 0; border-radius: var(--r); box-shadow: var(--shadow); padding: 14px 16px; transition: transform .15s ease; }
+.chap:hover { background: var(--surface); transform: translateY(-1px); }
+.chap .rn { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-soft); color: var(--gold); font-size: 19px; text-align: center; }
+.chap .rn.cur { background: var(--lapis); color: var(--on-accent); }
+.chap h3 { margin: 2px 0 6px; }
+.chap .meta { display: block; }
+.go-ic { color: var(--muted); }
+@media (max-width: 520px) { .chap { grid-template-columns: 44px minmax(0, 1fr); } .chap .meta { display: none; } .chap .rn { width: 40px; height: 40px; font-size: 16px; } }
+.pills { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 2px 9px; border-radius: 99px; border: 1px solid var(--line); font-size: 12.5px; color: var(--muted); font-family: var(--mono); }
+.pill .ic { width: 14px; height: 14px; }
+.pill.ok { border-color: var(--good); color: var(--good); }
+@media (prefers-reduced-motion: reduce) { .chap { transition: none; } .chap:hover { transform: none; } }
+
+/* person rings */
+.person { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 12px; align-items: center; }
+.ring { position: relative; width: 56px; height: 56px; display: grid; place-items: center; }
+.ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 4; }
+.ring-bg { stroke: var(--line); }
+.ring-fg { stroke: var(--lapis); stroke-linecap: round; }
+.ring b { font-size: 12px; font-weight: 500; }
+.pinfo { display: grid; gap: 4px; min-width: 0; }
+.stats { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13.5px; color: var(--muted); }
+.stats span { display: inline-flex; align-items: center; gap: 4px; }
+.stats b { color: var(--ink); font-weight: 500; }
+
+/* books */
+.book { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.read-toggle { position: relative; display: inline-grid; place-items: center; }
+.read-toggle input { appearance: none; -webkit-appearance: none; width: 28px; height: 28px; margin: 0; border: 1.5px solid var(--line); border-radius: 50%; cursor: pointer; background: var(--paper); }
+.read-toggle input:checked { background: var(--good); border-color: var(--good); }
+.read-toggle input:focus-visible { outline: 2px solid var(--lapis); outline-offset: 2px; }
+.read-toggle .ic { position: absolute; width: 16px; height: 16px; color: var(--on-accent); opacity: 0; pointer-events: none; stroke-width: 2.4; }
+.read-toggle input:checked ~ .ic { opacity: 1; }
+
+/* media */
+.media { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.media li { grid-template-columns: 42px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px; border: 0; border-radius: var(--r); background: var(--surface); box-shadow: var(--shadow); }
+.mic { width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center; background: var(--lapis-soft); color: var(--lapis); }
+.m-luogo .mic, .m-film .mic { background: var(--gold-soft); color: var(--gold); }
+.mb { display: grid; gap: 1px; min-width: 0; }
+.mb .label { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.media .note { font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mlink { display: inline-flex; align-items: center; gap: 4px; padding: 5px 10px; border-radius: 99px; background: var(--paper); text-decoration: none; font-size: 13px; white-space: nowrap; }
+.mlink:hover { background: var(--lapis-soft); }
+.mlink .ic { width: 13px; height: 13px; }
+
+/* lessons */
+.lesson-card { gap: 6px; padding: 14px; border: 0; box-shadow: var(--shadow); min-height: 120px; }
+.lesson-card.on { box-shadow: 0 0 0 2px var(--lapis); }
+.lnum { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--gold-soft); color: var(--gold); font-family: var(--display); font-weight: 700; font-size: 15px; flex: none; }
+.lesson-card.on .lnum { background: var(--lapis); color: var(--on-accent); }
+.lnum.big { width: 44px; height: 44px; font-size: 22px; background: var(--lapis); color: var(--on-accent); }
+.lesson-title { display: flex; gap: 14px; align-items: center; margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--line); }
+.lesson-empty { display: grid; justify-items: center; text-align: center; gap: 10px; padding: 28px 16px; border: 1.5px dashed var(--line); border-radius: var(--r); }
+.reading { display: flex; gap: 10px; align-items: flex-start; font-style: normal; border-left: 0; padding: 12px 14px; background: var(--surface); border-radius: var(--r); font-size: 15px; }
+.reading .ic { color: var(--gold); margin-top: 3px; }
+.points { gap: 8px; }
+
+/* quiz */
+.opt { border-radius: 10px; }
+.result { border: 0; box-shadow: var(--shadow); border-radius: var(--r); }
+.rival { display: inline-flex; align-items: center; gap: 6px; }
+.ok-ic { color: var(--good); margin-right: 4px; }
+.bad-ic { color: var(--bad); margin-right: 4px; }
+.quiz-actions { align-items: center; }
+.qprog { flex: 1; max-width: 220px; height: 6px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.qprog i { display: block; height: 100%; background: var(--lapis); }
+
+/* duel & lists */
+.duel-score { border: 0; box-shadow: var(--shadow); border-radius: var(--r); }
+.duel th .av { vertical-align: middle; }
+.lead-ic { color: var(--gold); margin-left: 4px; }
+.duel tr.muted td { color: var(--muted); }
+.kv .ic, p.kv .ic { color: var(--gold); }
+.cand { border: 0; box-shadow: var(--shadow); }
+.cand.mine { box-shadow: 0 0 0 2px var(--lapis); }
+.cand.win { box-shadow: 0 0 0 2px var(--gold); }
+.arch .card { border: 0; box-shadow: var(--shadow); }
+.plan li { padding: 16px 0; }
+[hidden] { display: none !important; }
+@media (max-width: 860px) {
+  .grid > .maincol { display: contents; }
+  .grid > .maincol > section:first-child { order: 0; }
+  .grid > aside { order: 1; }
+  .grid > .maincol > section:not(:first-child) { order: 2; }
+}
+.empty { justify-items: center; text-align: center; margin-inline: auto; border-style: dashed; }
+.notice { border-radius: var(--r); }
 </style>
 
 <div class="wrap">
@@ -271,10 +414,10 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
         <div class="motto">un argomento al mese, in due</div>
       </div>
       <nav class="nav" id="nav" aria-label="Sezioni">
-        <button type="button" data-act="go" data-view="home">Argomento del mese</button>
-        <button type="button" data-act="go" data-view="vote">Votazione</button>
-        <button type="button" data-act="go" data-view="plan">Piano annuale</button>
-        <button type="button" data-act="go" data-view="archive">Archivio</button>
+        <button type="button" data-act="go" data-view="home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg><span>Il mese</span></button>
+        <button type="button" data-act="go" data-view="vote"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12H5z"/><path d="M22 19H2"/></svg><span>Vota</span></button>
+        <button type="button" data-act="go" data-view="plan"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Piano</span></button>
+        <button type="button" data-act="go" data-view="archive"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg><span>Archivio</span></button>
       </nav>
     </div>
     <div class="intarsia" aria-hidden="true"></div>
@@ -292,7 +435,7 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
     </div>
   </main>
 
-  <footer>Lo Studiolo · i progressi si salvano da soli, per ciascuno di voi.</footer>
+  <footer>Lo Studiolo</footer>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
@@ -307,9 +450,58 @@ const addMonths = (k, n) => { const [y, m] = k.split("-").map(Number); return mo
 const monthLabel = k => { const [y, m] = k.split("-").map(Number); const s = new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" }); return s.charAt(0).toUpperCase() + s.slice(1); };
 const isMonth = k => /^\d{4}-\d{2}$/.test(String(k));
 const LETTERS = "ABCD";
+const ICON = {
+  book: '<path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  vote: '<path d="m9 12 2 2 4-4"/><path d="M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12H5z"/><path d="M22 19H2"/>',
+  compass: '<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/>',
+  archive: '<rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  left: '<path d="m12 19-7-7 7-7M19 12H5"/>',
+  right: '<path d="M5 12h14M12 5l7 7-7 7"/>',
+  headphones: '<path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>',
+  film: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 7.5h4M3 12h18M3 16.5h4M17 7.5h4M17 16.5h4"/>',
+  play: '<rect x="2" y="5" width="20" height="14" rx="4"/><path d="m10 9 5 3-5 3z"/>',
+  tv: '<rect x="2" y="7" width="20" height="15" rx="2"/><path d="m17 2-5 5-5-5"/>',
+  video: '<path d="m22 8-6 4 6 4z"/><rect x="2" y="6" width="14" height="12" rx="2"/>',
+  pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/>',
+  trophy: '<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 3.8"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/>',
+  target: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  zap: '<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1zM4 22v-7"/>',
+  layers: '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>',
+  bulb: '<path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4"/>',
+  chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  sparkles: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M21 5h-4"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  ext: '<path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  plus: '<path d="M5 12h14M12 5v14"/>',
+  stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
+  refresh: '<path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16M3 21v-5h5"/>',
+  dice: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1"/><circle cx="15.5" cy="15.5" r="1"/><circle cx="12" cy="12" r="1"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  globe: '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>',
+  landmark: '<path d="M3 22h18M6 18v-7M10 18v-7M14 18v-7M18 18v-7M12 2l8 5H4z"/>',
+  palette: '<path d="M12 22a10 10 0 1 1 10-10c0 2.5-2 3-3.5 3H16a2 2 0 0 0-1.5 3.3A2 2 0 0 1 13 22z"/><circle cx="7.5" cy="11" r="1"/><circle cx="11" cy="7" r="1"/><circle cx="16" cy="8.5" r="1"/>',
+  feather: '<path d="M20.2 12.2a6 6 0 0 0-8.5-8.5L5 10.5V19h8.5zM16 8 2 22M17.5 15H9"/>',
+  coins: '<circle cx="8" cy="8" r="6"/><path d="M18.1 10.4A6 6 0 1 1 10.3 18M7 6h1v4"/>',
+  scale: '<path d="m16 16 3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1zM2 16l3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1zM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
+  flask: '<path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3M7 15h10"/>',
+  cpu: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+  music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'
+};
+const ic = (n, cls = "") => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n] || ""}</svg>`;
+const THEME_ICON = { geopolitica: "globe", storia: "landmark", arte: "palette", letteratura: "feather", economia: "coins", politica: "scale", scienza: "flask", filosofia: "bulb", tecnologia: "cpu", cultura: "music" };
+const secHead = (icon, title, meta = "") => `<div class="sec-head"><h2><span class="hic">${ic(icon)}</span>${title}</h2>${meta ? `<span class="label">${meta}</span>` : ""}</div>`;
+const panelHead = (icon, title) => `<h2 class="ph"><span class="hic">${ic(icon)}</span>${title}</h2>`;
+function ring(pct, label) {
+  const r = 17, c = 2 * Math.PI * r, v = Math.max(0, Math.min(100, pct || 0));
+  return `<span class="ring" role="img" aria-label="${esc(label)}"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="${r}" class="ring-bg"/><circle cx="20" cy="20" r="${r}" class="ring-fg" stroke-dasharray="${(c * v / 100).toFixed(1)} ${c.toFixed(1)}"/></svg><b class="num">${v}%</b></span>`;
+}
 const THEMES = ["geopolitica", "storia", "arte", "letteratura", "economia", "politica", "scienza", "filosofia", "tecnologia", "cultura"];
 const normTheme = x => { const t = String(x || "").trim().toLowerCase(); return THEMES.includes(t) ? t : ""; };
-const themeChip = t => normTheme(t) ? `<span class="chip theme">${esc(normTheme(t))}</span>` : "";
+const themeChip = t => normTheme(t) ? `<span class="chip theme">${ic(THEME_ICON[normTheme(t)])}${esc(normTheme(t))}</span>` : "";
 const themeSelect = (id, value, attrs = "") => `<select id="${id}" ${attrs}><option value="">Tema…</option>${THEMES.map(t => `<option value="${t}" ${normTheme(value) === t ? "selected" : ""}>${t}</option>`).join("")}</select>`;
 const isWeekly = topic => topic.chapters.length <= 4;
 const unitName = topic => isWeekly(topic) ? "Settimana" : "Capitolo";
@@ -320,7 +512,8 @@ function weekRange(month, i, n) {
   return `${a}–${b} ${new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long" })}`;
 }
 const MEDIA_TYPES = ["youtube", "podcast", "film", "serie", "documentario", "luogo"];
-const MEDIA_LABEL = { youtube: "Video su YouTube", podcast: "Podcast", film: "Film", serie: "Serie", documentario: "Documentario", luogo: "Luogo" };
+const MEDIA_LABEL = { youtube: "YouTube", podcast: "Podcast", film: "Film", serie: "Serie", documentario: "Documentario", luogo: "Luogo" };
+const MEDIA_ICON = { youtube: "play", podcast: "headphones", film: "film", serie: "tv", documentario: "video", luogo: "pin" };
 function normMedia(list, max) {
   return (Array.isArray(list) ? list : []).filter(x => x && x.title).slice(0, max).map(x => {
     const t = String(x.type || "").toLowerCase();
@@ -329,15 +522,17 @@ function normMedia(list, max) {
 }
 function mediaLink(x) {
   const q = x.query || [x.title, x.by].filter(Boolean).join(" ");
-  if (x.type === "youtube") return { href: "https://www.youtube.com/results?search_query=" + encodeURIComponent(q), label: "Cerca su YouTube" };
-  if (x.type === "podcast") return { href: "https://www.google.com/search?q=" + encodeURIComponent(q + " podcast"), label: "Cerca il podcast" };
-  if (x.type === "luogo") return { href: "https://www.google.com/maps/search/" + encodeURIComponent(x.title), label: "Apri sulla mappa" };
-  return { href: "https://www.google.com/search?q=" + encodeURIComponent(q), label: "Dove vederlo" };
+  if (x.type === "youtube") return { href: "https://www.youtube.com/results?search_query=" + encodeURIComponent(q), label: "Guarda" };
+  if (x.type === "podcast") return { href: "https://www.google.com/search?q=" + encodeURIComponent(q + " podcast"), label: "Ascolta" };
+  if (x.type === "luogo") return { href: "https://www.google.com/maps/search/" + encodeURIComponent(x.title), label: "Mappa" };
+  return { href: "https://www.google.com/search?q=" + encodeURIComponent(q), label: "Trova" };
 }
 function mediaList(items) {
   const sorted = [...items].sort((a, b) => MEDIA_TYPES.indexOf(a.type) - MEDIA_TYPES.indexOf(b.type));
   return `<ul class="media">${sorted.map(x => { const l = mediaLink(x);
-    return `<li><span class="label">${esc(MEDIA_LABEL[x.type] || x.type)}</span><span class="t">${esc(x.title)}</span>${x.by ? `<span class="by">${esc(x.by)}</span>` : ""}${x.note ? `<span class="note">${esc(x.note)}</span>` : ""}<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a></li>`; }).join("")}</ul>`;
+    return `<li class="m-${x.type}"><span class="mic">${ic(MEDIA_ICON[x.type] || "play")}</span>
+      <div class="mb"><span class="label">${esc(MEDIA_LABEL[x.type] || x.type)}${x.by ? " · " + esc(x.by) : ""}</span><span class="t">${esc(x.title)}</span>${x.note ? `<span class="note">${esc(x.note)}</span>` : ""}</div>
+      <a class="mlink" href="${esc(l.href)}" target="_blank" rel="noopener" aria-label="${esc(l.label + ": " + x.title)}">${esc(l.label)}${ic("ext")}</a></li>`; }).join("")}</ul>`;
 }
 const LESSONS_PER_WEEK = 3;
 function lessonPlan(ch) {
@@ -995,19 +1190,19 @@ function challengeSection(topic) {
   const score = two ? `<div class="duel-score" aria-label="Punteggio della sfida">
       ${c.ppl.map((u, i) => `${i ? `<span class="vs">contro</span>` : ""}<span class="side">${avatar(u)}<span>${esc(personName(u))}</span><span class="pts">${c.pts[u]}</span></span>`).join("")}
     </div>
-    <p class="kv">Ogni test vale un punto per chi ha il miglior risultato, quando lo avete fatto entrambi. Gli allenamenti servono solo a prepararsi e non danno punti. A pari punteggio il punto non va a nessuno. Potete ripetere i test per migliorare.</p>`
-    : `<p class="kv">Quando anche l'altra persona farà i test, qui vedrete chi è in vantaggio, test per test.</p>`;
-  const rows = c.rows.map(r => `<tr><td>${esc(r.label)}</td>${r.scores.map((x, i) => `<td class="n ${r.lead === c.ppl[i] ? "lead" : ""}">${x == null ? "—" : x + "%"}${r.lead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`).join("");
-  const prac = `<tr><td>Allenamenti <span class="label">nessun punto</span></td>${c.practice.map(n => `<td class="n">${n ? n + (n === 1 ? " test" : " test") : "—"}</td>`).join("")}</tr>`;
-  const log = c.log.length ? `<ul class="log">${c.log.map(l => `<li>${avatar(l.uid, "sm")}<span>${esc(personName(l.uid))} · ${esc(quizLabel(topic, l.key))}</span><span class="label num">${l.pct}% · ${esc(fmt(l.at))}</span></li>`).join("")}</ul>` : `<p class="kv">Nessun test ancora: il primo punto è in palio.</p>`;
+    <p class="kv">${ic("trophy")} 1 punto per test al miglior risultato</p>`
+    : `<p class="kv">${ic("users")} La sfida parte quando avete fatto i test entrambi.</p>`;
+  const rows = c.rows.map(r => `<tr><td>${esc(r.label)}</td>${r.scores.map((x, i) => `<td class="n ${r.lead === c.ppl[i] ? "lead" : ""}">${x == null ? "—" : x + "%"}${r.lead === c.ppl[i] ? ic("trophy", "lead-ic") : ""}</td>`).join("")}</tr>`).join("");
+  const prac = `<tr class="muted"><td>${ic("zap")} Allenamenti</td>${c.practice.map(n => `<td class="n">${n || "—"}</td>`).join("")}</tr>`;
+  const log = c.log.length ? `<ul class="log">${c.log.map(l => `<li>${avatar(l.uid, "sm")}<span>${esc(quizLabel(topic, l.key))}</span><span class="label num">${l.pct}% · ${esc(fmt(l.at))}</span></li>`).join("")}</ul>` : `<p class="kv">Ancora nessun test.</p>`;
   return `<section class="sec">
-    <div class="sec-head"><h2>La sfida</h2><span class="label">migliori risultati del mese</span></div>
+    ${secHead("trophy", "La sfida")}
     ${score}
     <div class="duel-wrap"><table class="duel">
-      <thead><tr><th>Test</th>${c.ppl.map(u => `<th>${esc(personName(u))}</th>`).join("")}</tr></thead>
+      <thead><tr><th></th>${c.ppl.map(u => `<th>${avatar(u, "sm")}</th>`).join("")}</tr></thead>
       <tbody>${rows}${prac}</tbody>
     </table></div>
-    <h3 class="label" style="margin-top:6px">Ultimi test</h3>
+    <h3 class="label" style="margin-top:6px">${ic("clock")} Ultimi test</h3>
     ${log}
   </section>`;
 }
@@ -1019,12 +1214,16 @@ function personPanel(topic) {
   return ppl.map(uid => {
     const s = stats(topic, uid);
     return `<div class="person">
-      <div class="who">${avatar(uid)}<span>${esc(personName(uid))}</span></div>
-      <div class="bar" aria-label="Capitoli studiati: ${s.done} su ${s.n}"><i style="width:${s.pct}%"></i></div>
-      <div class="kv"><span>${isWeekly(topic) ? "Settimane" : "Capitoli"} <b class="num">${s.done}/${s.n}</b></span>
-        <span>Media test <b class="num">${s.avg == null ? "—" : s.avg + "%"}</b></span>
-        <span>Esame finale <b class="num">${s.fin == null ? "—" : s.fin + "%"}</b></span>
-        <span>Libri letti <b class="num">${s.books}</b></span></div>
+      ${ring(s.pct, `Settimane completate: ${s.done} su ${s.n}`)}
+      <div class="pinfo">
+        <div class="who">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span></div>
+        <div class="stats">
+          <span title="Settimane completate">${ic("calendar")}<b class="num">${s.done}/${s.n}</b></span>
+          <span title="Media dei test">${ic("target")}<b class="num">${s.avg == null ? "—" : s.avg + "%"}</b></span>
+          <span title="Esame finale">${ic("flag")}<b class="num">${s.fin == null ? "—" : s.fin + "%"}</b></span>
+          <span title="Libri letti">${ic("book")}<b class="num">${s.books}</b></span>
+        </div>
+      </div>
     </div>`;
   }).join("");
 }
@@ -1038,60 +1237,68 @@ function topicView(topic) {
     const best = myP?.quiz?.[c.id]?.best;
     const wk = isWeekly(topic), cw = currentWeek(topic.id) === i;
     return `<li class="chap" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(c.id)}" tabindex="0" role="link" aria-label="${unitName(topic)} ${roman(i + 1)}: ${esc(c.title)}">
-      <div class="rn">${roman(i + 1)}</div>
-      <div>${wk ? `<div class="row" style="gap:8px;margin-bottom:2px"><span class="label">Settimana ${roman(i + 1)} · ${esc(weekRange(topic.id, i, topic.chapters.length))}</span>${cw ? `<span class="chip now">questa settimana</span>` : ""}</div>` : ""}<h3>${esc(c.title)}</h3><p class="sum">${esc(c.summary)}</p></div>
-      <div class="meta">
-        <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).done?.[c.id] ? "" : " off"))).join("")}</span>
-        <span class="label num">${myP ? `lezioni ${lessonPlan(c).filter((_, k) => myP.read?.[c.id + "-l" + (k + 1)]).length}/${LESSONS_PER_WEEK} · ` : ""}${typeof best === "number" ? "test " + best + "%" : "test da fare"}</span>
+      <div class="rn ${cw ? "cur" : ""}">${roman(i + 1)}</div>
+      <div class="cbody">${wk ? `<div class="row" style="gap:8px"><span class="label">${esc(weekRange(topic.id, i, topic.chapters.length))}</span>${cw ? `<span class="chip now">ora</span>` : ""}</div>` : ""}<h3>${esc(c.title)}</h3>
+        <div class="pills">
+          ${myP ? `<span class="pill" title="Lezioni lette">${ic("layers")}<span class="num">${lessonPlan(c).filter((_, k) => myP.read?.[c.id + "-l" + (k + 1)]).length}/${LESSONS_PER_WEEK}</span></span>` : ""}
+          <span class="pill ${typeof best === "number" ? "ok" : ""}" title="Il tuo test">${ic("target")}<span class="num">${typeof best === "number" ? best + "%" : "—"}</span></span>
+          <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).done?.[c.id] ? "" : " off"))).join("")}</span>
+        </div>
       </div>
+      <div class="meta">${ic("right", "go-ic")}</div>
     </li>`;
   }).join("");
   const books = (topic.books || []).map((b, i) => `
     <div class="book">
       <div><div class="t">${esc(b.title)}</div><div class="a">${esc(b.author)}${b.year ? `, <span class="num">${esc(b.year)}</span>` : ""}</div></div>
       <div class="row" style="justify-content:flex-end;align-items:start">
-        <span class="chip ${b.level === "classico" ? "gold" : b.level === "introduttivo" ? "lapis" : ""}">${esc(b.level)}</span>
-        ${S.me ? `<label class="read-toggle"><input type="checkbox" id="book-${esc(topic.id)}-${i}" data-act="book" data-topic="${esc(topic.id)}" data-i="${i}" ${myP?.books?.[i] ? "checked" : ""} ${S.canWrite ? "" : "disabled"}> letto</label>` : ""}
+        <span class="chip ${b.level === "classico" ? "gold" : b.level === "introduttivo" ? "lapis" : ""}" title="${esc(b.why)}">${esc(b.level)}</span>
+        ${S.me ? `<label class="read-toggle" title="Letto"><input type="checkbox" id="book-${esc(topic.id)}-${i}" data-act="book" data-topic="${esc(topic.id)}" data-i="${i}" ${myP?.books?.[i] ? "checked" : ""} ${S.canWrite ? "" : "disabled"}><span class="sr">letto</span>${ic("check")}</label>` : ""}
       </div>
-      <p class="why">${esc(b.why)}</p>
     </div>`).join("");
   const extras = (topic.extras || []).length ? mediaList(normMedia(topic.extras, 20)) : "";
   const myFinal = myP?.quiz?.final;
   return `
   <section class="hero">
-    <span class="row" style="gap:10px">${themeChip(topic.theme || planItems().find(i => i.month === topic.id)?.theme)}<span class="label">${esc(monthLabel(topic.id))} · ${isNow ? "argomento del mese" : topic.id < NOW ? "dall'archivio" : "in programma"}</span></span>
+    <span class="row" style="gap:10px">${themeChip(topic.theme || planItems().find(i => i.month === topic.id)?.theme)}<span class="label">${esc(monthLabel(topic.id))}</span></span>
     <h1>${esc(topic.title)}</h1>
     ${topic.subtitle ? `<p class="sub">${esc(topic.subtitle)}</p>` : ""}
-    ${topic.intro ? `<p class="intro">${esc(topic.intro)}</p>` : ""}
+    <div class="facts">
+      <span>${ic("calendar")}<b class="num">${topic.chapters.length}</b> settimane</span>
+      <span>${ic("layers")}<b class="num">${topic.chapters.length * LESSONS_PER_WEEK}</b> lezioni</span>
+      <span>${ic("target")}<b class="num">${topic.chapters.length + 1}</b> test</span>
+      <span>${ic("book")}<b class="num">${(topic.books || []).length}</b> libri</span>
+      <span>${ic("play")}<b class="num">${(topic.extras || []).length}</b> fonti</span>
+    </div>
+    ${topic.intro ? `<details class="intro-more"><summary>Perché studiarlo</summary><p class="intro">${esc(topic.intro)}</p></details>` : ""}
   </section>
   <div class="grid">
-    <div>
+    <div class="maincol">
       <section class="sec">
-        <div class="sec-head"><h2>${isWeekly(topic) ? "Programma di studio" : "Capitoli"}</h2><span class="label">${isWeekly(topic) ? "un capitolo a settimana, ognuno con il suo test conclusivo" : topic.chapters.length + " capitoli"}</span></div>
+        ${secHead("calendar", isWeekly(topic) ? "Le quattro settimane" : "Capitoli")}
         <ol class="chapters">${chapters}</ol>
       </section>
       ${challengeSection(topic)}
       ${books ? `<section class="sec">
-        <div class="sec-head"><h2>Libri consigliati</h2><span class="label">dal più accessibile al più impegnativo</span></div>
+        ${secHead("book", "Libri")}
         <div class="books">${books}</div>
       </section>` : ""}
       ${extras ? `<section class="sec">
-        <div class="sec-head"><h2>Ascolta, guarda, visita</h2><span class="label">podcast, film, video e luoghi per tutto il mese</span></div>
+        ${secHead("headphones", "Ascolta e guarda")}
         ${extras}
       </section>` : ""}
     </div>
     <aside class="sec">
       <div class="panel">
-        <h2>A che punto siamo</h2>
+        ${panelHead("users", "A che punto siamo")}
         ${personPanel(topic)}
       </div>
       ${practicePanel(topic)}
       ${votePanel()}
       <div class="panel">
-        <h2>Esame finale</h2>
-        <p>30 domande su tutto il mese, comprese quelle che collegano ${isWeekly(topic) ? "settimane" : "capitoli"} diversi. Fatelo entrambi alla fine del mese e confrontate i risultati.</p>
-        ${myFinal ? `<p class="kv">Il tuo miglior risultato: <b class="num">${myFinal.best}%</b> · tentativi <b class="num">${myFinal.attempts}</b></p>` : ""}
-        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="final">Fai l'esame finale</button></div>
+        ${panelHead("flag", "Esame finale")}
+        <p class="kv">30 domande su tutto il mese${myFinal ? ` · record <b class="num">${myFinal.best}%</b>` : ""}</p>
+        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="final">${ic("flag")}Inizia</button></div>
       </div>
     </aside>
   </div>`;
@@ -1103,12 +1310,11 @@ function practicePanel(topic) {
   const myPr = prog(topic.id, S.me).quiz?.practice;
   const names = studied.map(c => roman(topic.chapters.indexOf(c) + 1)).join(", ");
   return `<div class="panel">
-    <h2>Allenamento libero</h2>
-    <p>Un test di 10 domande quando volete, solo su ${isWeekly(topic) ? "le settimane" : "i capitoli"} che hai già completato. Serve a prepararsi: non dà punti nella sfida.</p>
-    <p class="kv">${studied.length ? `Domande su: <b>${isWeekly(topic) ? "settimana" : "capitolo"} ${esc(names)}</b>` : `Segna come ${isWeekly(topic) ? "completata la prima settimana" : "studiato il primo capitolo"} per sbloccarlo.`}${myPr ? ` · ${myPr.attempts} allenamenti in tutto` : ""}</p>
+    ${panelHead("zap", "Allenamento")}
+    <p class="kv">${studied.length ? `10 domande · settimane ${esc(names)} · senza punti` : `Completa una settimana per sbloccarlo`}${myPr ? ` · fatti <b class="num">${myPr.attempts}</b>` : ""}</p>
     <div class="row">
-      <button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>Allenati</button>
-      ${canAsk() ? `<button class="btn small quiet" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>Domande nuove con Claude</button>` : ""}
+      <button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>${ic("zap")}Allenati</button>
+      ${canAsk() ? `<button class="btn small quiet" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"} title="Domande nuove con Claude">${ic("sparkles")}Nuove</button>` : ""}
     </div>
   </div>`;
 }
@@ -1117,13 +1323,13 @@ function homeEmpty() {
   const item = planItems().find(i => i.month === NOW);
   const busy = S.gen?.month === NOW && !S.gen.error;
   return `<div class="empty">
+    ${ic("book", "big-ic")}
     <span class="label">${esc(monthLabel(NOW))}</span>
-    <h2>${item ? esc(item.title) : "Nessun argomento per questo mese"}</h2>
-    <p>${item ? "È l'argomento previsto dal vostro piano. Claude può prepararne il programma: quattro capitoli, uno per settimana, con libri consigliati e test." : "Scegliete un argomento e Claude ne preparerà il programma: quattro capitoli, uno per settimana, con libri consigliati e test per verificare cosa avete imparato."}</p>
+    <h2>${item ? esc(item.title) : "Nessun argomento"}</h2>
     ${S.gen?.month === NOW && S.gen.error ? `<p class="err">${esc(S.gen.error)}</p>` : ""}
     <div class="row">
-      ${item && canAsk() ? (busy ? `<span class="thinking">Claude sta scrivendo il programma, può volerci un minuto</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${NOW}">Prepara il programma</button>`) : ""}
-      <button class="btn" type="button" data-act="go" data-view="plan">Apri il piano annuale</button>
+      ${item && canAsk() ? (busy ? `<span class="thinking">Claude scrive il programma</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>` : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${NOW}">${ic("sparkles")}Prepara il programma</button>`) : ""}
+      <button class="btn" type="button" data-act="go" data-view="plan">${ic("calendar")}Piano</button>
     </div>
   </div>`;
 }
@@ -1143,85 +1349,84 @@ function chapterView(topic, chId) {
   const lessonCards = plan.map((l, k) => {
     const lid = lessonId(topic, ch, k), written = !!S.lessons[lid], writing = !!S.stream["lesson-" + lid];
     return `<li><button type="button" class="lesson-card ${k === li ? "on" : ""}" data-act="lesson-open" data-i="${k}" aria-pressed="${k === li}">
-      <span class="label">Lezione ${k + 1} di ${plan.length}</span>
+      <span class="lnum">${k + 1}</span>
       <span class="t">${esc(l.title)}</span>
-      ${l.focus ? `<span class="f">${esc(l.focus)}</span>` : ""}
-      <span class="row" style="gap:6px;margin-top:4px">
-        <span class="chip ${written ? "ok" : ""}">${writing ? "in scrittura" : written ? "pronta" : "da scrivere"}</span>
+      <span class="row" style="gap:6px;margin-top:auto">
+        <span class="chip ${written ? "ok" : ""}">${writing ? "in scrittura" : written ? ic("check") + "pronta" : "da scrivere"}</span>
         <span class="ticks">${ppl.map(uid => avatar(uid, "sm" + (prog(topic.id, uid).read?.[readKey(k)] ? "" : " off"))).join("")}</span>
       </span>
     </button></li>`;
   }).join("");
   const myRead = S.me ? !!prog(topic.id, S.me).read?.[readKey(li)] : false;
   let lessonHTML;
-  if (streaming) lessonHTML = `<div class="prose" id="stream-${esc(skey)}">${streaming.text ? md(streaming.text) : `<p class="thinking">Claude sta scrivendo la lezione</p>`}</div>
-      <div class="row"><button class="btn small" type="button" data-act="stop-lesson" data-id="${esc(skey)}">Interrompi</button></div>`;
+  if (streaming) lessonHTML = `<div class="prose" id="stream-${esc(skey)}">${streaming.text ? md(streaming.text) : `<p class="thinking">Claude sta scrivendo</p>`}</div>
+      <div class="row"><button class="btn small" type="button" data-act="stop-lesson" data-id="${esc(skey)}">${ic("stop")}Interrompi</button></div>`;
   else if (lesson === undefined) lessonHTML = `<p class="thinking">Carico la lezione</p>`;
   else if (lesson) lessonHTML = `<div class="prose">${md(lesson.text)}</div>
       <div class="row">
-        ${S.me ? `<button class="btn ${myRead ? "" : "primary"}" type="button" data-act="lesson-read" data-topic="${esc(topic.id)}" data-key="${esc(readKey(li))}" ${S.canWrite ? "" : "disabled"}>${myRead ? "✓ Letta · annulla" : "Segna come letta"}</button>` : ""}
-        ${li < plan.length - 1 ? `<button class="btn" type="button" data-act="lesson-open" data-i="${li + 1}">Lezione ${li + 2} →</button>` : ""}
-        ${canAsk() ? `<button class="btn quiet small" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}">Riscrivi la lezione</button>` : ""}
+        ${S.me ? `<button class="btn ${myRead ? "" : "primary"}" type="button" data-act="lesson-read" data-topic="${esc(topic.id)}" data-key="${esc(readKey(li))}" ${S.canWrite ? "" : "disabled"}>${ic("check")}${myRead ? "Letta" : "Segna come letta"}</button>` : ""}
+        ${li < plan.length - 1 ? `<button class="btn" type="button" data-act="lesson-open" data-i="${li + 1}">Lezione ${li + 2}${ic("right")}</button>` : ""}
+        ${canAsk() ? `<button class="btn quiet small" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}" title="Riscrivi la lezione">${ic("refresh")}Riscrivi</button>` : ""}
       </div>`;
   else lessonHTML = canAsk()
-      ? `<p>Questa lezione non è ancora stata scritta. Claude la prepara in un paio di minuti seguendo lo schema completo, e resta salvata per entrambi.</p>
-         <div class="row"><button class="btn primary" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}">Scrivi la lezione ${li + 1} con Claude</button></div>`
-      : `<p>La lezione non è ancora stata scritta. Studiate dalle letture indicate qui sopra.</p>`;
+      ? `<div class="lesson-empty">${ic("sparkles", "big-ic")}<p class="kv">Pronta in un paio di minuti, salvata per entrambi.</p>
+         <button class="btn primary" type="button" data-act="lesson" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" data-i="${li}">${ic("sparkles")}Scrivi la lezione</button></div>`
+      : `<p class="kv">Lezione non ancora scritta.</p>`;
   const tutor = S.tutor[ch.id];
   const prev = topic.chapters[idx - 1], next = topic.chapters[idx + 1];
   return `
-  <div class="back"><button class="btn quiet" type="button" data-act="topic" data-topic="${esc(topic.id)}">← ${esc(topic.title)}</button></div>
+  <div class="back"><button class="btn quiet" type="button" data-act="topic" data-topic="${esc(topic.id)}">${ic("left")}${esc(topic.title)}</button></div>
   <section class="chap-hero">
-    <span class="label">${unitName(topic)} ${roman(idx + 1)} di ${roman(topic.chapters.length)}${isWeekly(topic) ? " · " + esc(weekRange(topic.id, idx, topic.chapters.length)) : ""}${ch.minutes ? ` · circa ${Math.round(ch.minutes / 60)} ore di studio` : ""}</span>
+    <span class="label">${unitName(topic)} ${roman(idx + 1)}${isWeekly(topic) ? " · " + esc(weekRange(topic.id, idx, topic.chapters.length)) : ""}${ch.minutes ? ` · ${ic("clock")} ${Math.round(ch.minutes / 60)} ore` : ""}</span>
     <h1>${esc(ch.title)}</h1>
     <p class="intro">${esc(ch.summary)}</p>
   </section>
   <div class="grid">
-    <div>
+    <div class="maincol">
       <section class="sec">
-        <div class="sec-head"><h2>Concetti chiave</h2></div>
+        ${secHead("bulb", "Concetti chiave")}
         <ul class="points">${(ch.points || []).map(p => `<li>${esc(p)}</li>`).join("")}</ul>
-        ${ch.reading ? `<p class="reading">${esc(ch.reading)}</p>` : ""}
+        ${ch.reading ? `<p class="reading">${ic("book")}<span>${esc(ch.reading)}</span></p>` : ""}
       </section>
       ${(ch.media || []).length ? `<section class="sec">
-        <div class="sec-head"><h2>Da ascoltare e guardare</h2><span class="label">per questa ${isWeekly(topic) ? "settimana" : "parte"}</span></div>
+        ${secHead("headphones", "Ascolta e guarda")}
         ${mediaList(normMedia(ch.media, 6))}
       </section>` : ""}
       <section class="sec" id="lezioni">
-        <div class="sec-head"><h2>Le tre lezioni della settimana</h2><span class="label">spiegazione, contesto, nomi e date, esempi, collegamenti, mappa</span></div>
+        ${secHead("layers", "Lezioni")}
         <ol class="lesson-cards">${lessonCards}</ol>
-        <div class="sec-head" style="margin-top:8px"><h3 class="lesson-h">Lezione ${li + 1} · ${esc(plan[li].title)}</h3>${lesson?.createdAt ? `<span class="label">scritta da Claude</span>` : ""}</div>
+        <div class="lesson-title"><span class="lnum big">${li + 1}</span><div><h3 class="lesson-h">${esc(plan[li].title)}</h3>${plan[li].focus ? `<p class="kv">${esc(plan[li].focus)}</p>` : ""}</div></div>
         ${lessonHTML}
       </section>
       ${canAsk() ? `<section class="sec">
-        <div class="sec-head"><h2>Chiedi al tutor</h2><span class="label">la risposta non viene salvata</span></div>
-        <label class="label" for="ask-${esc(ch.id)}">La tua domanda su questo capitolo</label>
-        <textarea id="ask-${esc(ch.id)}" data-draft="1" placeholder="Per esempio: perché proprio Firenze e non Milano o Venezia?"></textarea>
+        ${secHead("chat", "Chiedi al tutor")}
+        <label class="sr" for="ask-${esc(ch.id)}">La tua domanda</label>
+        <textarea id="ask-${esc(ch.id)}" data-draft="1" placeholder="Fai una domanda su questa settimana…"></textarea>
         <div class="row">${tutor?.busy
           ? `<span class="thinking">Il tutor sta rispondendo</span><button class="btn small" type="button" data-act="stop-tutor" data-ch="${esc(ch.id)}">Interrompi</button>`
-          : `<button class="btn" type="button" data-act="ask" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">Chiedi</button>`}</div>
+          : `<button class="btn" type="button" data-act="ask" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}">${ic("chat")}Chiedi</button>`}</div>
         ${tutor ? `<div class="panel"><span class="label">${esc(tutor.q)}</span><div class="prose" id="tutor-${esc(ch.id)}">${tutor.text ? md(tutor.text) : `<p class="thinking">Sto pensando</p>`}</div>${tutor.error ? `<p class="err">${esc(tutor.error)}</p>` : ""}</div>` : ""}
       </section>` : ""}
     </div>
     <aside class="sec">
       <div class="panel">
-        <h2>${isWeekly(topic) ? "La tua settimana" : "Il tuo capitolo"}</h2>
-        ${S.me ? `<button class="btn ${done ? "" : "primary"}" type="button" data-act="toggle-done" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" ${S.canWrite ? "" : "disabled"}>${done ? "✓ " + doneWord(topic, true) + " · annulla" : "Segna come " + doneWord(topic, true)}</button>` : `<p class="kv">Accedi per segnare i progressi.</p>`}
+        ${panelHead("check", isWeekly(topic) ? "La tua settimana" : "Il tuo capitolo")}
+        ${S.me ? `<button class="btn ${done ? "" : "primary"}" type="button" data-act="toggle-done" data-topic="${esc(topic.id)}" data-ch="${esc(ch.id)}" ${S.canWrite ? "" : "disabled"}>${ic("check")}${done ? doneWord(topic, true) : "Segna come " + doneWord(topic, true)}</button>` : `<p class="kv">Accedi per segnare i progressi.</p>`}
         <div class="scores">
           ${ppl.map(uid => { const q = prog(topic.id, uid).quiz?.[ch.id]; const d = prog(topic.id, uid).done?.[ch.id];
-            return `<div class="score-line">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span><span class="label num" style="margin-left:auto">${doneWord(topic, !!d)}${q ? " · test " + q.best + "%" : ""}</span></div>`; }).join("")}
+            return `<div class="score-line">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span><span class="pills" style="margin-left:auto"><span class="pill ${d ? "ok" : ""}">${ic("check")}</span><span class="pill ${q ? "ok" : ""}">${ic("target")}<span class="num">${q ? q.best + "%" : "—"}</span></span></span></div>`; }).join("")}
         </div>
       </div>
       <div class="panel">
-        <h2>${isWeekly(topic) ? "Test conclusivo" : "Mettiti alla prova"}</h2>
-        <p>30 domande a scelta multipla su ${isWeekly(topic) ? "tutta la settimana" : "questo capitolo"}, con la spiegazione di ogni risposta. Le domande sono le stesse per entrambi: vince la sfida chi fa meglio.</p>
-        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="${esc(ch.id)}">Fai il test</button></div>
+        ${panelHead("target", "Test della settimana")}
+        <p class="kv">30 domande · uguali per entrambi · vale 1 punto</p>
+        <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="${esc(ch.id)}">${ic("target")}Inizia il test</button></div>
       </div>
     </aside>
   </div>
   <nav class="pager" aria-label="Capitoli">
-    ${prev ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(prev.id)}">← ${roman(idx)}. ${esc(prev.title)}</button>` : "<span></span>"}
-    ${next ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(next.id)}">${roman(idx + 2)}. ${esc(next.title)} →</button>` : ""}
+    ${prev ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(prev.id)}">${ic("left")}${roman(idx)}. ${esc(prev.title)}</button>` : "<span></span>"}
+    ${next ? `<button class="btn quiet" type="button" data-act="chapter" data-topic="${esc(topic.id)}" data-ch="${esc(next.id)}">${roman(idx + 2)}. ${esc(next.title)}${ic("right")}</button>` : ""}
   </nav>`;
 }
 
@@ -1232,9 +1437,9 @@ function rivalLine(topic, key, pct) {
     const q = prog(topic.id, u).quiz?.[key];
     const name = esc(personName(u));
     if (key === "practice") return "";
-    if (typeof q?.best !== "number") return `<span class="rival">${name} non ha ancora fatto questo test: il tuo risultato è il primo da battere.</span>`;
+    if (typeof q?.best !== "number") return `<span class="rival">${ic("trophy")}${name} non l'ha ancora fatto</span>`;
     const me = Math.max(pct, prog(topic.id, S.me).quiz?.[key]?.best ?? 0);
-    return `<span class="rival">Record di ${name}: <b class="num">${q.best}%</b>. ${me > q.best ? "Sei in vantaggio su questo test." : me === q.best ? "Siete pari." : "Ti mancano " + (q.best - me) + " punti per raggiungere il record."}</span>`;
+    return `<span class="rival">${ic("trophy")}${name}: <b class="num">${q.best}%</b> · ${me > q.best ? "sei in vantaggio" : me === q.best ? "pari" : "ti mancano " + (q.best - me) + " punti"}</span>`;
   }).join("");
 }
 
@@ -1246,9 +1451,9 @@ function quizView() {
   const practiceOn = z.key === "practice" && z.data?.chapters?.length
     ? " · domande su " + (isWeekly(topic) ? "settimana " : "capitolo ") + z.data.chapters.map(id => roman(topic.chapters.findIndex(c => c.id === id) + 1)).join(", ") : "";
   const head = `
-    <div class="back"><button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">← ${esc(ch ? ch.title : topic.title)}</button></div>
+    <div class="back"><button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">${ic("left")}${esc(ch ? ch.title : topic.title)}</button></div>
     <section class="chap-hero">
-      <span class="label">${ch ? (isWeekly(topic) ? "Test conclusivo · settimana " : "Test · capitolo ") + roman(chIdx + 1) : z.key === "practice" ? "Allenamento libero" + esc(practiceOn) : "Esame finale · " + esc(monthLabel(topic.id))}</span>
+      <span class="label">${ic(ch ? "target" : z.key === "practice" ? "zap" : "flag")} ${ch ? (isWeekly(topic) ? "Test · settimana " : "Test · capitolo ") + roman(chIdx + 1) : z.key === "practice" ? "Allenamento" + esc(practiceOn) : "Esame finale"}</span>
       <h1>${esc(ch ? ch.title : topic.title)}</h1>
     </section>`;
   if (z.loading) return head + `<div class="quiz"><p class="thinking">${canAsk() ? "Preparo le domande, può volerci un minuto" : "Carico le domande"}</p>
@@ -1259,7 +1464,7 @@ function quizView() {
   const answered = Object.keys(z.answers).length;
   const result = z.submitted ? `<div class="result">
       <span class="big num">${z.score.pct}%</span>
-      <span>${z.score.right} risposte giuste su ${z.score.total}. ${z.score.pct >= 85 ? "Ottimo: questi argomenti li padroneggi." : z.score.pct >= 60 ? "Buona base: rileggi le spiegazioni delle risposte sbagliate." : "Conviene ripassare e ritentare tra qualche giorno."}</span>
+      <span>${z.score.right}/${z.score.total} giuste · ${z.score.pct >= 85 ? "Ottimo!" : z.score.pct >= 60 ? "Buona base" : "Da ripassare"}</span>
       ${rivalLine(topic, z.key, z.score.pct)}
     </div>` : "";
   const items = qs.map((q, i) => {
@@ -1273,7 +1478,7 @@ function quizView() {
           return `<button type="button" class="opt ${cls}" data-act="pick" data-q="${i}" data-o="${j}" aria-pressed="${pick === j}" ${z.submitted ? "disabled" : ""}><span class="k">${LETTERS[j]}</span><span>${esc(o)}</span></button>`;
         }).join("")}
       </div>
-      ${z.submitted && q.explain ? `<p class="explain">${pick === q.answer ? "Giusto. " : "La risposta corretta è " + LETTERS[q.answer] + ". "}${esc(q.explain)}</p>` : ""}
+      ${z.submitted && q.explain ? `<p class="explain">${pick === q.answer ? ic("check", "ok-ic") : ic("x", "bad-ic") + "<b>" + LETTERS[q.answer] + "</b> · "}${esc(q.explain)}</p>` : ""}
     </div>`;
   }).join("");
   return head + `<div class="quiz">
@@ -1282,12 +1487,13 @@ function quizView() {
     <div class="row ${z.submitted ? "" : "quiz-actions"}">
       ${z.submitted
         ? `${z.key === "practice"
-            ? `<button class="btn" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice">Un altro allenamento</button>
-               ${canAsk() ? `<button class="btn" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="practice">Domande nuove con Claude</button>` : ""}`
-            : `<button class="btn" type="button" data-act="quiz-retry">Rifai il test per migliorare</button>`}
-           <button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">Torna ${ch ? (isWeekly(topic) ? "alla settimana" : "al capitolo") : "al programma"}</button>`
-        : `<button class="btn primary" type="button" data-act="submit-quiz" ${answered < qs.length ? "aria-disabled=\"true\"" : ""}>Consegna</button>
-           <span class="label num">${answered}/${qs.length} risposte</span>`}
+            ? `<button class="btn" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice">${ic("zap")}Ancora</button>
+               ${canAsk() ? `<button class="btn" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="practice">${ic("sparkles")}Domande nuove</button>` : ""}`
+            : `<button class="btn" type="button" data-act="quiz-retry">${ic("refresh")}Riprova</button>`}
+           <button class="btn quiet" type="button" data-act="${ch ? "chapter" : "topic"}" data-topic="${esc(topic.id)}" data-ch="${esc(ch?.id || "")}">${ic("left")}Indietro</button>`
+        : `<button class="btn primary" type="button" data-act="submit-quiz" ${answered < qs.length ? "aria-disabled=\"true\"" : ""}>${ic("check")}Consegna</button>
+           <span class="qprog" aria-hidden="true"><i style="width:${Math.round(answered / qs.length * 100)}%"></i></span>
+           <span class="label num">${answered}/${qs.length}</span>`}
     </div>
   </div>`;
 }
@@ -1296,17 +1502,17 @@ function planView() {
   const items = planItems();
   const pg = S.planGen;
   const header = `<section class="hero">
-    <span class="label">Piano annuale</span>
-    <h1>Dodici mesi, dodici argomenti</h1>
-    <p class="intro">Ogni mese appartiene a uno dei dieci temi: ${THEMES.join(", ")}. Il piano è una traccia: cambiate i titoli quando volete. Quando arriva il mese, chiedete a Claude di preparare il programma completo.</p>
+    <span class="label">${ic("calendar")} Piano annuale</span>
+    <h1>Dodici mesi</h1>
+    <div class="theme-strip">${THEMES.map(t => themeChip(t)).join("")}</div>
   </section>`;
   if (!items.length) return header + `<div class="empty">
-    <h2>Il piano è ancora vuoto</h2>
-    <p>Claude può proporre dodici argomenti di discipline diverse, a partire da ${esc(monthLabel(NOW).toLowerCase())}. Oppure aggiungete i mesi uno alla volta.</p>
+    ${ic("calendar", "big-ic")}
+    <h2>Piano vuoto</h2>
     ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
     <div class="row">
-      ${canAsk() ? (pg && !pg.error ? `<span class="thinking">Claude sta componendo il piano</span><button class="btn small" type="button" data-act="stop-plan">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-plan" ${S.canWrite ? "" : "disabled"}>Proponi un piano con Claude</button>`) : ""}
-      <button class="btn" type="button" data-act="plan-add" ${S.canWrite ? "" : "disabled"}>Aggiungi un mese</button>
+      ${canAsk() ? (pg && !pg.error ? `<span class="thinking">Claude sta componendo il piano</span><button class="btn small" type="button" data-act="stop-plan">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-plan" ${S.canWrite ? "" : "disabled"}>${ic("sparkles")}Proponi con Claude</button>`) : ""}
+      <button class="btn" type="button" data-act="plan-add" ${S.canWrite ? "" : "disabled"}>${ic("plus")}Aggiungi un mese</button>
     </div>
   </div>`;
   const rows = items.map(it => {
@@ -1314,12 +1520,12 @@ function planView() {
     const gen = S.gen?.month === it.month ? S.gen : null;
     const sug = S.suggest[it.month];
     let act;
-    if (t) act = `<span class="chip ok">pronto</span><button class="btn small" type="button" data-act="topic" data-topic="${esc(it.month)}">Apri</button>`;
-    else if (gen && !gen.error) act = `<span class="thinking">Claude scrive il programma</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>`;
-    else act = `${it.month < NOW ? `<span class="chip">non svolto</span>` : ""}
-      ${canAsk() ? `<button class="btn small primary" type="button" data-act="gen-topic" data-month="${esc(it.month)}" ${S.canWrite ? "" : "disabled"}>Prepara il programma</button>
-      <button class="btn small" type="button" data-act="suggest" data-month="${esc(it.month)}">Altre idee</button>` : ""}
-      ${S.canWrite ? `<button class="btn small quiet" type="button" data-act="plan-remove" data-month="${esc(it.month)}">Togli</button>` : ""}`;
+    if (t) act = `<button class="btn small" type="button" data-act="topic" data-topic="${esc(it.month)}">${ic("book")}Apri</button>`;
+    else if (gen && !gen.error) act = `<span class="thinking">Claude scrive</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>`;
+    else act = `${it.month < NOW ? `<span class="chip">saltato</span>` : ""}
+      ${canAsk() ? `<button class="btn small primary" type="button" data-act="gen-topic" data-month="${esc(it.month)}" ${S.canWrite ? "" : "disabled"}>${ic("sparkles")}Prepara</button>
+      <button class="btn small icon-only" type="button" data-act="suggest" data-month="${esc(it.month)}" aria-label="Altre idee" title="Altre idee">${ic("bulb")}</button>` : ""}
+      ${S.canWrite ? `<button class="btn small quiet icon-only" type="button" data-act="plan-remove" data-month="${esc(it.month)}" aria-label="Togli dal piano" title="Togli">${ic("x")}</button>` : ""}`;
     return `<li class="${it.month === NOW ? "now" : ""}">
       <div class="m">${esc(monthLabel(it.month))}</div>
       <div class="ttl">
@@ -1328,7 +1534,7 @@ function planView() {
           : `<strong>${esc(it.title)}</strong>`}
         <span class="row" style="gap:8px">${!t && S.canWrite
           ? `<span style="width:150px">${themeSelect("plan-th-" + it.month, it.theme, `data-act="plan-theme" data-month="${esc(it.month)}" aria-label="Tema di ${esc(monthLabel(it.month))}"`)}</span>`
-          : themeChip(t?.theme || it.theme)}<span class="s">${esc(t ? t.subtitle : it.subtitle)}</span></span>
+          : themeChip(t?.theme || it.theme)}${t ? `<span class="chip ok">${ic("check")}pronto</span>` : ""}</span>
         ${gen?.error ? `<span class="err">${esc(gen.error)}</span>` : ""}
       </div>
       <div class="act">${act}</div>
@@ -1337,13 +1543,13 @@ function planView() {
     </li>`;
   }).join("");
   return header + `<section class="sec">
-    <div class="sec-head"><h2>Il vostro anno</h2>
+    <div class="sec-head"><h2><span class="hic">${ic("calendar")}</span>Il vostro anno</h2>
       <div class="row">
-        ${S.canWrite ? `<button class="btn small" type="button" data-act="plan-add">Aggiungi un mese</button>` : ""}
-        ${canAsk() && S.canWrite ? (pg && !pg.error ? `<span class="thinking">Claude ricompone il piano</span>` : `<button class="btn small quiet" type="button" data-act="gen-plan-confirm">Rifai il piano con Claude</button>`) : ""}
+        ${S.canWrite ? `<button class="btn small" type="button" data-act="plan-add">${ic("plus")}Mese</button>` : ""}
+        ${canAsk() && S.canWrite ? (pg && !pg.error ? `<span class="thinking">Claude ricompone il piano</span>` : `<button class="btn small quiet" type="button" data-act="gen-plan-confirm">${ic("sparkles")}Rifai con Claude</button>`) : ""}
       </div>
     </div>
-    ${S.busy.planConfirm ? `<div class="notice">Claude sostituirà gli argomenti da ${esc(monthLabel(NOW).toLowerCase())} in poi. I mesi già preparati restano salvati nell'archivio.
+    ${S.busy.planConfirm ? `<div class="notice">Gli argomenti da ${esc(monthLabel(NOW).toLowerCase())} in poi verranno sostituiti. I mesi già preparati restano.
       <div class="row" style="margin-top:8px"><button class="btn small primary" type="button" data-act="gen-plan">Sì, rifai il piano</button><button class="btn small" type="button" data-act="gen-plan-cancel">Annulla</button></div></div>` : ""}
     ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
     <ol class="plan">${rows}</ol>
@@ -1352,24 +1558,23 @@ function planView() {
 
 function archiveView() {
   const list = [...S.topics].reverse();
-  const header = `<section class="hero"><span class="label">Archivio</span><h1>Tutto quello che avete studiato</h1></section>`;
-  if (!list.length) return header + `<div class="empty"><h2>L'archivio è vuoto</h2><p>Gli argomenti preparati compariranno qui, mese per mese, con i vostri risultati.</p></div>`;
+  const header = `<section class="hero"><span class="label">${ic("archive")} Archivio</span><h1>Quello che avete studiato</h1></section>`;
+  if (!list.length) return header + `<div class="empty">${ic("archive", "big-ic")}<h2>Archivio vuoto</h2></div>`;
   return header + `<div class="arch">${list.map(t => `
     <button class="card" type="button" data-act="topic" data-topic="${esc(t.id)}">
       <span class="row" style="gap:8px">${themeChip(t.theme)}<span class="label">${esc(monthLabel(t.id))}${t.id === NOW ? " · in corso" : ""}</span></span>
       <h3>${esc(t.title)}</h3>
-      ${t.subtitle ? `<span class="kv">${esc(t.subtitle)}</span>` : ""}
       ${peopleFor(t.id).map(uid => { const s = stats(t, uid);
-        return `<span class="score-line">${avatar(uid, "sm")}<span class="label num">${s.done}/${s.n} capitoli · finale ${s.fin == null ? "—" : s.fin + "%"}</span></span>`; }).join("")}
+        return `<span class="score-line">${avatar(uid, "sm")}<span class="pills"><span class="pill">${ic("calendar")}<span class="num">${s.done}/${s.n}</span></span><span class="pill">${ic("flag")}<span class="num">${s.fin == null ? "—" : s.fin + "%"}</span></span></span></span>`; }).join("")}
     </button>`).join("")}</div>`;
 }
 
 function voteView() {
   const month = voteMonth(), vote = voteFor(month), topic = topicById(month);
   const header = `<section class="hero">
-    <span class="label">Votazione · ${esc(monthLabel(month))}</span>
-    <h1>Scegliete il prossimo argomento</h1>
-    <p class="intro">Cinque argomenti in gara. Ognuno di voi ha ${VOTES_EACH} voti da dare a tre argomenti diversi, al massimo un voto per argomento. I voti dell'altro restano nascosti finché non avete votato entrambi. Vince l'argomento con più voti.</p>
+    <span class="label">${ic("vote")} ${esc(monthLabel(month))}</span>
+    <h1>Il prossimo argomento</h1>
+    <div class="facts"><span>${ic("layers")}<b class="num">5</b> candidati</span><span>${ic("check")}<b class="num">${VOTES_EACH}</b> voti a testa, uno per argomento</span><span>${ic("users")}risultati quando avete votato entrambi</span></div>
   </section>`;
 
   if (!vote) {
@@ -1383,13 +1588,12 @@ function voteView() {
         <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.subtitle) : ""}" ${S.canWrite ? "" : "disabled"}>
       </div>`).join("");
     return header + `<section class="sec">
-      <div class="sec-head"><h2>I cinque candidati</h2><span class="label">${topic ? "il programma di questo mese è già pronto" : "ancora da proporre"}</span></div>
-      <p>Ogni argomento appartiene a uno dei dieci temi: ${THEMES.join(", ")}. Scrivete cinque argomenti che vi incuriosiscono${canAsk() ? ", oppure lasciate le righe vuote e fatevele proporre da Claude" : ""}. ${planned ? "Il primo è quello previsto dal piano annuale." : ""}</p>
+      ${secHead("layers", "Cinque candidati")}
       <div class="draft">${rows}</div>
       ${vs?.error ? `<p class="err">${esc(vs.error)}</p>` : ""}
       <div class="row">
-        ${canAsk() && S.canWrite ? (vs?.busy ? `<span class="thinking">Claude sta cercando idee</span>` : `<button class="btn" type="button" data-act="vote-suggest">Riempi le righe vuote con Claude</button>`) : ""}
-        <button class="btn primary" type="button" data-act="vote-open" ${S.canWrite ? "" : "disabled"}>Apri la votazione</button>
+        ${canAsk() && S.canWrite ? (vs?.busy ? `<span class="thinking">Claude sta cercando idee</span>` : `<button class="btn" type="button" data-act="vote-suggest">${ic("sparkles")}Riempi con Claude</button>`) : ""}
+        <button class="btn primary" type="button" data-act="vote-open" ${S.canWrite ? "" : "disabled"}>${ic("vote")}Apri la votazione</button>
       </div>
     </section>`;
   }
@@ -1404,8 +1608,8 @@ function voteView() {
     return `<li class="cand ${win ? "win" : mine ? "mine" : ""}">
       <span class="rn">${roman(i + 1)}</span>
       <div><div class="row" style="gap:8px"><span class="t">${esc(c.title)}</span>${themeChip(c.theme)}</div>${c.subtitle ? `<div class="s">${esc(c.subtitle)}</div>` : ""}</div>
-      ${closed ? (win ? `<span class="chip gold">vincitore</span>` : "<span></span>")
-        : `<button class="btn small ${mine ? "primary" : ""}" type="button" data-act="vote-pick" data-key="${esc(c.key)}" aria-pressed="${mine}" ${S.me && S.canWrite ? "" : "disabled"}>${mine ? "✓ Votato" : "Vota"}</button>`}
+      ${closed ? (win ? `<span class="chip gold">${ic("trophy")}vincitore</span>` : "<span></span>")
+        : `<button class="btn small vote-btn ${mine ? "primary" : ""}" type="button" data-act="vote-pick" data-key="${esc(c.key)}" aria-pressed="${mine}" ${S.me && S.canWrite ? "" : "disabled"}>${ic(mine ? "check" : "plus")}${mine ? "Votato" : "Vota"}</button>`}
       ${st.revealed ? `<div class="tally">
           <div class="bar" aria-label="${n} voti"><i style="width:${st.max ? Math.round(n / Math.max(st.max, 2) * 100) : 0}%"></i></div>
           <span class="ticks">${st.counts[c.key].map(uid => avatar(uid, "sm")).join("")}</span>
@@ -1418,7 +1622,7 @@ function voteView() {
     const b = ballotFor(uid, vote.round) || [];
     const done = b.length === VOTES_EACH;
     return `<div class="score-line">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span>
-      <span class="label" style="margin-left:auto">${done ? "ha votato" : "deve ancora votare"}</span></div>`;
+      <span class="pill ${done ? "ok" : ""}" style="margin-left:auto">${ic(done ? "check" : "clock")}${done ? "votato" : "in attesa"}</span></div>`;
   }).join("");
 
   let outcome = "";
@@ -1426,14 +1630,14 @@ function voteView() {
     const w = vote.candidates.find(c => c.key === vote.winner);
     outcome = `<div class="result">
       <div style="display:grid;gap:4px;min-width:0">
-        <span class="label">Argomento di ${esc(monthLabel(month))}${vote.tieBreak ? " · scelto a sorte dopo un pareggio" : ""}</span>
+        <span class="label">${ic("trophy")} ${esc(monthLabel(month))}${vote.tieBreak ? " · " + ic("dice") + " a sorte" : ""}</span>
         <span class="big" style="font-size:clamp(26px,4vw,38px)">${esc(w?.title || "")}</span>
       </div>
       <div class="row">${topic
-        ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">Apri il programma</button>`
+        ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">${ic("book")}Apri</button>`
         : canAsk() && S.canWrite ? (S.gen?.month === month && !S.gen.error
-            ? `<span class="thinking">Claude scrive il programma</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>`
-            : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${esc(month)}">Prepara il programma</button>`) : ""}</div>
+            ? `<span class="thinking">Claude scrive il programma</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>`
+            : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${esc(month)}">${ic("sparkles")}Prepara il programma</button>`) : ""}</div>
       ${S.gen?.month === month && S.gen.error ? `<p class="err">${esc(S.gen.error)}</p>` : ""}
     </div>`;
   } else if (st.revealed && st.leaders.length) {
@@ -1441,39 +1645,36 @@ function voteView() {
     outcome = `<div class="result">
       <div style="display:grid;gap:4px;min-width:0">
         <span class="label">${tie ? "Pareggio" : "In testa"}</span>
-        <span>${tie ? `Pari merito con ${st.max} voti: ${st.leaders.map(c => "<strong>" + esc(c.title) + "</strong>").join(", ")}. Potete cambiare i vostri voti per decidere, oppure tirare a sorte.` : `<strong>${esc(st.leaders[0].title)}</strong> con ${st.max} voti.`}</span>
+        <span>${tie ? st.leaders.map(c => "<strong>" + esc(c.title) + "</strong>").join(" · ") + ` <span class="kv">(${st.max} voti)</span>` : `<strong>${esc(st.leaders[0].title)}</strong> <span class="kv">(${st.max} voti)</span>`}</span>
       </div>
       ${S.canWrite ? `<div class="row">${tie
-        ? `<button class="btn gold" type="button" data-act="vote-close" data-random="1">Tira a sorte tra i primi</button>`
-        : `<button class="btn gold" type="button" data-act="vote-close">Conferma il vincitore</button>`}</div>` : ""}
+        ? `<button class="btn gold" type="button" data-act="vote-close" data-random="1">${ic("dice")}Tira a sorte</button>`
+        : `<button class="btn gold" type="button" data-act="vote-close">${ic("trophy")}Conferma</button>`}</div>` : ""}
     </div>`;
   }
 
   return header + `<div class="grid">
-    <div>
+    <div class="maincol">
       <section class="sec">
         ${outcome}
-        <div class="sec-head"><h2>Candidati</h2>${closed ? `<span class="label">votazione chiusa</span>` : `<span class="label num">i tuoi voti: ${picks.length} di ${VOTES_EACH}</span>`}</div>
+        ${secHead("vote", "Candidati", closed ? "chiusa" : `<span class="ballot-dots">${Array.from({ length: VOTES_EACH }, (_, i) => `<i class="${i < picks.length ? "on" : ""}"></i>`).join("")}</span>`)}
         <ol class="cands">${cands}</ol>
         ${closed ? "" : `<div class="row">
-          <button class="btn primary" type="button" data-act="vote-submit" ${S.me && S.canWrite ? "" : "disabled"}>${saved.length === VOTES_EACH ? "Aggiorna i miei voti" : "Conferma i miei voti"}</button>
-          <span class="ballot-dots" aria-hidden="true">${Array.from({ length: VOTES_EACH }, (_, i) => `<i class="${i < picks.length ? "on" : ""}"></i>`).join("")}</span>
-          ${dirty && saved.length ? `<span class="label">modifiche non ancora confermate</span>` : ""}
+          <button class="btn primary" type="button" data-act="vote-submit" ${S.me && S.canWrite ? "" : "disabled"}>${ic("check")}${saved.length === VOTES_EACH ? "Aggiorna i voti" : "Conferma i voti"}</button>
+          ${dirty && saved.length ? `<span class="label">non confermato</span>` : ""}
         </div>`}
       </section>
     </div>
     <aside class="sec">
       <div class="panel">
-        <h2>Chi ha votato</h2>
+        ${panelHead("users", "Chi ha votato")}
         <div class="voters">${votersHTML}</div>
-        ${!st.revealed ? `<p class="kv">I risultati compaiono quando avete votato entrambi.</p>` : ""}
       </div>
       ${S.canWrite ? `<div class="panel">
-        <h2>Ricominciare</h2>
-        <p class="kv">Scegliete cinque argomenti nuovi. I voti dati finora vengono annullati.</p>
+        ${panelHead("refresh", "Nuova votazione")}
         ${S.busy.voteReset
-          ? `<div class="row"><button class="btn small primary" type="button" data-act="vote-reset">Sì, ricomincia</button><button class="btn small" type="button" data-act="vote-reset-cancel">Annulla</button></div>`
-          : `<div class="row"><button class="btn small" type="button" data-act="vote-reset-ask">Nuova votazione</button></div>`}
+          ? `<p class="kv">I voti dati finora si perdono.</p><div class="row"><button class="btn small primary" type="button" data-act="vote-reset">Sì, ricomincia</button><button class="btn small" type="button" data-act="vote-reset-cancel">Annulla</button></div>`
+          : `<div class="row"><button class="btn small" type="button" data-act="vote-reset-ask">${ic("refresh")}Ricomincia</button></div>`}
       </div>` : ""}
     </aside>
   </div>`;
@@ -1481,11 +1682,11 @@ function voteView() {
 
 function votePanel() {
   const month = voteMonth(), vote = voteFor(month);
-  let text, btn = "Vai alla votazione";
-  if (!vote) text = `L'argomento di ${esc(monthLabel(month).toLowerCase())} lo scegliete voi: proponete cinque candidati e votate.`;
-  else if (vote.status === "closed") { const w = vote.candidates.find(c => c.key === vote.winner); text = `Avete scelto <strong>${esc(w?.title || "")}</strong>.`; btn = "Vedi il risultato"; }
-  else { const mine = (ballotFor(S.me, vote.round) || []).length === VOTES_EACH; text = mine ? "Hai votato. Si aspetta l'altro voto." : `La votazione è aperta e ti restano ${VOTES_EACH} voti da dare.`; }
-  return `<div class="panel"><h2>Il prossimo mese</h2><p>${text}</p><div class="row"><button class="btn" type="button" data-act="go" data-view="vote">${btn}</button></div></div>`;
+  let text, btn = "Vota";
+  if (!vote) { text = "Proponete 5 argomenti"; btn = "Proponi"; }
+  else if (vote.status === "closed") { const w = vote.candidates.find(c => c.key === vote.winner); text = `<strong>${esc(w?.title || "")}</strong>`; btn = "Risultato"; }
+  else { const mine = (ballotFor(S.me, vote.round) || []).length === VOTES_EACH; text = mine ? "Hai votato · in attesa" : "Votazione aperta"; }
+  return `<div class="panel">${panelHead("vote", esc(monthLabel(month)))}<p class="kv">${text}</p><div class="row"><button class="btn" type="button" data-act="go" data-view="vote">${ic("vote")}${btn}</button></div></div>`;
 }
 
 function viewHTML() {
