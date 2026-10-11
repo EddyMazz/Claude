@@ -2,8 +2,8 @@
 
 Una web app per studiare in due (Luca e Camilla) un argomento nuovo ogni mese e diventare più colti.
 
-- **Argomento del mese**: il programma di studio diviso in 4 capitoli, uno per settimana, con libri consigliati e altre fonti: podcast, film, serie, documentari, video su YouTube e luoghi da visitare. Anche ogni settimana ha le sue fonti da ascoltare e guardare. I link portano a una ricerca su YouTube, su Google o sulla mappa, così funzionano sempre. Mostra i progressi di entrambi e la settimana in corso.
-- **Settimana**: concetti chiave, letture e fonti. C'è anche un tutor a cui fare domande. Ogni settimana è divisa in 3 lezioni scritte da Claude, che restano salvate e si possono segnare come lette. Ogni lezione segue sempre questa struttura: spiegazione approfondita, contesto storico, nomi, date, istituzioni e concetti fondamentali, esempi concreti, collegamenti con altri argomenti, una mappa di riepilogo disegnata dall'app e due domande da discutere insieme.
+- **Argomento del mese**: il programma di studio diviso in 4 capitoli, uno per settimana, più 10 approfondimenti su aspetti che le lezioni non coprono (Claude li scrive su richiesta, con mappa di riepilogo). Mostra i progressi di entrambi, la settimana in corso e il tabellone della sfida.
+- **Settimana**: concetti chiave. C'è anche un tutor a cui fare domande. Ogni settimana è divisa in 3 lezioni scritte da Claude, che restano salvate e si possono segnare come lette. Ogni lezione segue sempre questa struttura: spiegazione approfondita, contesto storico, nomi, date, istituzioni e concetti fondamentali, esempi concreti, collegamenti con altri argomenti, una mappa di riepilogo disegnata dall'app e due domande da discutere insieme.
 - **Test**: ogni settimana ha il suo test conclusivo di 30 domande, uguali per entrambi. C'è poi un esame finale di 30 domande su tutto il mese. Ogni risposta ha la sua spiegazione.
 - **Allenamento libero**: un test di 10 domande quando volete, che non dà punti, con domande solo sulle settimane che avete già completato, prese dai test o scritte da Claude.
 - **La sfida**: si salvano tutti i punteggi. Ogni test settimanale e l'esame finale si fanno una sola volta e valgono un punto per chi ha il risultato migliore; in caso di pareggio un punto a testa. Dopo la consegna il test si può solo rivedere. Una tabella confronta i vostri record e mostra gli ultimi test.
@@ -31,9 +31,9 @@ Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in moda
 | Collezione | Documento | Contenuto |
 |---|---|---|
 | `topics` | `AAAA-MM` | programma del mese: capitoli, libri, extra |
-| `progress` | `AAAA-MM--<utente>` | settimane completate, lezioni lette, libri letti, risultati e storico di test, allenamenti ed esame finale |
+| `progress` | `AAAA-MM--<utente>` | settimane completate, lezioni lette, risultati e storico di test, allenamenti ed esame finale |
 | `quizzes` | `AAAA-MM--c1` … `AAAA-MM--final` | domande dei test |
-| `lessons` | `AAAA-MM--c1--l1` … `--l3` | le tre lezioni di ogni settimana, scritte da Claude |
+| `lessons` | `AAAA-MM--c1--l1` … `--l3` | le tre lezioni di ogni settimana (`--c1--l1`…) e gli approfondimenti (`--dd1`…`--dd10`), scritti da Claude |
 | `votes` | `AAAA-MM` | votazione del mese: 5 candidati, stato, vincitore |
 | `names` | `<utente>` | nome scelto da ciascun partecipante; ognuno può modificare solo il proprio |
 | `ballots` | `<utente>` | voti di ciascuno; ognuno può modificare solo i propri |

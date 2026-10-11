@@ -397,6 +397,14 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
 .arch .card { border: 0; box-shadow: var(--shadow); }
 .plan li { padding: 16px 0; }
 [hidden] { display: none !important; }
+.deeps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.deep { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); }
+.deep.on { box-shadow: 0 0 0 2px var(--gold), var(--shadow); }
+.deep-head { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 16px; background: none; border: 0; text-align: left; cursor: pointer; }
+.deep-t { display: grid; gap: 2px; min-width: 0; }
+.deep-t .kv { font-size: 14px; }
+.deep-body { padding: 0 16px 18px 56px; display: grid; gap: 14px; }
+@media (max-width: 520px) { .deep-head { grid-template-columns: 28px minmax(0, 1fr); } .deep-head .chip { grid-column: 2; justify-self: start; } .deep-body { padding-left: 16px; } }
 .scoreboard { position: relative; overflow: hidden; display: grid; gap: 16px; padding: 20px 22px; margin-bottom: 36px; border-radius: 18px; background:
   radial-gradient(120% 140% at 0% 0%, var(--lapis-soft) 0%, transparent 55%),
   radial-gradient(120% 140% at 100% 100%, var(--gold-soft) 0%, transparent 55%), var(--surface); box-shadow: var(--shadow); }
@@ -828,12 +836,11 @@ ${note ? "Indicazioni: " + note + "\n" : ""}${AUDIENCE}
 ${prev ? "Argomenti già studiati nei mesi precedenti (evita ripetizioni, puoi richiamarli): " + prev + "\n" : ""}
 Rispondi solo con un oggetto JSON con questa forma:
 {"title": string, "subtitle": string (una riga evocativa), "intro": string (3-4 frasi: di cosa si tratta e perché vale la pena studiarlo),
- "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [8 concetti chiave, frasi brevi], "reading": string (cosa leggere o guardare per questo capitolo, citando i libri consigliati e le pagine o i capitoli quando possibile), "minutes": number (minuti di studio stimati per la settimana),
+ "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [8 concetti chiave, frasi brevi], "minutes": number (minuti di studio stimati per la settimana),
    "lessons": [esattamente 3 oggetti {"title": string, "focus": string (1-2 frasi su che cosa tratta)}: le tre lezioni in cui si divide la settimana, in ordine logico, senza sovrapposizioni, che insieme coprono tutti i concetti chiave],
-   "media": [3 fonti per la settimana, con la stessa forma degli extra qui sotto: almeno un video su YouTube e almeno un podcast, film, serie o documentario]}],
- "books": [{"title": string, "author": string, "year": number, "level": "introduttivo" | "approfondimento" | "classico", "why": string (una frase)}],
- "extras": [{"type": "youtube" | "podcast" | "film" | "serie" | "documentario" | "luogo", "title": string, "by": string (canale YouTube, autore o conduttore del podcast, regista), "note": string (una frase: perché vederlo o ascoltarlo), "query": string (parole da cercare per trovarlo, in particolare su YouTube)}]}
-Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; 5-7 libri che esistono davvero e si trovano in italiano, senza inventare titoli o autori (se non sei sicuro di un titolo, non includerlo); 6-10 extra per tutto il mese, con almeno un podcast, un film o una serie, un documentario e due video su YouTube, più un luogo da visitare se ha senso. Fonti, canali, podcast e film devono esistere davvero: preferisci canali e programmi noti (per esempio Rai Cultura, Rai Play Sound, divulgatori riconosciuti) e, se non sei sicuro del titolo esatto di un video, descrivilo e metti in "query" le parole giuste per cercarlo. Non scrivere link.`;
+  }],
+ "deepDives": [esattamente 10 oggetti {"title": string (breve), "why": string (1-2 frasi: di che cosa si tratta e perché è interessante)}]}
+Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; esattamente 10 approfondimenti ("deepDives"): argomenti collegati al tema del mese che le 12 lezioni NON trattano o toccano solo di sfuggita (episodi poco noti, conseguenze successive, personaggi secondari, collegamenti con altre discipline o con il presente), ciascuno abbastanza specifico da meritare una lettura a sé.`;
 }
 function promptQuiz(topic, ch) {
   if (ch) return `Crea il test conclusivo della settimana dedicata a "${ch.title}" nel percorso "${topic.title}".
@@ -899,6 +906,99 @@ Metti 4-6 rami che riassumono questa lezione.
 
 Usa Markdown semplice: titoli con ## e ###, elenchi con -, grassetto con **. Nessun preambolo: inizia direttamente con "## Spiegazione approfondita".`;
 }
+const DEEP_COUNT = 10;
+const normDeep = list => (Array.isArray(list) ? list : []).filter(x => x && x.title).slice(0, DEEP_COUNT).map(x => ({ title: String(x.title), why: String(x.why || "") }));
+const deepId = (topic, i) => `${topic.id}--dd${i + 1}`;
+function promptDeepList(topic) {
+  const lessons = topic.chapters.map((c, i) => `Settimana ${i + 1}, ${c.title}: ${lessonPlan(c).map(l => l.title + " (" + l.focus + ")").join("; ")}`).join("\n");
+  return `Il percorso mensile "${topic.title}" è diviso in queste lezioni:
+${lessons}
+${AUDIENCE}
+Proponi esattamente 10 approfondimenti: argomenti collegati al tema che queste lezioni NON trattano o toccano solo di sfuggita (episodi poco noti, conseguenze successive fino a oggi, personaggi secondari, aspetti tecnici, scientifici, artistici o economici, collegamenti con altre discipline). Ognuno deve essere specifico e meritare una lettura a sé. Solo fatti verificabili.
+Rispondi solo con JSON: {"deepDives": [{"title": string (breve), "why": string (1-2 frasi: di che cosa si tratta e perché è interessante)}]} con esattamente 10 elementi.`;
+}
+function promptDeep(topic, d) {
+  return `Scrivi un approfondimento intitolato "${d.title}", collegato al percorso mensile "${topic.title}".
+Di che cosa tratta: ${d.why}
+Le lezioni del mese hanno già coperto: ${topic.chapters.map(c => c.title).join("; ")}. Non ripeterle: concentrati su questo approfondimento.
+${AUDIENCE}
+Lunghezza: 900-1200 parole, mappa esclusa. Usa esattamente questi titoli, in quest'ordine:
+## Di che cosa si tratta
+## La storia
+## Nomi, date e concetti chiave
+(elenco puntato: "- **Nome, data o termine** — spiegazione in una riga")
+## Un esempio concreto
+## Perché conta
+(collegamenti con il tema del mese e con il mondo di oggi)
+## Mappa di riepilogo
+Subito sotto il titolo, un blocco di codice con linguaggio "mappa" che contiene SOLO un oggetto JSON: {"centro": string, "rami": [{"titolo": string, "voci": [2-4 stringhe brevi]}]} con 3-5 rami.
+Usa Markdown semplice. Nessun preambolo: inizia direttamente con "## Di che cosa si tratta".`;
+}
+async function generateDeepList(topic) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  S.busy.deepList = true; render();
+  try {
+    let list = normDeep((await S.sample.json(promptDeepList(topic), { modelTier: "default", cache: false }))?.deepDives);
+    if (list.length < DEEP_COUNT) throw { code: "invalid_json" };
+    const doc = { ...topic, deepDives: list }; delete doc.id;
+    await save("topics", topic.id, doc, "10 approfondimenti pronti");
+  } catch (e) { toast(sampleErr(e)); }
+  S.busy.deepList = false; render();
+}
+async function writeDeep(topic, i) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  const d = topic.deepDives[i], id = deepId(topic, i), key = "lesson-" + id;
+  const ctl = new AbortController();
+  S.stream[key] = { text: "", ctl }; render();
+  try {
+    const { text, truncated } = await S.sample(promptDeep(topic, d), {
+      modelTier: "complex", signal: ctl.signal, cache: false,
+      onText: ({ text }) => { S.stream[key].text = text; const el = document.getElementById("stream-" + key); if (el) el.innerHTML = md(text); }
+    });
+    const doc = { topic: topic.id, deep: i + 1, title: d.title, text, truncated: !!truncated, createdAt: new Date().toISOString(), createdBy: S.me || null };
+    delete S.stream[key]; S.lessons[id] = doc;
+    await save("lessons", id, doc, "Approfondimento salvato");
+  } catch (e) {
+    delete S.stream[key];
+    if (!(e && e.code === "cancelled")) toast(sampleErr(e));
+  }
+  render();
+}
+function deepSection(topic) {
+  const list = normDeep(topic.deepDives);
+  if (!list.length) {
+    return `<section class="sec" id="approfondimenti">${secHead("compass", "Approfondimenti")}
+      <div class="lesson-empty">${ic("compass", "big-ic")}<p class="kv">10 argomenti che le lezioni non coprono</p>
+      ${canAsk() && S.canWrite ? (S.busy.deepList ? `<span class="thinking">Claude sceglie gli argomenti</span>` : `<button class="btn primary" type="button" data-act="deep-list" data-topic="${esc(topic.id)}">${ic("sparkles")}Proponi 10 approfondimenti</button>`) : ""}</div>
+    </section>`;
+  }
+  const open = S.deepOpen?.[topic.id];
+  const cards = list.map((d, i) => {
+    const id = deepId(topic, i);
+    if (!(id in S.lessons)) loadLesson(id);
+    const written = !!S.lessons[id], writing = !!S.stream["lesson-" + id], on = open === i;
+    return `<li class="deep ${on ? "on" : ""}">
+      <button type="button" class="deep-head" data-act="deep-open" data-topic="${esc(topic.id)}" data-i="${i}" aria-expanded="${on}">
+        <span class="lnum">${i + 1}</span>
+        <span class="deep-t"><strong>${esc(d.title)}</strong>${d.why ? `<span class="kv">${esc(d.why)}</span>` : ""}</span>
+        <span class="chip ${written ? "ok" : ""}">${writing ? "in scrittura" : written ? ic("check") + "pronto" : ic("sparkles") + "da scrivere"}</span>
+      </button>
+      ${on ? `<div class="deep-body">${deepBody(topic, i)}</div>` : ""}
+    </li>`;
+  }).join("");
+  return `<section class="sec" id="approfondimenti">${secHead("compass", "Approfondimenti", "oltre le lezioni")}<ol class="deeps">${cards}</ol></section>`;
+}
+function deepBody(topic, i) {
+  const id = deepId(topic, i), skey = "lesson-" + id, doc = S.lessons[id], st = S.stream[skey];
+  if (st) return `<div class="prose" id="stream-${esc(skey)}">${st.text ? md(st.text) : `<p class="thinking">Claude sta scrivendo</p>`}</div>
+    <div class="row"><button class="btn small" type="button" data-act="stop-lesson" data-id="${esc(skey)}">${ic("stop")}Interrompi</button></div>`;
+  if (doc === undefined) return `<p class="thinking">Carico</p>`;
+  if (doc) return `<div class="prose">${md(doc.text)}</div>
+    ${canAsk() ? `<div class="row"><button class="btn quiet small" type="button" data-act="deep-write" data-topic="${esc(topic.id)}" data-i="${i}">${ic("refresh")}Riscrivi</button></div>` : ""}`;
+  return canAsk()
+    ? `<div class="row"><button class="btn primary" type="button" data-act="deep-write" data-topic="${esc(topic.id)}" data-i="${i}">${ic("sparkles")}Scrivi l'approfondimento</button></div>`
+    : `<p class="kv">Non ancora scritto.</p>`;
+}
 function promptTutor(topic, ch, q) {
   return `Sei il tutor del percorso "${topic.title}", capitolo "${ch.title}" (${ch.summary}).
 ${AUDIENCE}
@@ -946,23 +1046,20 @@ function normalizeTopic(r, title, month) {
   const chapters = r.chapters.filter(c => c && c.title).slice(0, 4).map((c, i) => ({
     id: "c" + (i + 1), title: String(c.title), summary: String(c.summary || ""),
     points: Array.isArray(c.points) ? c.points.map(String).slice(0, 8) : [],
-    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90, media: normMedia(c.media, 4),
+    minutes: Number(c.minutes) || 90,
     lessons: lessonPlan({ ...c, points: Array.isArray(c.points) ? c.points.map(String) : [] })
   }));
   if (chapters.length < 3) return null;
-  const books = (Array.isArray(r.books) ? r.books : []).filter(b => b && b.title).slice(0, 8).map(b => ({
-    title: String(b.title), author: String(b.author || ""), year: Number(b.year) || null,
-    level: ["introduttivo", "approfondimento", "classico"].includes(b.level) ? b.level : "approfondimento", why: String(b.why || "")
-  }));
-  const extras = normMedia(r.extras, 12);
+  const deepDives = normDeep(r.deepDives);
   return { month, title: String(r.title || title), subtitle: String(r.subtitle || ""), intro: String(r.intro || ""),
-    chapters, books, extras, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
+    chapters, deepDives, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
 }
 
 async function clearMonth(month) {
   const ids = [];
   ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "final"].forEach(k => ids.push(["quizzes", month + "--" + k]));
   ["c1", "c2", "c3", "c4"].forEach(c => { ids.push(["lessons", month + "--" + c]); [1, 2, 3].forEach(l => ids.push(["lessons", `${month}--${c}--l${l}`])); });
+  for (let i = 1; i <= DEEP_COUNT; i++) ids.push(["lessons", `${month}--dd${i}`]);
   S.progress.filter(p => p.topic === month).forEach(p => ids.push(["progress", p.id]));
   for (const [c, id] of ids) { try { await Store.del(c, id); } catch (e) {} }
   Object.keys(S.quizCache).forEach(k => { if (k.startsWith(month + "--")) delete S.quizCache[k]; });
@@ -1368,7 +1465,6 @@ function personPanel(topic) {
           <span title="Settimane completate">${ic("calendar")}<b class="num">${s.done}/${s.n}</b></span>
           <span title="Media dei test">${ic("target")}<b class="num">${s.avg == null ? "—" : s.avg + "%"}</b></span>
           <span title="Esame finale">${ic("flag")}<b class="num">${s.fin == null ? "—" : s.fin + "%"}</b></span>
-          <span title="Libri letti">${ic("book")}<b class="num">${s.books}</b></span>
         </div>
       </div>
     </div>`;
@@ -1395,15 +1491,6 @@ function topicView(topic) {
       <div class="meta">${ic("right", "go-ic")}</div>
     </li>`;
   }).join("");
-  const books = (topic.books || []).map((b, i) => `
-    <div class="book">
-      <div><div class="t">${esc(b.title)}</div><div class="a">${esc(b.author)}${b.year ? `, <span class="num">${esc(b.year)}</span>` : ""}</div></div>
-      <div class="row" style="justify-content:flex-end;align-items:start">
-        <span class="chip ${b.level === "classico" ? "gold" : b.level === "introduttivo" ? "lapis" : ""}" title="${esc(b.why)}">${esc(b.level)}</span>
-        ${S.me ? `<label class="read-toggle" title="Letto"><input type="checkbox" id="book-${esc(topic.id)}-${i}" data-act="book" data-topic="${esc(topic.id)}" data-i="${i}" ${myP?.books?.[i] ? "checked" : ""} ${S.canWrite ? "" : "disabled"}><span class="sr">letto</span>${ic("check")}</label>` : ""}
-      </div>
-    </div>`).join("");
-  const extras = (topic.extras || []).length ? mediaList(normMedia(topic.extras, 20)) : "";
   const myFinal = myP?.quiz?.final;
   return `
   <section class="hero">
@@ -1414,8 +1501,7 @@ function topicView(topic) {
       <span>${ic("calendar")}<b class="num">${topic.chapters.length}</b> settimane</span>
       <span>${ic("layers")}<b class="num">${topic.chapters.length * LESSONS_PER_WEEK}</b> lezioni</span>
       <span>${ic("target")}<b class="num">${topic.chapters.length + 1}</b> test</span>
-      <span>${ic("book")}<b class="num">${(topic.books || []).length}</b> libri</span>
-      <span>${ic("play")}<b class="num">${(topic.extras || []).length}</b> fonti</span>
+      <span>${ic("compass")}<b class="num">${normDeep(topic.deepDives).length || DEEP_COUNT}</b> approfondimenti</span>
     </div>
     ${topic.intro ? `<details class="intro-more"><summary>Perché studiarlo</summary><p class="intro">${esc(topic.intro)}</p></details>` : ""}
   </section>
@@ -1427,14 +1513,7 @@ function topicView(topic) {
         <ol class="chapters">${chapters}</ol>
       </section>
       ${challengeSection(topic)}
-      ${books ? `<section class="sec">
-        ${secHead("book", "Libri")}
-        <div class="books">${books}</div>
-      </section>` : ""}
-      ${extras ? `<section class="sec">
-        ${secHead("headphones", "Ascolta e guarda")}
-        ${extras}
-      </section>` : ""}
+      ${deepSection(topic)}
     </div>
     <aside class="sec">
       <div class="panel">
@@ -1534,12 +1613,7 @@ function chapterView(topic, chId) {
       <section class="sec">
         ${secHead("bulb", "Concetti chiave")}
         <ul class="points">${(ch.points || []).map(p => `<li>${esc(p)}</li>`).join("")}</ul>
-        ${ch.reading ? `<p class="reading">${ic("book")}<span>${esc(ch.reading)}</span></p>` : ""}
       </section>
-      ${(ch.media || []).length ? `<section class="sec">
-        ${secHead("headphones", "Ascolta e guarda")}
-        ${mediaList(normMedia(ch.media, 6))}
-      </section>` : ""}
       <section class="sec" id="lezioni">
         ${secHead("layers", "Lezioni")}
         <ol class="lesson-cards">${lessonCards}</ol>
@@ -1734,8 +1808,7 @@ function voteView() {
       ${topic ? `<ol class="nt-weeks">${topic.chapters.map((c, i) => `<li><span class="lnum">${roman(i + 1)}</span><span>${esc(c.title)}</span></li>`).join("")}</ol>
         <div class="facts">
           <span>${ic("layers")}<b class="num">${topic.chapters.length * LESSONS_PER_WEEK}</b> lezioni</span>
-          <span>${ic("book")}<b class="num">${(topic.books || []).length}</b> libri</span>
-          <span>${ic("play")}<b class="num">${(topic.extras || []).length}</b> fonti</span>
+          <span>${ic("compass")}<b class="num">${DEEP_COUNT}</b> approfondimenti</span>
         </div>` : ""}
       <div class="row">${topic
         ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">${ic("book")}Apri il programma</button>`
@@ -1856,6 +1929,9 @@ document.addEventListener("click", e => {
       break;
     }
     case "stop-gen": S.gen?.ctl?.abort(); break;
+    case "deep-list": if (topic) generateDeepList(topic); break;
+    case "deep-open": { S.deepOpen ||= {}; S.deepOpen[d.topic] = S.deepOpen[d.topic] === +d.i ? null : +d.i; render(); break; }
+    case "deep-write": if (topic) writeDeep(topic, +d.i); break;
     case "name-edit": S.editName = true; render(); setTimeout(() => document.getElementById("my-name")?.focus(), 0); break;
     case "name-cancel": S.editName = false; render(); break;
     case "vote-suggest": suggestCandidates(voteMonth()); break;
