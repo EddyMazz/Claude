@@ -396,6 +396,12 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
 .arch .card { border: 0; box-shadow: var(--shadow); }
 .plan li { padding: 16px 0; }
 [hidden] { display: none !important; }
+.next-topic { display: grid; gap: 12px; padding: 22px; border-radius: var(--r); background: var(--surface); box-shadow: 0 0 0 2px var(--gold), var(--shadow); }
+.nt-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.nt-title { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 4.5vw, 42px); line-height: 1.08; }
+.nt-weeks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.nt-weeks li { display: flex; gap: 10px; align-items: center; font-weight: 500; }
+.nt-weeks .lnum { font-size: 13px; }
 @media (max-width: 860px) {
   .grid > .maincol { display: contents; }
   .grid > .maincol > section:first-child { order: 0; }
@@ -416,7 +422,6 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
       <nav class="nav" id="nav" aria-label="Sezioni">
         <button type="button" data-act="go" data-view="home"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg><span>Il mese</span></button>
         <button type="button" data-act="go" data-view="vote"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 12 2 2 4-4"/><path d="M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12H5z"/><path d="M22 19H2"/></svg><span>Vota</span></button>
-        <button type="button" data-act="go" data-view="plan"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Piano</span></button>
         <button type="button" data-act="go" data-view="archive"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="5" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8M10 12h4"/></svg><span>Archivio</span></button>
       </nav>
     </div>
@@ -634,7 +639,7 @@ const S = {
   topics: [], progress: [], plan: null, loaded: { topics: false, progress: false, plan: false },
   view: { name: "home" }, me: null, user: null, profiles: {}, canWrite: true,
   sample: null, sampleOff: false,
-  lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null, suggest: {}, planGen: null,
+  lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null,
   votes: [], ballots: [], picks: {}, voteSuggest: null
 };
 const canAsk = () => !!S.sample && !S.sampleOff;
@@ -806,12 +811,6 @@ ${AUDIENCE}
 Rispondi alla domanda in modo chiaro, in 150-250 parole, con un esempio concreto. Se la domanda esce dall'argomento, rispondi comunque brevemente e poi riportala al capitolo. Usa Markdown semplice.
 Domanda: ${q}`;
 }
-function promptPlan(start, existing) {
-  return `Proponi un piano di studio di 12 mesi, un argomento al mese, a partire da ${monthLabel(start)}.
-${AUDIENCE}
-${THEME_RULE} Usa ciascuno dei dieci temi almeno una volta nell'anno e non mettere lo stesso tema in due mesi consecutivi. Alterna argomenti più impegnativi e più leggeri; d'estate preferisci temi adatti al viaggio o alla lettura all'aperto.
-${existing ? "Argomenti già studiati, da non ripetere: " + existing + "\n" : ""}Rispondi solo con JSON: {"items": [{"month": "AAAA-MM", "title": string (breve), "subtitle": string (una riga), "theme": uno dei temi}]} con 12 elementi in ordine, il primo con month "${start}".`;
-}
 function promptSuggest(month, taken) {
   return `Suggerisci 5 argomenti alternativi da studiare in un mese (${monthLabel(month)}).
 ${AUDIENCE}
@@ -856,7 +855,7 @@ async function generateTopic(month, title, note, theme) {
     if (!topic) throw { code: "invalid_json" };
     topic.theme = normTheme(theme);
     S.gen = null;
-    if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto")) {
+    if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto") && S.view.name !== "vote") {
       S.view = { name: "topic", id: month };
       window.scrollTo(0, 0);
     }
@@ -1012,39 +1011,6 @@ async function askTutor(topic, ch) {
 }
 
 /* ---------- plan ---------- */
-function planItems() { return [...(S.plan?.items || [])].filter(i => isMonth(i.month)).sort((a, b) => a.month.localeCompare(b.month)); }
-function savePlan(items, msg) {
-  const doc = { items: items.map(i => ({ month: i.month, title: String(i.title || ""), subtitle: String(i.subtitle || ""), theme: normTheme(i.theme) })), updatedAt: new Date().toISOString() };
-  S.plan = doc; render();
-  return save("plan", "year", doc, msg);
-}
-async function generatePlan() {
-  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
-  const ctl = new AbortController(); S.planGen = { ctl }; render();
-  try {
-    const r = await S.sample.json(promptPlan(NOW, S.topics.map(t => t.title).join("; ")), { modelTier: "default", signal: ctl.signal, cache: false });
-    const items = (r && Array.isArray(r.items) ? r.items : []).filter(i => i && i.title && normTheme(i.theme)).slice(0, 12)
-      .map((i, n) => ({ month: addMonths(NOW, n), title: String(i.title), subtitle: String(i.subtitle || ""), theme: normTheme(i.theme) }));
-    if (items.length < 3) throw { code: "invalid_json" };
-    const keep = planItems().filter(i => i.month < NOW);
-    S.planGen = null;
-    await savePlan([...keep, ...items], "Piano annuale pronto");
-  } catch (e) {
-    S.planGen = e && e.code === "cancelled" ? null : { error: sampleErr(e) };
-    render();
-  }
-}
-async function suggestFor(month) {
-  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
-  S.suggest[month] = { busy: true }; render();
-  try {
-    const taken = [...planItems().map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
-    const r = await S.sample.json(promptSuggest(month, taken), { modelTier: "quick", cache: false });
-    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title && normTheme(x.theme)).slice(0, 6).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || ""), theme: normTheme(x.theme) }));
-    S.suggest[month] = list.length ? { list } : { error: "Nessun suggerimento ricevuto. Riprova." };
-  } catch (e) { S.suggest[month] = { error: sampleErr(e) }; }
-  render();
-}
 
 /* ---------- vote for next month's topic ---------- */
 const VOTES_EACH = 3, CANDIDATES = 5;
@@ -1124,7 +1090,7 @@ async function suggestCandidates(month) {
   const current = readDraft();
   S.voteSuggest = { busy: true }; render();
   try {
-    const taken = [...planItems().filter(i => i.month !== month).map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
+    const taken = S.topics.map(t => t.title).join("; ");
     const keepTitles = current.filter(x => x.title).map(x => x.title);
     const r = await S.sample.json(promptSuggest(month, taken + (keepTitles.length ? "; " + keepTitles.join("; ") : "")), { modelTier: "quick", cache: false });
     const list = (Array.isArray(r) ? r : []).filter(x => x && x.title && normTheme(x.theme)).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || ""), theme: normTheme(x.theme) }));
@@ -1148,12 +1114,7 @@ async function closeVote(vote, pickRandom) {
   delete doc.id;
   S.votes = S.votes.map(v => v.id === vote.id ? { ...doc, id: vote.id } : v);
   render();
-  if (!(await save("votes", vote.id, doc, "Ha vinto: " + winner.title))) return;
-  const items = planItems();
-  const next = items.some(i => i.month === vote.id)
-    ? items.map(i => i.month === vote.id ? { ...i, title: winner.title, subtitle: winner.subtitle, theme: winner.theme } : i)
-    : [...items, { month: vote.id, title: winner.title, subtitle: winner.subtitle, theme: winner.theme }];
-  await savePlan(next);
+  await save("votes", vote.id, doc, "Ha vinto: " + winner.title);
 }
 
 /* ---------- challenge ---------- */
@@ -1260,7 +1221,7 @@ function topicView(topic) {
   const myFinal = myP?.quiz?.final;
   return `
   <section class="hero">
-    <span class="row" style="gap:10px">${themeChip(topic.theme || planItems().find(i => i.month === topic.id)?.theme)}<span class="label">${esc(monthLabel(topic.id))}</span></span>
+    <span class="row" style="gap:10px">${themeChip(topic.theme)}<span class="label">${esc(monthLabel(topic.id))}</span></span>
     <h1>${esc(topic.title)}</h1>
     ${topic.subtitle ? `<p class="sub">${esc(topic.subtitle)}</p>` : ""}
     <div class="facts">
@@ -1320,7 +1281,7 @@ function practicePanel(topic) {
 }
 
 function homeEmpty() {
-  const item = planItems().find(i => i.month === NOW);
+  const v = voteFor(NOW), item = v?.status === "closed" ? v.candidates.find(c => c.key === v.winner) : null;
   const busy = S.gen?.month === NOW && !S.gen.error;
   return `<div class="empty">
     ${ic("book", "big-ic")}
@@ -1329,7 +1290,7 @@ function homeEmpty() {
     ${S.gen?.month === NOW && S.gen.error ? `<p class="err">${esc(S.gen.error)}</p>` : ""}
     <div class="row">
       ${item && canAsk() ? (busy ? `<span class="thinking">Claude scrive il programma</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>` : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${NOW}">${ic("sparkles")}Prepara il programma</button>`) : ""}
-      <button class="btn" type="button" data-act="go" data-view="plan">${ic("calendar")}Piano</button>
+      <button class="btn" type="button" data-act="go" data-view="vote">${ic("vote")}Votazione</button>
     </div>
   </div>`;
 }
@@ -1498,63 +1459,6 @@ function quizView() {
   </div>`;
 }
 
-function planView() {
-  const items = planItems();
-  const pg = S.planGen;
-  const header = `<section class="hero">
-    <span class="label">${ic("calendar")} Piano annuale</span>
-    <h1>Dodici mesi</h1>
-    <div class="theme-strip">${THEMES.map(t => themeChip(t)).join("")}</div>
-  </section>`;
-  if (!items.length) return header + `<div class="empty">
-    ${ic("calendar", "big-ic")}
-    <h2>Piano vuoto</h2>
-    ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
-    <div class="row">
-      ${canAsk() ? (pg && !pg.error ? `<span class="thinking">Claude sta componendo il piano</span><button class="btn small" type="button" data-act="stop-plan">Interrompi</button>` : `<button class="btn primary" type="button" data-act="gen-plan" ${S.canWrite ? "" : "disabled"}>${ic("sparkles")}Proponi con Claude</button>`) : ""}
-      <button class="btn" type="button" data-act="plan-add" ${S.canWrite ? "" : "disabled"}>${ic("plus")}Aggiungi un mese</button>
-    </div>
-  </div>`;
-  const rows = items.map(it => {
-    const t = topicById(it.month);
-    const gen = S.gen?.month === it.month ? S.gen : null;
-    const sug = S.suggest[it.month];
-    let act;
-    if (t) act = `<button class="btn small" type="button" data-act="topic" data-topic="${esc(it.month)}">${ic("book")}Apri</button>`;
-    else if (gen && !gen.error) act = `<span class="thinking">Claude scrive</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>`;
-    else act = `${it.month < NOW ? `<span class="chip">saltato</span>` : ""}
-      ${canAsk() ? `<button class="btn small primary" type="button" data-act="gen-topic" data-month="${esc(it.month)}" ${S.canWrite ? "" : "disabled"}>${ic("sparkles")}Prepara</button>
-      <button class="btn small icon-only" type="button" data-act="suggest" data-month="${esc(it.month)}" aria-label="Altre idee" title="Altre idee">${ic("bulb")}</button>` : ""}
-      ${S.canWrite ? `<button class="btn small quiet icon-only" type="button" data-act="plan-remove" data-month="${esc(it.month)}" aria-label="Togli dal piano" title="Togli">${ic("x")}</button>` : ""}`;
-    return `<li class="${it.month === NOW ? "now" : ""}">
-      <div class="m">${esc(monthLabel(it.month))}</div>
-      <div class="ttl">
-        ${t ? `<strong>${esc(t.title)}</strong>` : S.canWrite
-          ? `<label class="label" for="plan-${esc(it.month)}" hidden>Argomento di ${esc(monthLabel(it.month))}</label><input type="text" id="plan-${esc(it.month)}" value="${esc(it.title)}" data-act="plan-title" data-month="${esc(it.month)}">`
-          : `<strong>${esc(it.title)}</strong>`}
-        <span class="row" style="gap:8px">${!t && S.canWrite
-          ? `<span style="width:150px">${themeSelect("plan-th-" + it.month, it.theme, `data-act="plan-theme" data-month="${esc(it.month)}" aria-label="Tema di ${esc(monthLabel(it.month))}"`)}</span>`
-          : themeChip(t?.theme || it.theme)}${t ? `<span class="chip ok">${ic("check")}pronto</span>` : ""}</span>
-        ${gen?.error ? `<span class="err">${esc(gen.error)}</span>` : ""}
-      </div>
-      <div class="act">${act}</div>
-      ${sug ? `<div class="suggest">${sug.busy ? `<span class="thinking">Cerco idee</span>` : sug.error ? `<span class="err">${esc(sug.error)}</span>` :
-        sug.list.map((s, k) => `<button class="btn small" type="button" data-act="use-suggest" data-month="${esc(it.month)}" data-k="${k}" title="${esc(s.subtitle)}">${esc(s.title)} <span class="label">· ${esc(s.theme)}</span></button>`).join("")}</div>` : ""}
-    </li>`;
-  }).join("");
-  return header + `<section class="sec">
-    <div class="sec-head"><h2><span class="hic">${ic("calendar")}</span>Il vostro anno</h2>
-      <div class="row">
-        ${S.canWrite ? `<button class="btn small" type="button" data-act="plan-add">${ic("plus")}Mese</button>` : ""}
-        ${canAsk() && S.canWrite ? (pg && !pg.error ? `<span class="thinking">Claude ricompone il piano</span>` : `<button class="btn small quiet" type="button" data-act="gen-plan-confirm">${ic("sparkles")}Rifai con Claude</button>`) : ""}
-      </div>
-    </div>
-    ${S.busy.planConfirm ? `<div class="notice">Gli argomenti da ${esc(monthLabel(NOW).toLowerCase())} in poi verranno sostituiti. I mesi già preparati restano.
-      <div class="row" style="margin-top:8px"><button class="btn small primary" type="button" data-act="gen-plan">Sì, rifai il piano</button><button class="btn small" type="button" data-act="gen-plan-cancel">Annulla</button></div></div>` : ""}
-    ${pg?.error ? `<p class="err">${esc(pg.error)}</p>` : ""}
-    <ol class="plan">${rows}</ol>
-  </section>`;
-}
 
 function archiveView() {
   const list = [...S.topics].reverse();
@@ -1574,18 +1478,17 @@ function voteView() {
   const header = `<section class="hero">
     <span class="label">${ic("vote")} ${esc(monthLabel(month))}</span>
     <h1>Il prossimo argomento</h1>
-    <div class="facts"><span>${ic("layers")}<b class="num">5</b> candidati</span><span>${ic("check")}<b class="num">${VOTES_EACH}</b> voti a testa, uno per argomento</span><span>${ic("users")}risultati quando avete votato entrambi</span></div>
+    ${vote?.status === "closed" ? "" : `<div class="facts"><span>${ic("layers")}<b class="num">5</b> candidati</span><span>${ic("check")}<b class="num">${VOTES_EACH}</b> voti a testa, uno per argomento</span><span>${ic("users")}risultati quando avete votato entrambi</span></div>`}
   </section>`;
 
   if (!vote) {
-    const planned = planItems().find(i => i.month === month);
     const vs = S.voteSuggest;
     const rows = Array.from({ length: CANDIDATES }, (_, i) => `
       <div class="draft-row">
         <span class="rn">${roman(i + 1)}</span>
-        <input type="text" id="cand-t-${i}" data-draft="1" placeholder="Argomento" aria-label="Argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.title) : ""}" ${S.canWrite ? "" : "disabled"}>
-        ${themeSelect("cand-th-" + i, i === 0 && planned ? planned.theme : "", `data-draft="1" aria-label="Tema dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}`)}
-        <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.subtitle) : ""}" ${S.canWrite ? "" : "disabled"}>
+        <input type="text" id="cand-t-${i}" data-draft="1" placeholder="Argomento" aria-label="Argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}>
+        ${themeSelect("cand-th-" + i, "", `data-draft="1" aria-label="Tema dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}`)}
+        <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}>
       </div>`).join("");
     return header + `<section class="sec">
       ${secHead("layers", "Cinque candidati")}
@@ -1628,13 +1531,21 @@ function voteView() {
   let outcome = "";
   if (closed) {
     const w = vote.candidates.find(c => c.key === vote.winner);
-    outcome = `<div class="result">
-      <div style="display:grid;gap:4px;min-width:0">
-        <span class="label">${ic("trophy")} ${esc(monthLabel(month))}${vote.tieBreak ? " · " + ic("dice") + " a sorte" : ""}</span>
-        <span class="big" style="font-size:clamp(26px,4vw,38px)">${esc(w?.title || "")}</span>
+    outcome = `<div class="next-topic">
+      <div class="nt-head">
+        <span class="label">${ic("trophy")} Argomento di ${esc(monthLabel(month).toLowerCase())}${vote.tieBreak ? " · " + ic("dice") + " a sorte" : ""}</span>
+        ${themeChip(w?.theme)}
       </div>
+      <h2 class="nt-title">${esc(topic ? topic.title : w?.title || "")}</h2>
+      ${(topic ? topic.subtitle : w?.subtitle) ? `<p class="sub">${esc(topic ? topic.subtitle : w.subtitle)}</p>` : ""}
+      ${topic ? `<ol class="nt-weeks">${topic.chapters.map((c, i) => `<li><span class="lnum">${roman(i + 1)}</span><span>${esc(c.title)}</span></li>`).join("")}</ol>
+        <div class="facts">
+          <span>${ic("layers")}<b class="num">${topic.chapters.length * LESSONS_PER_WEEK}</b> lezioni</span>
+          <span>${ic("book")}<b class="num">${(topic.books || []).length}</b> libri</span>
+          <span>${ic("play")}<b class="num">${(topic.extras || []).length}</b> fonti</span>
+        </div>` : ""}
       <div class="row">${topic
-        ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">${ic("book")}Apri</button>`
+        ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">${ic("book")}Apri il programma</button>`
         : canAsk() && S.canWrite ? (S.gen?.month === month && !S.gen.error
             ? `<span class="thinking">Claude scrive il programma</span><button class="btn small icon-only" type="button" data-act="stop-gen" aria-label="Interrompi">${ic("stop")}</button>`
             : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${esc(month)}">${ic("sparkles")}Prepara il programma</button>`) : ""}</div>
@@ -1657,7 +1568,7 @@ function voteView() {
     <div class="maincol">
       <section class="sec">
         ${outcome}
-        ${secHead("vote", "Candidati", closed ? "chiusa" : `<span class="ballot-dots">${Array.from({ length: VOTES_EACH }, (_, i) => `<i class="${i < picks.length ? "on" : ""}"></i>`).join("")}</span>`)}
+        ${secHead("vote", closed ? "Risultati" : "Candidati", closed ? "" : `<span class="ballot-dots">${Array.from({ length: VOTES_EACH }, (_, i) => `<i class="${i < picks.length ? "on" : ""}"></i>`).join("")}</span>`)}
         <ol class="cands">${cands}</ol>
         ${closed ? "" : `<div class="row">
           <button class="btn primary" type="button" data-act="vote-submit" ${S.me && S.canWrite ? "" : "disabled"}>${ic("check")}${saved.length === VOTES_EACH ? "Aggiorna i voti" : "Conferma i voti"}</button>
@@ -1692,7 +1603,6 @@ function votePanel() {
 function viewHTML() {
   if (!S.loaded.topics) return `<div class="empty"><h2>Apro lo studiolo…</h2><p>Sto caricando gli argomenti e i vostri progressi.</p></div>`;
   const v = S.view;
-  if (v.name === "plan") return planView();
   if (v.name === "vote") return voteView();
   if (v.name === "archive") return archiveView();
   if (v.name === "quiz") return quizView();
@@ -1712,7 +1622,7 @@ function render() {
   main.innerHTML = viewHTML();
   for (const [id, v] of Object.entries(keep)) { const el = document.getElementById(id); if (el) el.value = v; }
   if (fid) { const el = document.getElementById(fid); if (el) { el.focus({ preventScroll: true }); if (sel) try { el.setSelectionRange(sel[0], sel[1]); } catch (e) {} } }
-  const tab = ["plan", "archive", "vote"].includes(S.view.name) ? S.view.name : "home";
+  const tab = ["archive", "vote"].includes(S.view.name) ? S.view.name : "home";
   document.querySelectorAll("#nav button").forEach(b => { if (b.dataset.view === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
   const ppl = peopleFor(null);
   $("#people").innerHTML = ppl.map(uid => avatar(uid)).join("");
@@ -1744,29 +1654,12 @@ document.addEventListener("click", e => {
     case "submit-quiz": submitQuiz(); break;
     case "quiz-retry": if (S.quiz) { S.quiz.answers = {}; S.quiz.submitted = false; window.scrollTo(0, 0); render(); } break;
     case "gen-topic": {
-      const item = planItems().find(i => i.month === d.month);
-      const input = document.getElementById("plan-" + d.month);
-      generateTopic(d.month, input ? input.value : (item?.title || ""), item?.subtitle || "", item?.theme || "");
+      const v = voteFor(d.month), w = v?.status === "closed" ? v.candidates.find(c => c.key === v.winner) : null;
+      if (w) generateTopic(d.month, w.title, w.subtitle || "", w.theme || "");
+      else toast("Prima scegliete l'argomento con la votazione.");
       break;
     }
     case "stop-gen": S.gen?.ctl?.abort(); break;
-    case "gen-plan-confirm": S.busy.planConfirm = true; render(); break;
-    case "gen-plan-cancel": S.busy.planConfirm = false; render(); break;
-    case "gen-plan": S.busy.planConfirm = false; generatePlan(); break;
-    case "stop-plan": S.planGen?.ctl?.abort(); break;
-    case "suggest": suggestFor(d.month); break;
-    case "use-suggest": {
-      const s = S.suggest[d.month]?.list?.[+d.k]; if (!s) break;
-      delete S.suggest[d.month];
-      savePlan(planItems().map(i => i.month === d.month ? { ...i, title: s.title, subtitle: s.subtitle, theme: s.theme } : i), "Piano aggiornato");
-      break;
-    }
-    case "plan-add": {
-      const items = planItems();
-      const last = items.length ? items[items.length - 1].month : addMonths(NOW, -1);
-      savePlan([...items, { month: addMonths(last, 1), title: "", subtitle: "" }]);
-      break;
-    }
     case "vote-suggest": suggestCandidates(voteMonth()); break;
     case "vote-open": openVote(voteMonth()); break;
     case "vote-pick": { const v = voteFor(voteMonth()); if (v) togglePick(v, d.key); break; }
@@ -1781,7 +1674,6 @@ document.addEventListener("click", e => {
       save("votes", m, { month: m, candidates: [], status: "reset", resetAt: new Date().toISOString() }, "Votazione azzerata");
       break;
     }
-    case "plan-remove": savePlan(planItems().filter(i => i.month !== d.month), "Mese tolto dal piano"); break;
   }
 });
 document.addEventListener("keydown", e => {
@@ -1790,11 +1682,6 @@ document.addEventListener("keydown", e => {
 document.addEventListener("change", e => {
   const el = e.target, d = el.dataset;
   if (d.act === "book") saveProg(d.topic, cur => { cur.books[d.i] = el.checked; });
-  if (d.act === "plan-theme") savePlan(planItems().map(i => i.month === d.month ? { ...i, theme: el.value } : i), "Piano aggiornato");
-  if (d.act === "plan-title") {
-    const v = el.value.trim();
-    savePlan(planItems().map(i => i.month === d.month ? { ...i, title: v, subtitle: i.title === v ? i.subtitle : "" } : i), "Piano aggiornato");
-  }
 });
 
 /* ---------- boot ---------- */
@@ -1817,7 +1704,6 @@ async function boot() {
   Store.watch("progress", rows => { S.progress = rows; S.loaded.progress = true; render(); refreshProfiles(); });
   Store.watch("votes", rows => { S.votes = rows; render(); });
   Store.watch("ballots", rows => { S.ballots = rows; render(); refreshProfiles(); });
-  Store.watch("plan", rows => { S.plan = rows.find(r => r.id === "year") || null; S.loaded.plan = true; render(); });
   refreshProfiles();
 }
 boot();
