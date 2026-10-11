@@ -396,6 +396,13 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
 .arch .card { border: 0; box-shadow: var(--shadow); }
 .plan li { padding: 16px 0; }
 [hidden] { display: none !important; }
+.person-chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 3px; border-radius: 99px; background: var(--surface); box-shadow: var(--shadow); font-size: 13.5px; border: 0; }
+button.person-chip { cursor: pointer; color: inherit; font: inherit; font-size: 13.5px; }
+button.person-chip .ic { width: 13px; height: 13px; color: var(--muted); }
+.people { flex-wrap: wrap; gap: 6px; }
+.name-box { display: flex; gap: 14px; align-items: flex-start; padding: 18px; margin-bottom: 28px; border-radius: var(--r); background: var(--surface); box-shadow: 0 0 0 2px var(--lapis), var(--shadow); }
+.nb-body { display: grid; gap: 8px; flex: 1; min-width: 0; }
+.nb-body input { max-width: 280px; }
 .next-topic { display: grid; gap: 12px; padding: 22px; border-radius: var(--r); background: var(--surface); box-shadow: 0 0 0 2px var(--gold), var(--shadow); }
 .nt-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
 .nt-title { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 4.5vw, 42px); line-height: 1.08; }
@@ -636,11 +643,11 @@ const Store = {
 
 /* ---------- state ---------- */
 const S = {
-  topics: [], progress: [], plan: null, loaded: { topics: false, progress: false, plan: false },
+  topics: [], progress: [], plan: null, loaded: { topics: false, progress: false, names: false },
   view: { name: "home" }, me: null, user: null, profiles: {}, canWrite: true,
   sample: null, sampleOff: false,
   lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null,
-  votes: [], ballots: [], picks: {}, voteSuggest: null
+  votes: [], ballots: [], names: [], editName: false, picks: {}, voteSuggest: null
 };
 const canAsk = () => !!S.sample && !S.sampleOff;
 const topicById = id => S.topics.find(t => t.id === id);
@@ -683,19 +690,54 @@ function peopleFor(month) {
   if (S.me) ids.add(S.me);
   S.progress.forEach(p => { if ((!month || p.topic === month) && p.uid) ids.add(p.uid); });
   if (!month) S.ballots.forEach(b => { if (b.id) ids.add(b.id); });
+  S.names.forEach(n => { if (n.id && n.name) ids.add(n.id); });
   return [...ids];
 }
+const nameOf = uid => String(S.names.find(n => n.id === uid)?.name || "").trim();
 function personName(uid) {
-  const n = S.profiles[uid]?.name;
-  if (uid === S.me) return n ? n + " (tu)" : "Tu";
+  const n = nameOf(uid) || S.profiles[uid]?.name;
+  if (uid === S.me) return n || "Tu";
   return n || "Compagna o compagno di studio";
 }
+const AV_TONES = ["var(--lapis)", "var(--gold)", "var(--good)", "var(--bad)"];
+function initials(name) {
+  const w = String(name).trim().split(/\s+/).filter(Boolean);
+  return ((w[0]?.[0] || "") + (w[1]?.[0] || "")).toUpperCase() || "·";
+}
 function avatar(uid, cls = "") {
-  const p = S.profiles[uid];
+  const p = S.profiles[uid], custom = nameOf(uid);
   const label = esc(personName(uid));
-  if (p?.avatarUrl) return `<span class="av ${cls}" title="${label}" style="background:${esc(p.color || "")}"><img src="${esc(p.avatarUrl)}" alt=""></span>`;
-  const init = uid === S.me ? "TU" : "··";
-  return `<span class="av ${cls}" title="${label}">${init}</span>`;
+  if (!custom && p?.avatarUrl) return `<span class="av ${cls}" title="${label}" style="background:${esc(p.color || "")}"><img src="${esc(p.avatarUrl)}" alt=""></span>`;
+  const order = peopleFor(null).sort(), k = order.indexOf(uid);
+  const tone = AV_TONES[(k < 0 ? 0 : k) % AV_TONES.length];
+  const init = custom ? initials(custom) : uid === S.me ? "TU" : "··";
+  return `<span class="av ${cls}" title="${label}" style="background:${tone}">${esc(init)}</span>`;
+}
+async function saveName() {
+  const el = document.getElementById("my-name");
+  const v = (el?.value || "").trim().replace(/\s+/g, " ").slice(0, 30);
+  if (!v) { toast("Scrivi il tuo nome."); el?.focus(); return; }
+  if (!S.me) return;
+  const row = { id: S.me, name: v, updatedAt: new Date().toISOString() };
+  S.names = [...S.names.filter(n => n.id !== S.me), row];
+  S.editName = false; render();
+  await save("names", S.me, { name: v, updatedAt: row.updatedAt }, "Ciao, " + v + "!");
+}
+function nameBox() {
+  if (!S.me || !S.loaded.names || !S.canWrite) return "";
+  const mine = nameOf(S.me);
+  if (mine && !S.editName) return "";
+  return `<form class="name-box" data-form="name">
+    <span class="hic">${ic("users")}</span>
+    <div class="nb-body">
+      <label for="my-name"><strong>${mine ? "Cambia il tuo nome" : "Come ti chiami?"}</strong></label>
+      <div class="row">
+        <input type="text" id="my-name" maxlength="30" autocomplete="nickname" placeholder="Il tuo nome" value="${esc(mine)}">
+        <button class="btn primary" type="submit">${ic("check")}Salva</button>
+        ${mine ? `<button class="btn quiet" type="button" data-act="name-cancel">Annulla</button>` : ""}
+      </div>
+    </div>
+  </form>`;
 }
 async function refreshProfiles() {
   if (!S.user) return;
@@ -1600,7 +1642,8 @@ function votePanel() {
   return `<div class="panel">${panelHead("vote", esc(monthLabel(month)))}<p class="kv">${text}</p><div class="row"><button class="btn" type="button" data-act="go" data-view="vote">${ic("vote")}${btn}</button></div></div>`;
 }
 
-function viewHTML() {
+function viewHTML() { return nameBox() + viewBody(); }
+function viewBody() {
   if (!S.loaded.topics) return `<div class="empty"><h2>Apro lo studiolo…</h2><p>Sto caricando gli argomenti e i vostri progressi.</p></div>`;
   const v = S.view;
   if (v.name === "vote") return voteView();
@@ -1625,7 +1668,9 @@ function render() {
   const tab = ["archive", "vote"].includes(S.view.name) ? S.view.name : "home";
   document.querySelectorAll("#nav button").forEach(b => { if (b.dataset.view === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
   const ppl = peopleFor(null);
-  $("#people").innerHTML = ppl.map(uid => avatar(uid)).join("");
+  $("#people").innerHTML = ppl.map(uid => uid === S.me && S.canWrite
+    ? `<button type="button" class="person-chip me" data-act="name-edit" title="Cambia il tuo nome">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span>${ic("feather")}</button>`
+    : `<span class="person-chip">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span></span>`).join("");
   $("#mode").textContent = Store.mode === "cloud"
     ? (S.canWrite ? "Salvataggio condiviso attivo" : "Sola lettura")
     : "Salvataggio solo su questo dispositivo";
@@ -1660,6 +1705,8 @@ document.addEventListener("click", e => {
       break;
     }
     case "stop-gen": S.gen?.ctl?.abort(); break;
+    case "name-edit": S.editName = true; render(); setTimeout(() => document.getElementById("my-name")?.focus(), 0); break;
+    case "name-cancel": S.editName = false; render(); break;
     case "vote-suggest": suggestCandidates(voteMonth()); break;
     case "vote-open": openVote(voteMonth()); break;
     case "vote-pick": { const v = voteFor(voteMonth()); if (v) togglePick(v, d.key); break; }
@@ -1675,6 +1722,9 @@ document.addEventListener("click", e => {
       break;
     }
   }
+});
+document.addEventListener("submit", e => {
+  if (e.target.matches('[data-form="name"]')) { e.preventDefault(); saveName(); }
 });
 document.addEventListener("keydown", e => {
   if ((e.key === "Enter" || e.key === " ") && e.target.matches(".chap")) { e.preventDefault(); e.target.click(); }
@@ -1704,6 +1754,7 @@ async function boot() {
   Store.watch("progress", rows => { S.progress = rows; S.loaded.progress = true; render(); refreshProfiles(); });
   Store.watch("votes", rows => { S.votes = rows; render(); });
   Store.watch("ballots", rows => { S.ballots = rows; render(); refreshProfiles(); });
+  Store.watch("names", rows => { S.names = rows; S.loaded.names = true; render(); refreshProfiles(); });
   refreshProfiles();
 }
 boot();

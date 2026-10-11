@@ -11,9 +11,13 @@ Una web app per studiare in due un argomento nuovo ogni mese e diventare più co
 - **Temi**: ogni argomento appartiene a uno di questi dieci temi: geopolitica, storia, arte, letteratura, economia, politica, scienza, filosofia, tecnologia, cultura. Claude propone solo argomenti con un tema valido, e le 5 proposte di una votazione hanno temi diversi tra loro.
 - **Archivio**: tutti i mesi studiati, con i risultati di ciascuno.
 
+## Nomi
+
+Al primo accesso l'app chiede a ciascuno come vuole essere chiamato. Il nome compare nei progressi, nella sfida e nella votazione, e si può cambiare in qualsiasi momento toccando il proprio nome in alto. Ognuno può modificare solo il proprio.
+
 ## Dove si usa
 
-L'app è pubblicata come Artifact su claude.ai. Lì i dati si salvano in un database condiviso, così i progressi restano sincronizzati tra voi due e su tutti i dispositivi. Lì funziona anche la generazione dei contenuti con Claude. Per usarla in due, condividete l'artifact dal menu Condividi con un livello di accesso che permetta di modificare, cioè Collaboratore o superiore.
+L'app è pubblicata come Artifact su claude.ai. Lì i dati si salvano in un database condiviso, così i progressi restano sincronizzati tra voi due e su tutti i dispositivi. Lì funziona anche la generazione dei contenuti con Claude. Per usarla in due, il proprietario invita l'altra persona per email dal menu Condividi, con il livello Editor. Non attivate il link pubblico: con il link pubblico attivo, chi è stato invitato da fuori non può salvare.
 
 Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in modalità locale: i progressi restano solo in quel browser e Claude non è disponibile.
 
@@ -31,4 +35,5 @@ Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in moda
 | `quizzes` | `AAAA-MM--c1` … `AAAA-MM--final` | domande dei test |
 | `lessons` | `AAAA-MM--c1--l1` … `--l3` | le tre lezioni di ogni settimana, scritte da Claude |
 | `votes` | `AAAA-MM` | votazione del mese: 5 candidati, stato, vincitore |
+| `names` | `<utente>` | nome scelto da ciascun partecipante; ognuno può modificare solo il proprio |
 | `ballots` | `<utente>` | voti di ciascuno; ognuno può modificare solo i propri |
