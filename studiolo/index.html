@@ -802,13 +802,13 @@ function promptQuiz(topic, ch) {
   if (ch) return `Crea il test conclusivo della settimana dedicata a "${ch.title}" nel percorso "${topic.title}".
 Contenuto del capitolo: ${ch.summary} Concetti chiave: ${(ch.points || []).join("; ")}.
 ${AUDIENCE}
-Scrivi 30 domande a scelta multipla, di difficoltà crescente, che coprano tutti i concetti della settimana senza ripetersi: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi esattamente 30 domande a scelta multipla (né 29 né 31), di difficoltà crescente, che coprano tutti i concetti della settimana senza ripetersi: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi che spiegano la risposta)}]}`;
   return `Crea l'esame finale del percorso mensile "${topic.title}".
 Capitoli studiati:
 ${topic.chapters.map((c, i) => `${i + 1}. ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
 ${AUDIENCE}
-Scrivi 30 domande a scelta multipla che coprano in modo equilibrato tutte le settimane, con almeno 8 domande che chiedono di collegare settimane diverse. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi esattamente 30 domande a scelta multipla (né 29 né 31) che coprano in modo equilibrato tutte le settimane, con almeno 8 domande che chiedono di collegare settimane diverse. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
 }
 function promptPractice(topic, chapters) {
@@ -817,7 +817,7 @@ Le domande devono riguardare SOLO questi argomenti, già studiati:
 ${chapters.map(c => `- ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
 Non fare domande su altri argomenti del percorso, anche se li conosci.
 ${AUDIENCE}
-Scrivi 10 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
+Scrivi esattamente 10 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
 Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
 }
 function promptLesson(topic, ch, i) {
@@ -875,6 +875,28 @@ Argomenti già nel piano o già studiati, da evitare: ${taken || "nessuno"}.
 ${THEME_RULE} I 5 argomenti devono avere 5 temi diversi tra loro. Rispondi solo con JSON: [{"title": string (breve), "subtitle": string (una riga), "theme": uno dei temi}]`;
 }
 
+const TEST_SIZE = 30, PRACTICE_SIZE = 10;
+// Ask Claude for questions until there are exactly `target` valid, distinct ones:
+// malformed questions are dropped by cleanQuestions, so top up what is missing.
+async function genQuestions(prompt, target, ctl) {
+  const opts = () => ({ modelTier: "default", signal: ctl.signal, cache: false });
+  const key = q => q.q.trim().toLowerCase();
+  let qs = cleanQuestions(await S.sample.json(prompt, opts()), 1) || [];
+  qs = qs.filter((q, i) => qs.findIndex(x => key(x) === key(q)) === i);
+  for (let round = 0; qs.length < target && round < 3; round++) {
+    const missing = target - qs.length;
+    const more = await S.sample.json(`${prompt}
+
+Hai già scritto queste domande: non ripeterle e non riformularle.
+${qs.map((q, i) => `${i + 1}. ${q.q}`).join("\n")}
+
+Ora scrivi SOLO ${missing} ${missing === 1 ? "domanda nuova" : "domande nuove"}, con lo stesso formato JSON: {"questions": [...]} con esattamente ${missing} ${missing === 1 ? "elemento" : "elementi"}.`, opts());
+    const add = (cleanQuestions(more, 1) || []).filter(q => !qs.some(x => key(x) === key(q)));
+    qs = qs.concat(add);
+  }
+  if (qs.length < target) throw { code: "invalid_json" };
+  return qs.slice(0, target);
+}
 function cleanQuestions(r, min) {
   const qs = (r && Array.isArray(r.questions) ? r.questions : []).filter(q =>
     q && typeof q.q === "string" && Array.isArray(q.options) && q.options.length === 4 &&
@@ -943,10 +965,10 @@ async function finalFromChapters(topic) {
     const q = S.quizCache[topic.id + "--" + c.id] || await Store.get("quizzes", topic.id + "--" + c.id);
     if (q?.questions?.length) {
       const shuffled = [...q.questions].sort(() => Math.random() - .5);
-      pool.push(...shuffled.slice(0, Math.ceil(30 / topic.chapters.length)));
+      pool.push(...shuffled.slice(0, Math.ceil(TEST_SIZE / topic.chapters.length)));
     }
   }
-  return pool.length >= 10 ? { questions: shuffle(pool).slice(0, 30), source: "capitoli" } : null;
+  return pool.length >= 10 ? { questions: shuffle(pool).slice(0, TEST_SIZE), source: "capitoli" } : null;
 }
 function studiedChapters(topic) {
   const p = S.me ? prog(topic.id, S.me) : null;
@@ -958,9 +980,7 @@ async function practiceQuiz(topic, withClaude) {
   const chapters = studied.map(c => c.id);
   if (withClaude) {
     const ctl = new AbortController(); S.quiz.ctl = ctl;
-    const r = await S.sample.json(promptPractice(topic, studied), { modelTier: "default", signal: ctl.signal, cache: false });
-    const questions = cleanQuestions(r, 6);
-    if (!questions) throw { code: "invalid_json" };
+    const questions = await genQuestions(promptPractice(topic, studied), PRACTICE_SIZE, ctl);
     return { questions, chapters, source: "claude" };
   }
   const banks = [];
@@ -971,7 +991,7 @@ async function practiceQuiz(topic, withClaude) {
   }
   if (!banks.length) return canAsk() ? practiceQuiz(topic, true) : { error: "Non ci sono ancora domande per gli argomenti che hai studiato. Apri il test conclusivo di una settimana per prepararle." };
   const out = [];
-  for (let i = 0; out.length < 10 && banks.some(b => b.length); i++) { const b = banks[i % banks.length]; if (b.length) out.push(b.pop()); }
+  for (let i = 0; out.length < PRACTICE_SIZE && banks.some(b => b.length); i++) { const b = banks[i % banks.length]; if (b.length) out.push(b.pop()); }
   return { questions: shuffle(out), chapters, source: "banca" };
 }
 async function loadQuiz(topic, key, fresh) {
@@ -988,9 +1008,7 @@ async function loadQuiz(topic, key, fresh) {
   }
   const ch = key === "final" ? null : topic.chapters.find(c => c.id === key);
   const ctl = new AbortController(); S.quiz.ctl = ctl;
-  const r = await S.sample.json(promptQuiz(topic, ch), { modelTier: "default", signal: ctl.signal, cache: false });
-  const questions = cleanQuestions(r, 20);
-  if (!questions) throw { code: "invalid_json" };
+  const questions = await genQuestions(promptQuiz(topic, ch), TEST_SIZE, ctl);
   const doc = { topic: topic.id, key, questions, createdAt: new Date().toISOString(), source: "claude" };
   S.quizCache[id] = doc;
   await save("quizzes", id, doc);
