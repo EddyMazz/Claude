@@ -30,7 +30,7 @@ Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in moda
 
 | Collezione | Documento | Contenuto |
 |---|---|---|
-| `topics` | `AAAA-MM` | programma del mese: capitoli, libri, extra |
+| `topics` | `AAAA-MM` | programma del mese: settimane, piano delle lezioni, approfondimenti |
 | `progress` | `AAAA-MM--<utente>` | settimane completate, lezioni lette, risultati e storico di test, allenamenti ed esame finale |
 | `quizzes` | `AAAA-MM--c1` … `AAAA-MM--final` | domande dei test |
 | `lessons` | `AAAA-MM--c1--l1` … `--l3` | le tre lezioni di ogni settimana (`--c1--l1`…) e gli approfondimenti (`--dd1`…`--dd10`), scritti da Claude |
