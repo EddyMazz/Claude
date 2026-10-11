@@ -1,17 +1,77 @@
 {
   "items": [
-    { "month": "2026-10", "title": "Il Rinascimento italiano", "subtitle": "Arte, potere e idee tra Firenze, le corti e Venezia" },
-    { "month": "2026-11", "title": "Cosmologia: dal Big Bang ai buchi neri", "subtitle": "Come sappiamo quello che sappiamo sull'universo" },
-    { "month": "2026-12", "title": "La filosofia greca", "subtitle": "Dai presocratici ad Aristotele: le domande da cui tutto è partito" },
-    { "month": "2027-01", "title": "Come funziona l'economia", "subtitle": "Moneta, mercati, inflazione e banche centrali spiegati bene" },
-    { "month": "2027-02", "title": "L'evoluzione della vita", "subtitle": "Darwin, il DNA e la storia della vita sulla Terra" },
-    { "month": "2027-03", "title": "Storia della musica classica", "subtitle": "Da Bach a Stravinskij: ascoltare con orecchie nuove" },
-    { "month": "2027-04", "title": "L'antica Roma", "subtitle": "Dalla repubblica all'impero, e perché Roma cadde" },
-    { "month": "2027-05", "title": "Il cervello e la mente", "subtitle": "Neuroscienze e psicologia: memoria, emozioni, decisioni" },
-    { "month": "2027-06", "title": "Storia del cinema", "subtitle": "Dai Lumière al neorealismo alla New Hollywood" },
-    { "month": "2027-07", "title": "Il mondo di oggi: geopolitica", "subtitle": "Mappe, risorse e potenze che spiegano le notizie" },
-    { "month": "2027-08", "title": "Mitologia greca", "subtitle": "Dèi, eroi e storie che leggiamo ancora: una lettura per l'estate" },
-    { "month": "2027-09", "title": "La rivoluzione scientifica", "subtitle": "Copernico, Galileo, Newton e la nascita del metodo" }
+    {
+      "month": "2026-10",
+      "title": "Il Rinascimento italiano",
+      "subtitle": "Arte, potere e idee tra Firenze, le corti e Venezia",
+      "theme": "arte"
+    },
+    {
+      "month": "2026-11",
+      "title": "Cosmologia: dal Big Bang ai buchi neri",
+      "subtitle": "Come sappiamo quello che sappiamo sull'universo",
+      "theme": "scienza"
+    },
+    {
+      "month": "2026-12",
+      "title": "La filosofia greca",
+      "subtitle": "Dai presocratici ad Aristotele: le domande da cui tutto è partito",
+      "theme": "filosofia"
+    },
+    {
+      "month": "2027-01",
+      "title": "Come funziona l'economia",
+      "subtitle": "Moneta, mercati, inflazione e banche centrali spiegati bene",
+      "theme": "economia"
+    },
+    {
+      "month": "2027-02",
+      "title": "L'evoluzione della vita",
+      "subtitle": "Darwin, il DNA e la storia della vita sulla Terra",
+      "theme": "scienza"
+    },
+    {
+      "month": "2027-03",
+      "title": "Storia della musica classica",
+      "subtitle": "Da Bach a Stravinskij: ascoltare con orecchie nuove",
+      "theme": "cultura"
+    },
+    {
+      "month": "2027-04",
+      "title": "L'antica Roma",
+      "subtitle": "Dalla repubblica all'impero, e perché Roma cadde",
+      "theme": "storia"
+    },
+    {
+      "month": "2027-05",
+      "title": "Le democrazie: come nascono e come muoiono",
+      "subtitle": "Da Atene a oggi: istituzioni, partiti, crisi e populismi",
+      "theme": "politica"
+    },
+    {
+      "month": "2027-06",
+      "title": "Storia del cinema",
+      "subtitle": "Dai Lumière al neorealismo alla New Hollywood",
+      "theme": "cultura"
+    },
+    {
+      "month": "2027-07",
+      "title": "Il mondo di oggi: geopolitica",
+      "subtitle": "Mappe, risorse e potenze che spiegano le notizie",
+      "theme": "geopolitica"
+    },
+    {
+      "month": "2027-08",
+      "title": "Mitologia greca",
+      "subtitle": "Dèi, eroi e storie che leggiamo ancora: una lettura per l'estate",
+      "theme": "letteratura"
+    },
+    {
+      "month": "2027-09",
+      "title": "Storia della tecnologia",
+      "subtitle": "Dalla stampa al computer all'intelligenza artificiale",
+      "theme": "tecnologia"
+    }
   ],
-  "updatedAt": "2026-10-11T09:00:00.000Z"
+  "updatedAt": "2026-10-11T12:00:00.000Z"
 }

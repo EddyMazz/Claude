@@ -118,20 +118,75 @@
     }
   ],
   "books": [
-    { "title": "La storia dell'arte", "author": "Ernst H. Gombrich", "year": 1950, "level": "introduttivo", "why": "Il manuale più leggibile mai scritto: i capitoli sul Rinascimento sono la base perfetta per tutto il mese." },
-    { "title": "La cupola di Brunelleschi", "author": "Ross King", "year": 2000, "level": "introduttivo", "why": "La storia della cupola di Firenze raccontata come un'avventura tecnica e umana." },
-    { "title": "Il manifesto della libertà. Lucrezio e la riscoperta del mondo moderno", "author": "Stephen Greenblatt", "year": 2011, "level": "introduttivo", "why": "Premio Pulitzer: come un manoscritto ritrovato nel 1417 ha contribuito a cambiare il pensiero europeo." },
-    { "title": "Leonardo da Vinci", "author": "Walter Isaacson", "year": 2017, "level": "approfondimento", "why": "Biografia costruita sui taccuini di Leonardo, ricchissima di immagini e di curiosità." },
-    { "title": "Il Principe", "author": "Niccolò Machiavelli", "year": 1532, "level": "classico", "why": "Breve, tagliente e ancora attualissimo: il testo fondatore della scienza politica moderna." },
-    { "title": "Le vite de' più eccellenti pittori, scultori e architettori", "author": "Giorgio Vasari", "year": 1550, "level": "classico", "why": "Le biografie degli artisti scritte da chi li conosceva: leggetene qualcuna, non tutte." },
-    { "title": "La civiltà del Rinascimento in Italia", "author": "Jacob Burckhardt", "year": 1860, "level": "classico", "why": "Il libro che ha inventato il concetto di Rinascimento. Impegnativo, ma da sfogliare almeno in parte." }
+    {
+      "title": "La storia dell'arte",
+      "author": "Ernst H. Gombrich",
+      "year": 1950,
+      "level": "introduttivo",
+      "why": "Il manuale più leggibile mai scritto: i capitoli sul Rinascimento sono la base perfetta per tutto il mese."
+    },
+    {
+      "title": "La cupola di Brunelleschi",
+      "author": "Ross King",
+      "year": 2000,
+      "level": "introduttivo",
+      "why": "La storia della cupola di Firenze raccontata come un'avventura tecnica e umana."
+    },
+    {
+      "title": "Il manifesto della libertà. Lucrezio e la riscoperta del mondo moderno",
+      "author": "Stephen Greenblatt",
+      "year": 2011,
+      "level": "introduttivo",
+      "why": "Premio Pulitzer: come un manoscritto ritrovato nel 1417 ha contribuito a cambiare il pensiero europeo."
+    },
+    {
+      "title": "Leonardo da Vinci",
+      "author": "Walter Isaacson",
+      "year": 2017,
+      "level": "approfondimento",
+      "why": "Biografia costruita sui taccuini di Leonardo, ricchissima di immagini e di curiosità."
+    },
+    {
+      "title": "Il Principe",
+      "author": "Niccolò Machiavelli",
+      "year": 1532,
+      "level": "classico",
+      "why": "Breve, tagliente e ancora attualissimo: il testo fondatore della scienza politica moderna."
+    },
+    {
+      "title": "Le vite de' più eccellenti pittori, scultori e architettori",
+      "author": "Giorgio Vasari",
+      "year": 1550,
+      "level": "classico",
+      "why": "Le biografie degli artisti scritte da chi li conosceva: leggetene qualcuna, non tutte."
+    },
+    {
+      "title": "La civiltà del Rinascimento in Italia",
+      "author": "Jacob Burckhardt",
+      "year": 1860,
+      "level": "classico",
+      "why": "Il libro che ha inventato il concetto di Rinascimento. Impegnativo, ma da sfogliare almeno in parte."
+    }
   ],
   "extras": [
-    { "type": "luogo", "title": "Firenze: Duomo, Cupola e Cappella Brancacci", "note": "Salire sulla cupola dopo aver letto Ross King è un'esperienza diversa." },
-    { "type": "luogo", "title": "Palazzo Ducale di Urbino", "note": "Lo studiolo di Federico da Montefeltro e la Galleria Nazionale delle Marche." },
-    { "type": "film", "title": "Il tormento e l'estasi (1965)", "note": "Charlton Heston è Michelangelo alle prese con la volta della Sistina e con Giulio II." }
+    {
+      "type": "luogo",
+      "title": "Firenze: Duomo, Cupola e Cappella Brancacci",
+      "note": "Salire sulla cupola dopo aver letto Ross King è un'esperienza diversa."
+    },
+    {
+      "type": "luogo",
+      "title": "Palazzo Ducale di Urbino",
+      "note": "Lo studiolo di Federico da Montefeltro e la Galleria Nazionale delle Marche."
+    },
+    {
+      "type": "film",
+      "title": "Il tormento e l'estasi (1965)",
+      "note": "Charlton Heston è Michelangelo alle prese con la volta della Sistina e con Giulio II."
+    }
   ],
   "createdAt": "2026-10-11T09:00:00.000Z",
   "createdBy": null,
-  "source": "seed"
+  "source": "seed",
+  "theme": "arte"
 }

@@ -88,6 +88,8 @@ button { font: inherit; color: inherit; }
 .chip { display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
 .chip.ok { border-color: var(--good); color: var(--good); }
 .chip.gold { border-color: var(--gold); color: var(--gold); }
+.chip.theme { border-color: var(--gold); color: var(--gold); background: var(--gold-soft); }
+select { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 10px; width: 100%; }
 .chip.lapis { border-color: var(--lapis); color: var(--lapis); }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
@@ -208,9 +210,9 @@ textarea { min-height: 80px; resize: vertical; }
 .cand .tally .bar i { background: var(--gold); }
 @media (max-width: 520px) { .cand { grid-template-columns: 30px minmax(0, 1fr); } .cand > .btn { grid-column: 2; justify-self: start; } }
 .draft { display: grid; gap: 12px; }
-.draft-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1.3fr); gap: 8px; align-items: center; }
+.draft-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 150px minmax(0, 1.2fr); gap: 8px; align-items: center; }
 .draft-row .rn { font-family: var(--display); font-size: 22px; color: var(--gold); text-align: center; }
-@media (max-width: 620px) { .draft-row { grid-template-columns: 30px minmax(0, 1fr); } .draft-row input + input { grid-column: 2; } }
+@media (max-width: 620px) { .draft-row { grid-template-columns: 30px minmax(0, 1fr); } .draft-row > :not(.rn) { grid-column: 2; } }
 .voters { display: grid; gap: 8px; }
 .ballot-dots { display: inline-flex; gap: 4px; }
 .ballot-dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--lapis); }
@@ -265,6 +267,11 @@ const addMonths = (k, n) => { const [y, m] = k.split("-").map(Number); return mo
 const monthLabel = k => { const [y, m] = k.split("-").map(Number); const s = new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" }); return s.charAt(0).toUpperCase() + s.slice(1); };
 const isMonth = k => /^\d{4}-\d{2}$/.test(String(k));
 const LETTERS = "ABCD";
+const THEMES = ["geopolitica", "storia", "arte", "letteratura", "economia", "politica", "scienza", "filosofia", "tecnologia", "cultura"];
+const normTheme = x => { const t = String(x || "").trim().toLowerCase(); return THEMES.includes(t) ? t : ""; };
+const themeChip = t => normTheme(t) ? `<span class="chip theme">${esc(normTheme(t))}</span>` : "";
+const themeSelect = (id, value, attrs = "") => `<select id="${id}" ${attrs}><option value="">Tema…</option>${THEMES.map(t => `<option value="${t}" ${normTheme(value) === t ? "selected" : ""}>${t}</option>`).join("")}</select>`;
+const THEME_RULE = "Ogni argomento deve appartenere a uno solo di questi temi, scritto esattamente così: " + THEMES.join(", ") + ".";
 const NOW = monthKey();
 
 function toast(msg) {
@@ -419,8 +426,8 @@ function sampleErr(e) {
 }
 const AUDIENCE = "Il pubblico sono due adulti italiani curiosi, non specialisti, che studiano insieme un argomento al mese per diventare più colti. Scrivi in italiano chiaro e preciso, con nomi, date e luoghi concreti.";
 
-function promptCurriculum(title, note, prev) {
-  return `Sei un docente universitario e un ottimo divulgatore. Prepara il programma di studio di un mese sull'argomento: "${title}".
+function promptCurriculum(title, note, prev, theme) {
+  return `Sei un docente universitario e un ottimo divulgatore. Prepara il programma di studio di un mese sull'argomento: "${title}"${theme ? `, affrontato dal punto di vista del tema "${theme}"` : ""}.
 ${note ? "Indicazioni: " + note + "\n" : ""}${AUDIENCE}
 ${prev ? "Argomenti già studiati nei mesi precedenti (evita ripetizioni, puoi richiamarli): " + prev + "\n" : ""}
 Rispondi solo con un oggetto JSON con questa forma:
@@ -460,14 +467,14 @@ Domanda: ${q}`;
 function promptPlan(start, existing) {
   return `Proponi un piano di studio di 12 mesi, un argomento al mese, a partire da ${monthLabel(start)}.
 ${AUDIENCE}
-Varia le discipline: storia, arte, scienze naturali, fisica e astronomia, filosofia, letteratura, musica, economia, psicologia, geografia e geopolitica, storia delle idee. Alterna argomenti più impegnativi e più leggeri; d'estate preferisci temi adatti al viaggio o alla lettura all'aperto.
-${existing ? "Argomenti già studiati, da non ripetere: " + existing + "\n" : ""}Rispondi solo con JSON: {"items": [{"month": "AAAA-MM", "title": string (breve), "subtitle": string (una riga)}]} con 12 elementi in ordine, il primo con month "${start}".`;
+${THEME_RULE} Usa ciascuno dei dieci temi almeno una volta nell'anno e non mettere lo stesso tema in due mesi consecutivi. Alterna argomenti più impegnativi e più leggeri; d'estate preferisci temi adatti al viaggio o alla lettura all'aperto.
+${existing ? "Argomenti già studiati, da non ripetere: " + existing + "\n" : ""}Rispondi solo con JSON: {"items": [{"month": "AAAA-MM", "title": string (breve), "subtitle": string (una riga), "theme": uno dei temi}]} con 12 elementi in ordine, il primo con month "${start}".`;
 }
 function promptSuggest(month, taken) {
   return `Suggerisci 5 argomenti alternativi da studiare in un mese (${monthLabel(month)}).
 ${AUDIENCE}
 Argomenti già nel piano o già studiati, da evitare: ${taken || "nessuno"}.
-Proponi discipline diverse tra loro. Rispondi solo con JSON: [{"title": string (breve), "subtitle": string (una riga)}]`;
+${THEME_RULE} I 5 argomenti devono avere 5 temi diversi tra loro. Rispondi solo con JSON: [{"title": string (breve), "subtitle": string (una riga), "theme": uno dei temi}]`;
 }
 
 function cleanQuestions(r, min) {
@@ -496,16 +503,17 @@ function normalizeTopic(r, title, month) {
     chapters, books, extras, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
 }
 
-async function generateTopic(month, title, note) {
+async function generateTopic(month, title, note, theme) {
   if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
   if (!title.trim()) { toast("Scrivi prima il titolo dell'argomento."); return; }
   const ctl = new AbortController();
   S.gen = { month, ctl }; render();
   try {
     const prev = S.topics.filter(t => t.id !== month).map(t => t.title).join("; ");
-    const r = await S.sample.json(promptCurriculum(title, note, prev), { modelTier: "complex", signal: ctl.signal, cache: false });
+    const r = await S.sample.json(promptCurriculum(title, note, prev, normTheme(theme)), { modelTier: "complex", signal: ctl.signal, cache: false });
     const topic = normalizeTopic(r, title, month);
     if (!topic) throw { code: "invalid_json" };
+    topic.theme = normTheme(theme);
     S.gen = null;
     if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto")) {
       S.view = { name: "topic", id: month };
@@ -634,7 +642,7 @@ async function askTutor(topic, ch) {
 /* ---------- plan ---------- */
 function planItems() { return [...(S.plan?.items || [])].filter(i => isMonth(i.month)).sort((a, b) => a.month.localeCompare(b.month)); }
 function savePlan(items, msg) {
-  const doc = { items: items.map(i => ({ month: i.month, title: String(i.title || ""), subtitle: String(i.subtitle || "") })), updatedAt: new Date().toISOString() };
+  const doc = { items: items.map(i => ({ month: i.month, title: String(i.title || ""), subtitle: String(i.subtitle || ""), theme: normTheme(i.theme) })), updatedAt: new Date().toISOString() };
   S.plan = doc; render();
   return save("plan", "year", doc, msg);
 }
@@ -643,8 +651,8 @@ async function generatePlan() {
   const ctl = new AbortController(); S.planGen = { ctl }; render();
   try {
     const r = await S.sample.json(promptPlan(NOW, S.topics.map(t => t.title).join("; ")), { modelTier: "default", signal: ctl.signal, cache: false });
-    const items = (r && Array.isArray(r.items) ? r.items : []).filter(i => i && i.title).slice(0, 12)
-      .map((i, n) => ({ month: addMonths(NOW, n), title: String(i.title), subtitle: String(i.subtitle || "") }));
+    const items = (r && Array.isArray(r.items) ? r.items : []).filter(i => i && i.title && normTheme(i.theme)).slice(0, 12)
+      .map((i, n) => ({ month: addMonths(NOW, n), title: String(i.title), subtitle: String(i.subtitle || ""), theme: normTheme(i.theme) }));
     if (items.length < 3) throw { code: "invalid_json" };
     const keep = planItems().filter(i => i.month < NOW);
     S.planGen = null;
@@ -660,7 +668,7 @@ async function suggestFor(month) {
   try {
     const taken = [...planItems().map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
     const r = await S.sample.json(promptSuggest(month, taken), { modelTier: "quick", cache: false });
-    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title).slice(0, 6).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || "") }));
+    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title && normTheme(x.theme)).slice(0, 6).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || ""), theme: normTheme(x.theme) }));
     S.suggest[month] = list.length ? { list } : { error: "Nessun suggerimento ricevuto. Riprova." };
   } catch (e) { S.suggest[month] = { error: sampleErr(e) }; }
   render();
@@ -722,16 +730,18 @@ function readDraft() {
   for (let i = 0; i < CANDIDATES; i++) {
     const t = (document.getElementById("cand-t-" + i)?.value || "").trim();
     const st = (document.getElementById("cand-s-" + i)?.value || "").trim();
-    items.push({ title: t, subtitle: st });
+    const th = normTheme(document.getElementById("cand-th-" + i)?.value);
+    items.push({ title: t, subtitle: st, theme: th });
   }
   return items;
 }
 async function openVote(month) {
   const items = readDraft();
   if (items.some(x => !x.title)) { toast("Scrivi tutti e " + CANDIDATES + " gli argomenti prima di aprire la votazione."); return; }
+  if (items.some(x => !x.theme)) { toast("Scegli il tema di ogni argomento."); return; }
   if (new Set(items.map(x => x.title.toLowerCase())).size < CANDIDATES) { toast("Ci sono due argomenti uguali: cambiane uno."); return; }
   const doc = { month, round: "r" + Date.now().toString(36), status: "open", winner: null,
-    candidates: items.map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle })),
+    candidates: items.map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle, theme: x.theme })),
     createdBy: S.me || null, createdAt: new Date().toISOString() };
   S.votes = [...S.votes.filter(v => v.id !== month), { ...doc, id: month }];
   render();
@@ -745,13 +755,15 @@ async function suggestCandidates(month) {
     const taken = [...planItems().filter(i => i.month !== month).map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
     const keepTitles = current.filter(x => x.title).map(x => x.title);
     const r = await S.sample.json(promptSuggest(month, taken + (keepTitles.length ? "; " + keepTitles.join("; ") : "")), { modelTier: "quick", cache: false });
-    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || "") }));
+    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title && normTheme(x.theme)).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || ""), theme: normTheme(x.theme) }));
     if (!list.length) throw { code: "invalid_json" };
     S.voteSuggest = null; render();
+    const used = new Set(current.filter(x => x.title && x.theme).map(x => x.theme));
+    const fresh = [...list.filter(x => !used.has(x.theme)), ...list.filter(x => used.has(x.theme))];
     let k = 0;
-    for (let i = 0; i < CANDIDATES && k < list.length; i++) {
-      const t = document.getElementById("cand-t-" + i), st = document.getElementById("cand-s-" + i);
-      if (t && !t.value.trim()) { t.value = list[k].title; if (st) st.value = list[k].subtitle; k++; }
+    for (let i = 0; i < CANDIDATES && k < fresh.length; i++) {
+      const t = document.getElementById("cand-t-" + i), st = document.getElementById("cand-s-" + i), th = document.getElementById("cand-th-" + i);
+      if (t && !t.value.trim()) { t.value = fresh[k].title; if (st) st.value = fresh[k].subtitle; if (th) th.value = fresh[k].theme; k++; }
     }
     if (!k) toast("Tutte le righe sono già piene: svuotane una per ricevere un'altra proposta.");
   } catch (e) { S.voteSuggest = { error: sampleErr(e) }; render(); }
@@ -767,8 +779,8 @@ async function closeVote(vote, pickRandom) {
   if (!(await save("votes", vote.id, doc, "Ha vinto: " + winner.title))) return;
   const items = planItems();
   const next = items.some(i => i.month === vote.id)
-    ? items.map(i => i.month === vote.id ? { ...i, title: winner.title, subtitle: winner.subtitle } : i)
-    : [...items, { month: vote.id, title: winner.title, subtitle: winner.subtitle }];
+    ? items.map(i => i.month === vote.id ? { ...i, title: winner.title, subtitle: winner.subtitle, theme: winner.theme } : i)
+    : [...items, { month: vote.id, title: winner.title, subtitle: winner.subtitle, theme: winner.theme }];
   await savePlan(next);
 }
 
@@ -818,7 +830,7 @@ function topicView(topic) {
   const myFinal = myP?.quiz?.final;
   return `
   <section class="hero">
-    <span class="label">${esc(monthLabel(topic.id))} · ${isNow ? "argomento del mese" : topic.id < NOW ? "dall'archivio" : "in programma"}</span>
+    <span class="row" style="gap:10px">${themeChip(topic.theme || planItems().find(i => i.month === topic.id)?.theme)}<span class="label">${esc(monthLabel(topic.id))} · ${isNow ? "argomento del mese" : topic.id < NOW ? "dall'archivio" : "in programma"}</span></span>
     <h1>${esc(topic.title)}</h1>
     ${topic.subtitle ? `<p class="sub">${esc(topic.subtitle)}</p>` : ""}
     ${topic.intro ? `<p class="intro">${esc(topic.intro)}</p>` : ""}
@@ -992,7 +1004,7 @@ function planView() {
   const header = `<section class="hero">
     <span class="label">Piano annuale</span>
     <h1>Dodici mesi, dodici argomenti</h1>
-    <p class="intro">Il piano è una traccia: cambiate i titoli quando volete. Quando arriva il mese, chiedete a Claude di preparare il programma completo.</p>
+    <p class="intro">Ogni mese appartiene a uno dei dieci temi: ${THEMES.join(", ")}. Il piano è una traccia: cambiate i titoli quando volete. Quando arriva il mese, chiedete a Claude di preparare il programma completo.</p>
   </section>`;
   if (!items.length) return header + `<div class="empty">
     <h2>Il piano è ancora vuoto</h2>
@@ -1020,12 +1032,14 @@ function planView() {
         ${t ? `<strong>${esc(t.title)}</strong>` : S.canWrite
           ? `<label class="label" for="plan-${esc(it.month)}" hidden>Argomento di ${esc(monthLabel(it.month))}</label><input type="text" id="plan-${esc(it.month)}" value="${esc(it.title)}" data-act="plan-title" data-month="${esc(it.month)}">`
           : `<strong>${esc(it.title)}</strong>`}
-        <span class="s">${esc(t ? t.subtitle : it.subtitle)}</span>
+        <span class="row" style="gap:8px">${!t && S.canWrite
+          ? `<span style="width:150px">${themeSelect("plan-th-" + it.month, it.theme, `data-act="plan-theme" data-month="${esc(it.month)}" aria-label="Tema di ${esc(monthLabel(it.month))}"`)}</span>`
+          : themeChip(t?.theme || it.theme)}<span class="s">${esc(t ? t.subtitle : it.subtitle)}</span></span>
         ${gen?.error ? `<span class="err">${esc(gen.error)}</span>` : ""}
       </div>
       <div class="act">${act}</div>
       ${sug ? `<div class="suggest">${sug.busy ? `<span class="thinking">Cerco idee</span>` : sug.error ? `<span class="err">${esc(sug.error)}</span>` :
-        sug.list.map((s, k) => `<button class="btn small" type="button" data-act="use-suggest" data-month="${esc(it.month)}" data-k="${k}" title="${esc(s.subtitle)}">${esc(s.title)}</button>`).join("")}</div>` : ""}
+        sug.list.map((s, k) => `<button class="btn small" type="button" data-act="use-suggest" data-month="${esc(it.month)}" data-k="${k}" title="${esc(s.subtitle)}">${esc(s.title)} <span class="label">· ${esc(s.theme)}</span></button>`).join("")}</div>` : ""}
     </li>`;
   }).join("");
   return header + `<section class="sec">
@@ -1048,7 +1062,7 @@ function archiveView() {
   if (!list.length) return header + `<div class="empty"><h2>L'archivio è vuoto</h2><p>Gli argomenti preparati compariranno qui, mese per mese, con i vostri risultati.</p></div>`;
   return header + `<div class="arch">${list.map(t => `
     <button class="card" type="button" data-act="topic" data-topic="${esc(t.id)}">
-      <span class="label">${esc(monthLabel(t.id))}${t.id === NOW ? " · in corso" : ""}</span>
+      <span class="row" style="gap:8px">${themeChip(t.theme)}<span class="label">${esc(monthLabel(t.id))}${t.id === NOW ? " · in corso" : ""}</span></span>
       <h3>${esc(t.title)}</h3>
       ${t.subtitle ? `<span class="kv">${esc(t.subtitle)}</span>` : ""}
       ${peopleFor(t.id).map(uid => { const s = stats(t, uid);
@@ -1071,11 +1085,12 @@ function voteView() {
       <div class="draft-row">
         <span class="rn">${roman(i + 1)}</span>
         <input type="text" id="cand-t-${i}" data-draft="1" placeholder="Argomento" aria-label="Argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.title) : ""}" ${S.canWrite ? "" : "disabled"}>
+        ${themeSelect("cand-th-" + i, i === 0 && planned ? planned.theme : "", `data-draft="1" aria-label="Tema dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}`)}
         <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.subtitle) : ""}" ${S.canWrite ? "" : "disabled"}>
       </div>`).join("");
     return header + `<section class="sec">
       <div class="sec-head"><h2>I cinque candidati</h2><span class="label">${topic ? "il programma di questo mese è già pronto" : "ancora da proporre"}</span></div>
-      <p>Scrivete cinque argomenti che vi incuriosiscono${canAsk() ? ", oppure lasciate le righe vuote e fatevele proporre da Claude" : ""}. ${planned ? "Il primo è quello previsto dal piano annuale." : ""}</p>
+      <p>Ogni argomento appartiene a uno dei dieci temi: ${THEMES.join(", ")}. Scrivete cinque argomenti che vi incuriosiscono${canAsk() ? ", oppure lasciate le righe vuote e fatevele proporre da Claude" : ""}. ${planned ? "Il primo è quello previsto dal piano annuale." : ""}</p>
       <div class="draft">${rows}</div>
       ${vs?.error ? `<p class="err">${esc(vs.error)}</p>` : ""}
       <div class="row">
@@ -1094,7 +1109,7 @@ function voteView() {
     const mine = picks.includes(c.key), n = st.counts[c.key].length, win = closed && vote.winner === c.key;
     return `<li class="cand ${win ? "win" : mine ? "mine" : ""}">
       <span class="rn">${roman(i + 1)}</span>
-      <div><div class="t">${esc(c.title)}</div>${c.subtitle ? `<div class="s">${esc(c.subtitle)}</div>` : ""}</div>
+      <div><div class="row" style="gap:8px"><span class="t">${esc(c.title)}</span>${themeChip(c.theme)}</div>${c.subtitle ? `<div class="s">${esc(c.subtitle)}</div>` : ""}</div>
       ${closed ? (win ? `<span class="chip gold">vincitore</span>` : "<span></span>")
         : `<button class="btn small ${mine ? "primary" : ""}" type="button" data-act="vote-pick" data-key="${esc(c.key)}" aria-pressed="${mine}" ${S.me && S.canWrite ? "" : "disabled"}>${mine ? "✓ Votato" : "Vota"}</button>`}
       ${st.revealed ? `<div class="tally">
@@ -1234,7 +1249,7 @@ document.addEventListener("click", e => {
     case "gen-topic": {
       const item = planItems().find(i => i.month === d.month);
       const input = document.getElementById("plan-" + d.month);
-      generateTopic(d.month, input ? input.value : (item?.title || ""), item?.subtitle || "");
+      generateTopic(d.month, input ? input.value : (item?.title || ""), item?.subtitle || "", item?.theme || "");
       break;
     }
     case "stop-gen": S.gen?.ctl?.abort(); break;
@@ -1246,7 +1261,7 @@ document.addEventListener("click", e => {
     case "use-suggest": {
       const s = S.suggest[d.month]?.list?.[+d.k]; if (!s) break;
       delete S.suggest[d.month];
-      savePlan(planItems().map(i => i.month === d.month ? { ...i, title: s.title, subtitle: s.subtitle } : i), "Piano aggiornato");
+      savePlan(planItems().map(i => i.month === d.month ? { ...i, title: s.title, subtitle: s.subtitle, theme: s.theme } : i), "Piano aggiornato");
       break;
     }
     case "plan-add": {
@@ -1278,6 +1293,7 @@ document.addEventListener("keydown", e => {
 document.addEventListener("change", e => {
   const el = e.target, d = el.dataset;
   if (d.act === "book") saveProg(d.topic, cur => { cur.books[d.i] = el.checked; });
+  if (d.act === "plan-theme") savePlan(planItems().map(i => i.month === d.month ? { ...i, theme: el.value } : i), "Piano aggiornato");
   if (d.act === "plan-title") {
     const v = el.value.trim();
     savePlan(planItems().map(i => i.month === d.month ? { ...i, title: v, subtitle: i.title === v ? i.subtitle : "" } : i), "Piano aggiornato");

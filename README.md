@@ -6,7 +6,8 @@ Una web app per studiare in due un argomento nuovo ogni mese e diventare più co
 - **Capitolo**: concetti chiave e letture. C'è una lezione scritta da Claude, che resta salvata, e un tutor a cui fare domande.
 - **Test**: un quiz a scelta multipla per ogni capitolo e un esame finale. Ogni risposta ha la sua spiegazione. Si salvano il punteggio migliore e lo storico dei tentativi.
 - **Votazione**: l'argomento del mese successivo lo scegliete voi. Si propongono 5 argomenti, scritti a mano o suggeriti da Claude. Ognuno ha 3 voti da dare a 3 argomenti diversi, al massimo uno per argomento. I voti dell'altro restano nascosti finché non avete votato entrambi. Vince l'argomento con più voti. In caso di pareggio potete cambiare i voti o tirare a sorte. Il vincitore entra nel piano annuale e Claude ne prepara il programma.
-- **Piano annuale**: dodici argomenti modificabili. Claude prepara il programma completo del mese con un clic e può proporre alternative.
+- **Temi**: ogni argomento appartiene a uno di questi dieci temi: geopolitica, storia, arte, letteratura, economia, politica, scienza, filosofia, tecnologia, cultura. Claude propone solo argomenti con un tema valido. Le 5 proposte di una votazione hanno temi diversi tra loro.
+- **Piano annuale**: dodici argomenti modificabili, che coprono tutti e dieci i temi. Claude prepara il programma completo del mese con un clic e può proporre alternative.
 - **Archivio**: tutti i mesi studiati, con i risultati di ciascuno.
 
 ## Dove si usa
