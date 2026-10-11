@@ -633,6 +633,17 @@ const Store = {
     if (this.mode === "cloud") { const s = await this.db.doc(coll + "/" + id).get(); return s.exists ? s.data() : null; }
     return (this.data[coll] || {})[id] ?? null;
   },
+  del(coll, id) {
+    const key = coll + "/" + id;
+    const run = async () => {
+      if (this.mode === "cloud") return this.db.doc(key).delete();
+      if (this.data[coll]) delete this.data[coll][id];
+      this.persist();
+      this.subs.filter(s => s.coll === coll).forEach(s => s.cb(this.rows(coll)));
+    };
+    const p = (this.chains[key] || Promise.resolve()).catch(() => {}).then(run);
+    this.chains[key] = p; return p;
+  },
   set(coll, id, data) {
     const key = coll + "/" + id;
     const run = async () => {
@@ -889,7 +900,17 @@ function normalizeTopic(r, title, month) {
     chapters, books, extras, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
 }
 
-async function generateTopic(month, title, note, theme) {
+async function clearMonth(month) {
+  const ids = [];
+  ["c1", "c2", "c3", "c4", "c5", "c6", "c7", "c8", "final"].forEach(k => ids.push(["quizzes", month + "--" + k]));
+  ["c1", "c2", "c3", "c4"].forEach(c => { ids.push(["lessons", month + "--" + c]); [1, 2, 3].forEach(l => ids.push(["lessons", `${month}--${c}--l${l}`])); });
+  S.progress.filter(p => p.topic === month).forEach(p => ids.push(["progress", p.id]));
+  for (const [c, id] of ids) { try { await Store.del(c, id); } catch (e) {} }
+  Object.keys(S.quizCache).forEach(k => { if (k.startsWith(month + "--")) delete S.quizCache[k]; });
+  Object.keys(S.lessons).forEach(k => { if (k.startsWith(month + "--")) delete S.lessons[k]; });
+  S.progress = S.progress.filter(p => p.topic !== month);
+}
+async function generateTopic(month, title, note, theme, round) {
   if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
   if (!title.trim()) { toast("Scrivi prima il titolo dell'argomento."); return; }
   const ctl = new AbortController();
@@ -900,8 +921,11 @@ async function generateTopic(month, title, note, theme) {
     const topic = normalizeTopic(r, title, month);
     if (!topic) throw { code: "invalid_json" };
     topic.theme = normTheme(theme);
+    if (round) topic.voteRound = round;
+    const old = topicById(month);
+    if (old && old.voteRound !== round) await clearMonth(month);
     S.gen = null;
-    if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto") && S.view.name !== "vote") {
+    if (await save("topics", month, topic, "Programma di " + monthLabel(month) + " pronto") && (S.view.name !== "vote" || month === NOW)) {
       S.view = { name: "topic", id: month };
       window.scrollTo(0, 0);
     }
@@ -1060,7 +1084,16 @@ async function askTutor(topic, ch) {
 
 /* ---------- vote for next month's topic ---------- */
 const VOTES_EACH = 3, CANDIDATES = 5;
-const voteMonth = () => addMonths(NOW, 1);
+// One-time exception: a vote for the current month (flag currentMonth on votes/<NOW>)
+// stays active until its winner's programme has been prepared.
+function currentMonthVote() {
+  const v = S.votes.find(x => x.id === NOW && x.currentMonth);
+  if (!v) return null;
+  if (v.status === "closed" && v.round && topicById(NOW)?.voteRound === v.round) return null;
+  return v;
+}
+const voteMonth = () => currentMonthVote() ? NOW : addMonths(NOW, 1);
+const topicForVote = (month, vote) => { const t = topicById(month); return t && (month !== NOW || !vote?.currentMonth || t.voteRound === vote.round) ? t : null; };
 const voteFor = month => S.votes.find(v => v.id === month && Array.isArray(v.candidates) && v.candidates.length) || null;
 function ballotFor(uid, round) {
   const b = S.ballots.find(x => x.id === uid);
@@ -1127,6 +1160,7 @@ async function openVote(month) {
   const doc = { month, round: "r" + Date.now().toString(36), status: "open", winner: null,
     candidates: items.map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle, theme: x.theme })),
     createdBy: S.me || null, createdAt: new Date().toISOString() };
+  if (S.votes.find(v => v.id === month)?.currentMonth) doc.currentMonth = true;
   S.votes = [...S.votes.filter(v => v.id !== month), { ...doc, id: month }];
   render();
   await save("votes", month, doc, "Votazione aperta");
@@ -1520,10 +1554,11 @@ function archiveView() {
 }
 
 function voteView() {
-  const month = voteMonth(), vote = voteFor(month), topic = topicById(month);
+  const month = voteMonth(), vote = voteFor(month), topic = topicForVote(month, vote);
   const header = `<section class="hero">
     <span class="label">${ic("vote")} ${esc(monthLabel(month))}</span>
-    <h1>Il prossimo argomento</h1>
+    <h1>${month === NOW ? "L'argomento di questo mese" : "Il prossimo argomento"}</h1>
+    ${month === NOW ? `<p class="kv">${ic("calendar")} Votazione speciale: il vincitore sostituisce il programma attuale di ${esc(monthLabel(NOW).toLowerCase())}.</p>` : ""}
     ${vote?.status === "closed" ? "" : `<div class="facts"><span>${ic("layers")}<b class="num">5</b> candidati</span><span>${ic("check")}<b class="num">${VOTES_EACH}</b> voti a testa, uno per argomento</span><span>${ic("users")}risultati quando avete votato entrambi</span></div>`}
   </section>`;
 
@@ -1704,7 +1739,7 @@ document.addEventListener("click", e => {
     case "quiz-retry": if (S.quiz) { S.quiz.answers = {}; S.quiz.submitted = false; window.scrollTo(0, 0); render(); } break;
     case "gen-topic": {
       const v = voteFor(d.month), w = v?.status === "closed" ? v.candidates.find(c => c.key === v.winner) : null;
-      if (w) generateTopic(d.month, w.title, w.subtitle || "", w.theme || "");
+      if (w) generateTopic(d.month, w.title, w.subtitle || "", w.theme || "", v.round);
       else toast("Prima scegliete l'argomento con la votazione.");
       break;
     }
@@ -1720,9 +1755,11 @@ document.addEventListener("click", e => {
     case "vote-reset-cancel": S.busy.voteReset = false; render(); break;
     case "vote-reset": {
       S.busy.voteReset = false;
-      const m = voteMonth();
-      S.votes = S.votes.filter(v => v.id !== m); render();
-      save("votes", m, { month: m, candidates: [], status: "reset", resetAt: new Date().toISOString() }, "Votazione azzerata");
+      const m = voteMonth(), wasCurrent = !!S.votes.find(v => v.id === m)?.currentMonth;
+      const doc = { month: m, candidates: [], status: "reset", resetAt: new Date().toISOString() };
+      if (wasCurrent) doc.currentMonth = true;
+      S.votes = [...S.votes.filter(v => v.id !== m), { ...doc, id: m }]; render();
+      save("votes", m, doc, "Votazione azzerata");
       break;
     }
   }
