@@ -2,11 +2,11 @@
 
 Una web app per studiare in due un argomento nuovo ogni mese e diventare più colti.
 
-- **Argomento del mese**: il programma di studio diviso in 4 capitoli, uno per settimana, con libri consigliati, film e luoghi da visitare. Mostra i progressi di entrambi e la settimana in corso.
+- **Argomento del mese**: il programma di studio diviso in 4 capitoli, uno per settimana, con libri consigliati e altre fonti: podcast, film, serie, documentari, video su YouTube e luoghi da visitare. Anche ogni settimana ha le sue fonti da ascoltare e guardare. I link portano a una ricerca su YouTube, su Google o sulla mappa, così funzionano sempre. Mostra i progressi di entrambi e la settimana in corso.
 - **Capitolo**: concetti chiave e letture. C'è una lezione scritta da Claude, che resta salvata, e un tutor a cui fare domande.
 - **Test**: ogni settimana ha il suo test conclusivo (10 domande, uguali per entrambi). C'è poi un esame finale su tutto il mese. Ogni risposta ha la sua spiegazione.
 - **Allenamento libero**: un test quando volete, con domande solo sulle settimane che avete già completato, prese dai test o scritte da Claude.
-- **La sfida**: si salvano tutti i punteggi. Ogni test vale un punto per chi ha il risultato migliore, gli allenamenti un punto per chi ha la media più alta. Una tabella confronta i vostri record e mostra gli ultimi test.
+- **La sfida**: si salvano tutti i punteggi. Ogni test vale un punto per chi ha il risultato migliore. Alla fine di ogni settimana un altro punto va a chi ha risposto a più domande di allenamento in quella settimana. Una tabella confronta i vostri record e mostra gli ultimi test.
 - **Votazione**: l'argomento del mese successivo lo scegliete voi. Si propongono 5 argomenti, scritti a mano o suggeriti da Claude. Ognuno ha 3 voti da dare a 3 argomenti diversi, al massimo uno per argomento. I voti dell'altro restano nascosti finché non avete votato entrambi. Vince l'argomento con più voti. In caso di pareggio potete cambiare i voti o tirare a sorte. Il vincitore entra nel piano annuale e Claude ne prepara il programma.
 - **Temi**: ogni argomento appartiene a uno di questi dieci temi: geopolitica, storia, arte, letteratura, economia, politica, scienza, filosofia, tecnologia, cultura. Claude propone solo argomenti con un tema valido. Le 5 proposte di una votazione hanno temi diversi tra loro.
 - **Piano annuale**: dodici argomenti modificabili, che coprono tutti e dieci i temi. Claude prepara il programma completo del mese con un clic e può proporre alternative.

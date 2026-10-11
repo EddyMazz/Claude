@@ -19,7 +19,30 @@
         "1494: cacciata dei Medici e la repubblica di Savonarola"
       ],
       "reading": "Gombrich, La storia dell'arte, capitolo 12. Ross King, La cupola di Brunelleschi, capitoli 1-3. Facoltativo: Burckhardt, La civiltà del Rinascimento in Italia, parte prima.",
-      "minutes": 300
+      "minutes": 300,
+      "media": [
+        {
+          "type": "youtube",
+          "title": "Lorenzo il Magnifico",
+          "by": "Alessandro Barbero",
+          "note": "Una conferenza su Lorenzo de' Medici e sull'equilibrio tra gli stati italiani.",
+          "query": "Barbero Lorenzo il Magnifico"
+        },
+        {
+          "type": "serie",
+          "title": "I Medici, prima stagione",
+          "by": "Rai Fiction",
+          "note": "Cosimo il Vecchio, la banca e il ritorno dall'esilio del 1434 (con molte licenze narrative).",
+          "query": "I Medici Masters of Florence"
+        },
+        {
+          "type": "podcast",
+          "title": "Wikiradio: Lorenzo il Magnifico",
+          "by": "Rai Radio 3",
+          "note": "Mezz'ora per ripassare la vita di Lorenzo e la congiura dei Pazzi.",
+          "query": "Wikiradio Lorenzo il Magnifico"
+        }
+      ]
     },
     {
       "id": "c2",
@@ -36,7 +59,30 @@
         "La caduta di Costantinopoli (1453) e i dotti greci in Italia"
       ],
       "reading": "Ross King, La cupola di Brunelleschi (da finire). Greenblatt, Il manifesto della libertà, capitoli 1-5. Gombrich, capitolo 13.",
-      "minutes": 300
+      "minutes": 300,
+      "media": [
+        {
+          "type": "youtube",
+          "title": "La cupola di Brunelleschi",
+          "by": "Smarthistory / Rai Cultura",
+          "note": "Come fu costruita la cupola senza centine: cercate i video che mostrano la doppia calotta e i mattoni a spina di pesce.",
+          "query": "cupola Brunelleschi come è stata costruita"
+        },
+        {
+          "type": "youtube",
+          "title": "Masaccio, la Trinità di Santa Maria Novella",
+          "by": "Smarthistory (in inglese)",
+          "note": "La prospettiva lineare spiegata davanti all'affresco.",
+          "query": "Smarthistory Masaccio Holy Trinity"
+        },
+        {
+          "type": "podcast",
+          "title": "Wikiradio: Pico della Mirandola",
+          "by": "Rai Radio 3",
+          "note": "Il filosofo dell'Oratio de hominis dignitate e la Firenze di Ficino.",
+          "query": "Wikiradio Pico della Mirandola"
+        }
+      ]
     },
     {
       "id": "c3",
@@ -53,7 +99,30 @@
         "Raffaello e la Scuola di Atene"
       ],
       "reading": "Gombrich, capitolo 14. Isaacson, Leonardo da Vinci (4-5 capitoli a scelta). Vasari, Vite: le biografie di Leonardo, Michelangelo e Raffaello.",
-      "minutes": 300
+      "minutes": 300,
+      "media": [
+        {
+          "type": "film",
+          "title": "Il tormento e l'estasi (1965)",
+          "by": "Carol Reed",
+          "note": "Da vedere mentre studiate la volta della Sistina.",
+          "query": "Il tormento e l'estasi film 1965"
+        },
+        {
+          "type": "documentario",
+          "title": "Ulisse: puntate su Leonardo e Michelangelo",
+          "by": "Alberto Angela, Rai",
+          "note": "Su RaiPlay: i taccuini di Leonardo, il David, la Sistina.",
+          "query": "Alberto Angela Leonardo da Vinci Ulisse"
+        },
+        {
+          "type": "youtube",
+          "title": "Raffaello, la Scuola di Atene",
+          "by": "Smarthistory (in inglese)",
+          "note": "Chi sono i filosofi dell'affresco e perché è un manifesto del Rinascimento maturo.",
+          "query": "Smarthistory Raphael School of Athens"
+        }
+      ]
     },
     {
       "id": "c4",
@@ -70,7 +139,30 @@
         "Il Concilio di Trento (1545) e la fine del Rinascimento"
       ],
       "reading": "Machiavelli, Il Principe (tutto). Gombrich, capitolo 15. Prima dell'esame finale rileggete i vostri appunti delle quattro settimane.",
-      "minutes": 300
+      "minutes": 300,
+      "media": [
+        {
+          "type": "youtube",
+          "title": "Machiavelli e Il Principe",
+          "by": "Alessandro Barbero",
+          "note": "Che cosa ha davvero scritto Machiavelli e perché fa ancora discutere.",
+          "query": "Barbero Machiavelli Il Principe"
+        },
+        {
+          "type": "film",
+          "title": "Il mestiere delle armi (2001)",
+          "by": "Ermanno Olmi",
+          "note": "Le guerre d'Italia e la fine di un mondo, nel 1526.",
+          "query": "Il mestiere delle armi Olmi"
+        },
+        {
+          "type": "podcast",
+          "title": "Wikiradio: Il Sacco di Roma",
+          "by": "Rai Radio 3",
+          "note": "Il 1527 raccontato in mezz'ora.",
+          "query": "Wikiradio Sacco di Roma 1527"
+        }
+      ]
     }
   ],
   "books": [
@@ -126,19 +218,74 @@
   ],
   "extras": [
     {
-      "type": "luogo",
-      "title": "Firenze: Duomo, Cupola e Cappella Brancacci",
-      "note": "Salire sulla cupola dopo aver letto Ross King è un'esperienza diversa."
-    },
-    {
-      "type": "luogo",
-      "title": "Palazzo Ducale di Urbino",
-      "note": "Lo studiolo di Federico da Montefeltro e la Galleria Nazionale delle Marche."
+      "type": "serie",
+      "title": "I Medici (2016-2019)",
+      "by": "Rai Fiction, con Dustin Hoffman e Richard Madden",
+      "note": "La prima stagione racconta Cosimo il Vecchio, la seconda Lorenzo il Magnifico e la congiura dei Pazzi. È romanzata: confrontatela con quello che studiate.",
+      "query": "I Medici serie Rai"
     },
     {
       "type": "film",
       "title": "Il tormento e l'estasi (1965)",
-      "note": "Charlton Heston è Michelangelo alle prese con la volta della Sistina e con Giulio II."
+      "by": "Carol Reed, con Charlton Heston e Rex Harrison",
+      "note": "Michelangelo alle prese con la volta della Sistina e con papa Giulio II.",
+      "query": "Il tormento e l'estasi film 1965"
+    },
+    {
+      "type": "film",
+      "title": "Il mestiere delle armi (2001)",
+      "by": "Ermanno Olmi",
+      "note": "Gli ultimi giorni di Giovanni dalle Bande Nere nel 1526, alla vigilia del Sacco di Roma: le guerre d'Italia viste da vicino.",
+      "query": "Il mestiere delle armi Olmi"
+    },
+    {
+      "type": "documentario",
+      "title": "Ulisse: il piacere della scoperta, puntate sul Rinascimento",
+      "by": "Alberto Angela, Rai",
+      "note": "Le puntate dedicate a Firenze, a Leonardo e a Michelangelo, disponibili su RaiPlay.",
+      "query": "Alberto Angela Ulisse Rinascimento Firenze"
+    },
+    {
+      "type": "podcast",
+      "title": "Il podcast di Alessandro Barbero",
+      "by": "Lezioni e conferenze di Alessandro Barbero",
+      "note": "Raccolta di lezioni dello storico: cercate quelle sul Quattrocento, sui Medici e sulle guerre d'Italia.",
+      "query": "Il podcast di Alessandro Barbero"
+    },
+    {
+      "type": "podcast",
+      "title": "Wikiradio",
+      "by": "Rai Radio 3",
+      "note": "Ogni puntata racconta un personaggio o un evento in mezz'ora. Ce ne sono su Lorenzo il Magnifico, Machiavelli, Leonardo e molti altri.",
+      "query": "Wikiradio Rai Radio 3 Rinascimento"
+    },
+    {
+      "type": "youtube",
+      "title": "Lezioni di Alessandro Barbero sul Rinascimento",
+      "by": "vari canali",
+      "note": "Conferenze registrate su Lorenzo il Magnifico, Machiavelli e l'Italia del Quattrocento.",
+      "query": "Alessandro Barbero Rinascimento conferenza"
+    },
+    {
+      "type": "youtube",
+      "title": "Smarthistory: Early Renaissance in Florence",
+      "by": "Smarthistory (in inglese)",
+      "note": "Brevi video di storici dell'arte davanti alle opere: Brunelleschi, Masaccio, Donatello. Si possono attivare i sottotitoli.",
+      "query": "Smarthistory Early Renaissance Florence"
+    },
+    {
+      "type": "luogo",
+      "title": "Firenze: Duomo, Cupola e Cappella Brancacci",
+      "by": "",
+      "note": "Salire sulla cupola dopo aver letto Ross King è un'esperienza diversa.",
+      "query": ""
+    },
+    {
+      "type": "luogo",
+      "title": "Palazzo Ducale di Urbino",
+      "by": "",
+      "note": "Lo studiolo di Federico da Montefeltro e la Galleria Nazionale delle Marche.",
+      "query": ""
     }
   ],
   "createdAt": "2026-10-11T09:00:00.000Z",

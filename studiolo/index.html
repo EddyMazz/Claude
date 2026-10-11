@@ -212,6 +212,12 @@ textarea { min-height: 80px; resize: vertical; }
 .log li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; }
 .rival { flex-basis: 100%; font-size: 14.5px; color: var(--muted); }
 .rival b { color: var(--ink); font-weight: 600; }
+.media { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 0 24px; }
+.media li { display: grid; gap: 2px; align-content: start; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; min-width: 0; }
+.media .t { font-weight: 600; font-size: 15.5px; line-height: 1.3; }
+.media .by { font-style: italic; }
+.media .note { color: var(--muted); }
+.media a { font-size: 13.5px; margin-top: 2px; }
 .chip.now { border-color: var(--lapis); color: var(--on-accent); background: var(--lapis); }
 
 /* Vote */
@@ -295,6 +301,36 @@ function weekRange(month, i, n) {
   const [y, m] = month.split("-").map(Number), last = new Date(y, m, 0).getDate();
   const a = 1 + 7 * i, b = i === n - 1 ? last : Math.min(last, 7 * i + 7);
   return `${a}–${b} ${new Date(y, m - 1, 1).toLocaleDateString("it-IT", { month: "long" })}`;
+}
+function weekOfDate(month, iso) {
+  const d = new Date(iso);
+  if (isNaN(d) || monthKey(d) !== month) return -1;
+  return Math.min(3, Math.floor((d.getDate() - 1) / 7));
+}
+function weekEnded(month, i) {
+  const [y, m] = month.split("-").map(Number), last = new Date(y, m, 0).getDate();
+  const end = i === 3 ? last : Math.min(last, 7 * i + 7);
+  return new Date() >= new Date(y, m - 1, end + 1);
+}
+const MEDIA_TYPES = ["youtube", "podcast", "film", "serie", "documentario", "luogo"];
+const MEDIA_LABEL = { youtube: "Video su YouTube", podcast: "Podcast", film: "Film", serie: "Serie", documentario: "Documentario", luogo: "Luogo" };
+function normMedia(list, max) {
+  return (Array.isArray(list) ? list : []).filter(x => x && x.title).slice(0, max).map(x => {
+    const t = String(x.type || "").toLowerCase();
+    return { type: MEDIA_TYPES.includes(t) ? t : "documentario", title: String(x.title), by: String(x.by || ""), note: String(x.note || ""), query: String(x.query || "") };
+  });
+}
+function mediaLink(x) {
+  const q = x.query || [x.title, x.by].filter(Boolean).join(" ");
+  if (x.type === "youtube") return { href: "https://www.youtube.com/results?search_query=" + encodeURIComponent(q), label: "Cerca su YouTube" };
+  if (x.type === "podcast") return { href: "https://www.google.com/search?q=" + encodeURIComponent(q + " podcast"), label: "Cerca il podcast" };
+  if (x.type === "luogo") return { href: "https://www.google.com/maps/search/" + encodeURIComponent(x.title), label: "Apri sulla mappa" };
+  return { href: "https://www.google.com/search?q=" + encodeURIComponent(q), label: "Dove vederlo" };
+}
+function mediaList(items) {
+  const sorted = [...items].sort((a, b) => MEDIA_TYPES.indexOf(a.type) - MEDIA_TYPES.indexOf(b.type));
+  return `<ul class="media">${sorted.map(x => { const l = mediaLink(x);
+    return `<li><span class="label">${esc(MEDIA_LABEL[x.type] || x.type)}</span><span class="t">${esc(x.title)}</span>${x.by ? `<span class="by">${esc(x.by)}</span>` : ""}${x.note ? `<span class="note">${esc(x.note)}</span>` : ""}<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a></li>`; }).join("")}</ul>`;
 }
 const currentWeek = month => month === NOW ? Math.min(3, Math.floor((new Date().getDate() - 1) / 7)) : -1;
 const shuffle = a => { const r = [...a]; for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; } return r; };
@@ -459,10 +495,11 @@ ${note ? "Indicazioni: " + note + "\n" : ""}${AUDIENCE}
 ${prev ? "Argomenti già studiati nei mesi precedenti (evita ripetizioni, puoi richiamarli): " + prev + "\n" : ""}
 Rispondi solo con un oggetto JSON con questa forma:
 {"title": string, "subtitle": string (una riga evocativa), "intro": string (3-4 frasi: di cosa si tratta e perché vale la pena studiarlo),
- "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [8 concetti chiave, frasi brevi], "reading": string (cosa leggere o guardare per questo capitolo, citando i libri consigliati e le pagine o i capitoli quando possibile), "minutes": number (minuti di studio stimati per la settimana)}],
+ "chapters": [{"title": string, "summary": string (2-3 frasi), "points": [8 concetti chiave, frasi brevi], "reading": string (cosa leggere o guardare per questo capitolo, citando i libri consigliati e le pagine o i capitoli quando possibile), "minutes": number (minuti di studio stimati per la settimana),
+   "media": [3 fonti per la settimana, con la stessa forma degli extra qui sotto: almeno un video su YouTube e almeno un podcast, film, serie o documentario]}],
  "books": [{"title": string, "author": string, "year": number, "level": "introduttivo" | "approfondimento" | "classico", "why": string (una frase)}],
- "extras": [{"type": "film" | "documentario" | "podcast" | "luogo", "title": string, "note": string}]}
-Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; 5-7 libri che esistono davvero e si trovano in italiano, senza inventare titoli o autori (se non sei sicuro di un titolo, non includerlo); 2-4 extra reali.`;
+ "extras": [{"type": "youtube" | "podcast" | "film" | "serie" | "documentario" | "luogo", "title": string, "by": string (canale YouTube, autore o conduttore del podcast, regista), "note": string (una frase: perché vederlo o ascoltarlo), "query": string (parole da cercare per trovarlo, in particolare su YouTube)}]}
+Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; 5-7 libri che esistono davvero e si trovano in italiano, senza inventare titoli o autori (se non sei sicuro di un titolo, non includerlo); 6-10 extra per tutto il mese, con almeno un podcast, un film o una serie, un documentario e due video su YouTube, più un luogo da visitare se ha senso. Fonti, canali, podcast e film devono esistere davvero: preferisci canali e programmi noti (per esempio Rai Cultura, Rai Play Sound, divulgatori riconosciuti) e, se non sei sicuro del titolo esatto di un video, descrivilo e metti in "query" le parole giuste per cercarlo. Non scrivere link.`;
 }
 function promptQuiz(topic, ch) {
   if (ch) return `Crea il test conclusivo della settimana dedicata a "${ch.title}" nel percorso "${topic.title}".
@@ -525,16 +562,14 @@ function normalizeTopic(r, title, month) {
   const chapters = r.chapters.filter(c => c && c.title).slice(0, 4).map((c, i) => ({
     id: "c" + (i + 1), title: String(c.title), summary: String(c.summary || ""),
     points: Array.isArray(c.points) ? c.points.map(String).slice(0, 8) : [],
-    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90
+    reading: String(c.reading || ""), minutes: Number(c.minutes) || 90, media: normMedia(c.media, 4)
   }));
   if (chapters.length < 3) return null;
   const books = (Array.isArray(r.books) ? r.books : []).filter(b => b && b.title).slice(0, 8).map(b => ({
     title: String(b.title), author: String(b.author || ""), year: Number(b.year) || null,
     level: ["introduttivo", "approfondimento", "classico"].includes(b.level) ? b.level : "approfondimento", why: String(b.why || "")
   }));
-  const extras = (Array.isArray(r.extras) ? r.extras : []).filter(x => x && x.title).slice(0, 5).map(x => ({
-    type: String(x.type || "extra"), title: String(x.title), note: String(x.note || "")
-  }));
+  const extras = normMedia(r.extras, 12);
   return { month, title: String(r.title || title), subtitle: String(r.subtitle || ""), intro: String(r.intro || ""),
     chapters, books, extras, createdAt: new Date().toISOString(), createdBy: S.me || null, source: "claude" };
 }
@@ -652,7 +687,7 @@ function submitQuiz() {
     const prev = cur.quiz[z.key] || {};
     const entry = { pct, right, total: qs.length, at: new Date().toISOString() };
     if (z.key === "practice") entry.chapters = z.data.chapters || [];
-    const hist = [...(prev.history || []), entry].slice(z.key === "practice" ? -30 : -10);
+    const hist = [...(prev.history || []), entry].slice(z.key === "practice" ? -200 : -10);
     cur.quiz[z.key] = { best: Math.max(prev.best ?? 0, pct), last: pct, attempts: (prev.attempts || 0) + 1, history: hist };
   });
   window.scrollTo(0, 0);
@@ -858,6 +893,10 @@ function quizLabel(topic, key) {
   const i = topic.chapters.findIndex(c => c.id === key);
   return i >= 0 ? (isWeekly(topic) ? "Test settimana " : "Test capitolo ") + roman(i + 1) : "Test";
 }
+function practiceAnswered(topic, uid, w) {
+  return (prog(topic.id, uid).quiz?.practice?.history || [])
+    .filter(h => weekOfDate(topic.id, h.at) === w).reduce((a, h) => a + (Number(h.total) || 0), 0);
+}
 function challenge(topic) {
   const ppl = peopleFor(topic.id);
   const pts = Object.fromEntries(ppl.map(u => [u, 0]));
@@ -870,20 +909,21 @@ function challenge(topic) {
     }
     return { key, label: quizLabel(topic, key), scores, lead };
   });
-  const practice = ppl.map(u => {
-    const h = prog(topic.id, u).quiz?.practice?.history || [];
-    return { n: h.length, avg: h.length ? Math.round(h.reduce((a, b) => a + b.pct, 0) / h.length) : null };
+  const practiceWeeks = [0, 1, 2, 3].map(w => {
+    const counts = ppl.map(u => practiceAnswered(topic, u, w));
+    const ended = weekEnded(topic.id, w);
+    let lead = null;
+    if (ended && ppl.length >= 2) {
+      const mx = Math.max(...counts), top = ppl.filter((u, i) => counts[i] === mx);
+      if (mx > 0 && top.length === 1) { lead = top[0]; pts[lead]++; }
+    }
+    return { w, counts, ended, current: currentWeek(topic.id) === w, lead };
   });
-  let practiceLead = null;
-  if (ppl.length >= 2 && practice.every(x => x.avg != null)) {
-    const mx = Math.max(...practice.map(x => x.avg)), top = ppl.filter((u, i) => practice[i].avg === mx);
-    if (top.length === 1) { practiceLead = top[0]; pts[practiceLead]++; }
-  }
   const log = [];
   ppl.forEach(u => Object.entries(prog(topic.id, u).quiz || {}).forEach(([key, q]) =>
     (q.history || []).forEach(h => log.push({ uid: u, key, ...h }))));
   log.sort((a, b) => String(b.at).localeCompare(String(a.at)));
-  return { ppl, pts, rows, practice, practiceLead, log: log.slice(0, 10) };
+  return { ppl, pts, rows, practiceWeeks, log: log.slice(0, 10) };
 }
 function challengeSection(topic) {
   const c = challenge(topic);
@@ -893,10 +933,11 @@ function challengeSection(topic) {
   const score = two ? `<div class="duel-score" aria-label="Punteggio della sfida">
       ${c.ppl.map((u, i) => `${i ? `<span class="vs">contro</span>` : ""}<span class="side">${avatar(u)}<span>${esc(personName(u))}</span><span class="pts">${c.pts[u]}</span></span>`).join("")}
     </div>
-    <p class="kv">Ogni test vale un punto per chi ha il miglior risultato, quando lo avete fatto entrambi. Gli allenamenti valgono un punto per chi ha la media più alta. A pari punteggio il punto non va a nessuno. Potete ripetere i test per migliorare.</p>`
+    <p class="kv">Ogni test vale un punto per chi ha il miglior risultato, quando lo avete fatto entrambi. Per gli allenamenti, alla fine di ogni settimana un punto va a chi ha risposto a più domande in quella settimana. A pari punteggio il punto non va a nessuno. Potete ripetere i test per migliorare.</p>`
     : `<p class="kv">Quando anche l'altra persona farà i test, qui vedrete chi è in vantaggio, test per test.</p>`;
   const rows = c.rows.map(r => `<tr><td>${esc(r.label)}</td>${r.scores.map((x, i) => `<td class="n ${r.lead === c.ppl[i] ? "lead" : ""}">${x == null ? "—" : x + "%"}${r.lead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`).join("");
-  const prac = `<tr><td>Allenamenti</td>${c.practice.map((p, i) => `<td class="n ${c.practiceLead === c.ppl[i] ? "lead" : ""}">${p.n ? `${p.n} · media ${p.avg}%` : "—"}${c.practiceLead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`;
+  const prac = c.practiceWeeks.map(pw => `<tr><td>Allenamento sett. ${roman(pw.w + 1)}${pw.current ? ` <span class="label">in corso</span>` : ""}</td>${pw.counts.map((n, i) =>
+    `<td class="n ${pw.lead === c.ppl[i] ? "lead" : ""}">${n || pw.ended || pw.current ? n + " domande" : "—"}${pw.lead === c.ppl[i] ? " ★" : ""}</td>`).join("")}</tr>`).join("");
   const log = c.log.length ? `<ul class="log">${c.log.map(l => `<li>${avatar(l.uid, "sm")}<span>${esc(personName(l.uid))} · ${esc(quizLabel(topic, l.key))}</span><span class="label num">${l.pct}% · ${esc(fmt(l.at))}</span></li>`).join("")}</ul>` : `<p class="kv">Nessun test ancora: il primo punto è in palio.</p>`;
   return `<section class="sec">
     <div class="sec-head"><h2>La sfida</h2><span class="label">migliori risultati del mese</span></div>
@@ -953,7 +994,7 @@ function topicView(topic) {
       </div>
       <p class="why">${esc(b.why)}</p>
     </div>`).join("");
-  const extras = (topic.extras || []).map(x => `<li><span class="label">${esc(x.type)}</span><span class="t">${esc(x.title)}</span><span>${esc(x.note)}</span></li>`).join("");
+  const extras = (topic.extras || []).length ? mediaList(normMedia(topic.extras, 20)) : "";
   const myFinal = myP?.quiz?.final;
   return `
   <section class="hero">
@@ -973,6 +1014,10 @@ function topicView(topic) {
         <div class="sec-head"><h2>Libri consigliati</h2><span class="label">dal più accessibile al più impegnativo</span></div>
         <div class="books">${books}</div>
       </section>` : ""}
+      ${extras ? `<section class="sec">
+        <div class="sec-head"><h2>Ascolta, guarda, visita</h2><span class="label">podcast, film, video e luoghi per tutto il mese</span></div>
+        ${extras}
+      </section>` : ""}
     </div>
     <aside class="sec">
       <div class="panel">
@@ -987,7 +1032,6 @@ function topicView(topic) {
         ${myFinal ? `<p class="kv">Il tuo miglior risultato: <b class="num">${myFinal.best}%</b> · tentativi <b class="num">${myFinal.attempts}</b></p>` : ""}
         <div class="row"><button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="final">Fai l'esame finale</button></div>
       </div>
-      ${extras ? `<div class="panel"><h2>Oltre i libri</h2><ul class="extras">${extras}</ul></div>` : ""}
     </aside>
   </div>`;
 }
@@ -999,8 +1043,9 @@ function practicePanel(topic) {
   const names = studied.map(c => roman(topic.chapters.indexOf(c) + 1)).join(", ");
   return `<div class="panel">
     <h2>Allenamento libero</h2>
-    <p>Un test quando volete, con domande solo su ${isWeekly(topic) ? "le settimane" : "i capitoli"} che hai già completato. Anche questi punteggi entrano nella sfida.</p>
-    <p class="kv">${studied.length ? `Domande su: <b>${isWeekly(topic) ? "settimana" : "capitolo"} ${esc(names)}</b>` : `Segna come ${isWeekly(topic) ? "completata la prima settimana" : "studiato il primo capitolo"} per sbloccarlo.`}${myPr ? ` · ${myPr.attempts} allenamenti, record ${myPr.best}%` : ""}</p>
+    <p>Un test quando volete, con domande solo su ${isWeekly(topic) ? "le settimane" : "i capitoli"} che hai già completato. Alla fine di ogni settimana, un punto della sfida va a chi ha risposto a più domande di allenamento.</p>
+    ${currentWeek(topic.id) >= 0 ? `<p class="kv">Questa settimana: ${peopleFor(topic.id).map(u => `${esc(u === S.me ? "tu" : personName(u))} <b class="num">${practiceAnswered(topic, u, currentWeek(topic.id))}</b>`).join(" · ")} domande</p>` : ""}
+    <p class="kv">${studied.length ? `Domande su: <b>${isWeekly(topic) ? "settimana" : "capitolo"} ${esc(names)}</b>` : `Segna come ${isWeekly(topic) ? "completata la prima settimana" : "studiato il primo capitolo"} per sbloccarlo.`}${myPr ? ` · ${myPr.attempts} allenamenti in tutto` : ""}</p>
     <div class="row">
       <button class="btn gold" type="button" data-act="quiz" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>Allenati</button>
       ${canAsk() ? `<button class="btn small quiet" type="button" data-act="quiz-new" data-topic="${esc(topic.id)}" data-key="practice" ${studied.length ? "" : "disabled"}>Domande nuove con Claude</button>` : ""}
@@ -1058,6 +1103,10 @@ function chapterView(topic, chId) {
         <ul class="points">${(ch.points || []).map(p => `<li>${esc(p)}</li>`).join("")}</ul>
         ${ch.reading ? `<p class="reading">${esc(ch.reading)}</p>` : ""}
       </section>
+      ${(ch.media || []).length ? `<section class="sec">
+        <div class="sec-head"><h2>Da ascoltare e guardare</h2><span class="label">per questa ${isWeekly(topic) ? "settimana" : "parte"}</span></div>
+        ${mediaList(normMedia(ch.media, 6))}
+      </section>` : ""}
       <section class="sec">
         <div class="sec-head"><h2>Lezione</h2>${lesson?.createdAt ? `<span class="label">scritta da Claude</span>` : ""}</div>
         ${lessonHTML}
@@ -1100,8 +1149,9 @@ function rivalLine(topic, key, pct) {
   return others.map(u => {
     const q = prog(topic.id, u).quiz?.[key];
     const name = esc(personName(u));
-    if (key === "practice") { const h = q?.history || []; if (!h.length) return `<span class="rival">${name} non ha ancora fatto allenamenti.</span>`;
-      const avg = Math.round(h.reduce((a, b) => a + b.pct, 0) / h.length); return `<span class="rival">Media allenamenti di ${name}: <b class="num">${avg}%</b>.</span>`; }
+    if (key === "practice") { const w = currentWeek(topic.id); if (w < 0) return "";
+      const mine = practiceAnswered(topic, S.me, w), theirs = practiceAnswered(topic, u, w);
+      return `<span class="rival">Domande di allenamento questa settimana: tu <b class="num">${mine}</b>, ${name} <b class="num">${theirs}</b>. ${mine > theirs ? "Per ora il punto della settimana è tuo." : mine === theirs ? "Siete pari." : "Te ne mancano " + (theirs - mine + 1) + " per passare in vantaggio."}</span>`; }
     if (typeof q?.best !== "number") return `<span class="rival">${name} non ha ancora fatto questo test: il tuo risultato è il primo da battere.</span>`;
     const me = Math.max(pct, prog(topic.id, S.me).quiz?.[key]?.best ?? 0);
     return `<span class="rival">Record di ${name}: <b class="num">${q.best}%</b>. ${me > q.best ? "Sei in vantaggio su questo test." : me === q.best ? "Siete pari." : "Ti mancano " + (q.best - me) + " punti per raggiungere il record."}</span>`;
