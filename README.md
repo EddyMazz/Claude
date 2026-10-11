@@ -5,6 +5,7 @@ Una web app per studiare in due un argomento nuovo ogni mese e diventare più co
 - **Mese in corso**: il programma del mese con 8 capitoli, libri consigliati, film e luoghi da visitare. Mostra anche i progressi di entrambi.
 - **Capitolo**: concetti chiave e letture. C'è una lezione scritta da Claude, che resta salvata, e un tutor a cui fare domande.
 - **Test**: un quiz a scelta multipla per ogni capitolo e un esame finale. Ogni risposta ha la sua spiegazione. Si salvano il punteggio migliore e lo storico dei tentativi.
+- **Votazione**: l'argomento del mese successivo lo scegliete voi. Si propongono 5 argomenti, scritti a mano o suggeriti da Claude. Ognuno ha 3 voti da dare a 3 argomenti diversi, al massimo uno per argomento. I voti dell'altro restano nascosti finché non avete votato entrambi. Vince l'argomento con più voti. In caso di pareggio potete cambiare i voti o tirare a sorte. Il vincitore entra nel piano annuale e Claude ne prepara il programma.
 - **Piano annuale**: dodici argomenti modificabili. Claude prepara il programma completo del mese con un clic e può proporre alternative.
 - **Archivio**: tutti i mesi studiati, con i risultati di ciascuno.
 
@@ -28,3 +29,5 @@ Se aprite `studiolo/index.html` direttamente nel browser, l'app funziona in moda
 | `quizzes` | `AAAA-MM--c1` … `AAAA-MM--final` | domande dei test |
 | `lessons` | `AAAA-MM--c1` … | lezioni scritte da Claude |
 | `plan` | `year` | piano annuale |
+| `votes` | `AAAA-MM` | votazione del mese: 5 candidati, stato, vincitore |
+| `ballots` | `<utente>` | voti di ciascuno; ognuno può modificare solo i propri |

@@ -195,6 +195,27 @@ textarea { min-height: 80px; resize: vertical; }
 .empty h2 { font-family: var(--display); font-weight: 600; font-size: 28px; }
 .err { color: var(--bad); font-size: 14.5px; }
 
+/* Vote */
+.cands { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cand { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.cand.mine { border-color: var(--lapis); background: var(--lapis-soft); }
+.cand.win { border-color: var(--gold); background: var(--gold-soft); }
+.cand .rn { font-family: var(--display); font-size: 22px; color: var(--gold); text-align: center; }
+.cand .t { font-weight: 600; font-size: 17px; line-height: 1.3; }
+.cand .s { color: var(--muted); font-size: 14.5px; }
+.cand .tally { grid-column: 2 / -1; display: flex; align-items: center; gap: 10px; }
+.cand .tally .bar { flex: 1; }
+.cand .tally .bar i { background: var(--gold); }
+@media (max-width: 520px) { .cand { grid-template-columns: 30px minmax(0, 1fr); } .cand > .btn { grid-column: 2; justify-self: start; } }
+.draft { display: grid; gap: 12px; }
+.draft-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) minmax(0, 1.3fr); gap: 8px; align-items: center; }
+.draft-row .rn { font-family: var(--display); font-size: 22px; color: var(--gold); text-align: center; }
+@media (max-width: 620px) { .draft-row { grid-template-columns: 30px minmax(0, 1fr); } .draft-row input + input { grid-column: 2; } }
+.voters { display: grid; gap: 8px; }
+.ballot-dots { display: inline-flex; gap: 4px; }
+.ballot-dots i { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid var(--lapis); }
+.ballot-dots i.on { background: var(--lapis); }
+
 #toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: var(--r); font-size: 14.5px; max-width: calc(100vw - 32px); opacity: 0; pointer-events: none; transition: opacity .2s; }
 #toast.show { opacity: 1; }
 footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
@@ -209,6 +230,7 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
       </div>
       <nav class="nav" id="nav" aria-label="Sezioni">
         <button type="button" data-act="go" data-view="home">Mese in corso</button>
+        <button type="button" data-act="go" data-view="vote">Votazione</button>
         <button type="button" data-act="go" data-view="plan">Piano annuale</button>
         <button type="button" data-act="go" data-view="archive">Archivio</button>
       </nav>
@@ -308,7 +330,8 @@ const S = {
   topics: [], progress: [], plan: null, loaded: { topics: false, progress: false, plan: false },
   view: { name: "home" }, me: null, user: null, profiles: {}, canWrite: true,
   sample: null, sampleOff: false,
-  lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null, suggest: {}, planGen: null
+  lessons: {}, quizCache: {}, stream: {}, tutor: {}, busy: {}, gen: null, quiz: null, suggest: {}, planGen: null,
+  votes: [], ballots: [], picks: {}, voteSuggest: null
 };
 const canAsk = () => !!S.sample && !S.sampleOff;
 const topicById = id => S.topics.find(t => t.id === id);
@@ -350,6 +373,7 @@ function peopleFor(month) {
   const ids = new Set();
   if (S.me) ids.add(S.me);
   S.progress.forEach(p => { if ((!month || p.topic === month) && p.uid) ids.add(p.uid); });
+  if (!month) S.ballots.forEach(b => { if (b.id) ids.add(b.id); });
   return [...ids];
 }
 function personName(uid) {
@@ -642,6 +666,112 @@ async function suggestFor(month) {
   render();
 }
 
+/* ---------- vote for next month's topic ---------- */
+const VOTES_EACH = 3, CANDIDATES = 5;
+const voteMonth = () => addMonths(NOW, 1);
+const voteFor = month => S.votes.find(v => v.id === month && Array.isArray(v.candidates) && v.candidates.length) || null;
+function ballotFor(uid, round) {
+  const b = S.ballots.find(x => x.id === uid);
+  const picks = b?.rounds?.[round]?.picks;
+  return Array.isArray(picks) ? picks : null;
+}
+function voters(vote) {
+  const ids = new Set(peopleFor(null));
+  S.ballots.forEach(b => { if (b.rounds?.[vote.round]) ids.add(b.id); });
+  return [...ids];
+}
+function voteState(vote) {
+  const people = voters(vote);
+  const complete = people.filter(uid => (ballotFor(uid, vote.round) || []).length === VOTES_EACH);
+  const counts = Object.fromEntries(vote.candidates.map(c => [c.key, []]));
+  complete.forEach(uid => ballotFor(uid, vote.round).forEach(k => { if (counts[k]) counts[k].push(uid); }));
+  const max = Math.max(0, ...Object.values(counts).map(a => a.length));
+  const leaders = max ? vote.candidates.filter(c => counts[c.key].length === max) : [];
+  const revealed = vote.status === "closed" || complete.length >= 2;
+  return { people, complete, counts, max, leaders, revealed };
+}
+function myPicks(vote) {
+  return S.picks[vote.round] || [...(ballotFor(S.me, vote.round) || [])];
+}
+function togglePick(vote, key) {
+  if (vote.status !== "open") return;
+  const picks = S.picks[vote.round] = myPicks(vote), i = picks.indexOf(key);
+  if (i >= 0) picks.splice(i, 1);
+  else if (picks.length >= VOTES_EACH) { toast("Hai già usato i tuoi " + VOTES_EACH + " voti: togline uno per spostarlo."); return; }
+  else picks.push(key);
+  render();
+}
+async function submitBallot(vote) {
+  const picks = [...new Set(myPicks(vote))].filter(k => vote.candidates.some(c => c.key === k));
+  if (picks.length !== VOTES_EACH) { toast("Assegna tutti e " + VOTES_EACH + " i voti, uno per argomento."); return; }
+  if (!S.me) { toast("Accedi a Claude per votare."); return; }
+  const cur = S.ballots.find(b => b.id === S.me);
+  const rounds = { ...(cur?.rounds || {}) };
+  rounds[vote.round] = { picks, month: vote.id, at: new Date().toISOString() };
+  const keep = Object.entries(rounds).sort((a, b) => String(b[1].at).localeCompare(String(a[1].at))).slice(0, 12);
+  const doc = { uid: S.me, rounds: Object.fromEntries(keep) };
+  const row = { ...doc, id: S.me };
+  const i = S.ballots.findIndex(b => b.id === S.me);
+  if (i >= 0) S.ballots[i] = row; else S.ballots.push(row);
+  delete S.picks[vote.round];
+  render();
+  await save("ballots", S.me, doc, "Voti registrati");
+}
+function readDraft() {
+  const items = [];
+  for (let i = 0; i < CANDIDATES; i++) {
+    const t = (document.getElementById("cand-t-" + i)?.value || "").trim();
+    const st = (document.getElementById("cand-s-" + i)?.value || "").trim();
+    items.push({ title: t, subtitle: st });
+  }
+  return items;
+}
+async function openVote(month) {
+  const items = readDraft();
+  if (items.some(x => !x.title)) { toast("Scrivi tutti e " + CANDIDATES + " gli argomenti prima di aprire la votazione."); return; }
+  if (new Set(items.map(x => x.title.toLowerCase())).size < CANDIDATES) { toast("Ci sono due argomenti uguali: cambiane uno."); return; }
+  const doc = { month, round: "r" + Date.now().toString(36), status: "open", winner: null,
+    candidates: items.map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle })),
+    createdBy: S.me || null, createdAt: new Date().toISOString() };
+  S.votes = [...S.votes.filter(v => v.id !== month), { ...doc, id: month }];
+  render();
+  await save("votes", month, doc, "Votazione aperta");
+}
+async function suggestCandidates(month) {
+  if (!canAsk()) { toast("Claude non è disponibile in questa vista."); return; }
+  const current = readDraft();
+  S.voteSuggest = { busy: true }; render();
+  try {
+    const taken = [...planItems().filter(i => i.month !== month).map(i => i.title), ...S.topics.map(t => t.title)].join("; ");
+    const keepTitles = current.filter(x => x.title).map(x => x.title);
+    const r = await S.sample.json(promptSuggest(month, taken + (keepTitles.length ? "; " + keepTitles.join("; ") : "")), { modelTier: "quick", cache: false });
+    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || "") }));
+    if (!list.length) throw { code: "invalid_json" };
+    S.voteSuggest = null; render();
+    let k = 0;
+    for (let i = 0; i < CANDIDATES && k < list.length; i++) {
+      const t = document.getElementById("cand-t-" + i), st = document.getElementById("cand-s-" + i);
+      if (t && !t.value.trim()) { t.value = list[k].title; if (st) st.value = list[k].subtitle; k++; }
+    }
+    if (!k) toast("Tutte le righe sono già piene: svuotane una per ricevere un'altra proposta.");
+  } catch (e) { S.voteSuggest = { error: sampleErr(e) }; render(); }
+}
+async function closeVote(vote, pickRandom) {
+  const st = voteState(vote);
+  if (!st.leaders.length) return;
+  const winner = pickRandom ? st.leaders[Math.floor(Math.random() * st.leaders.length)] : st.leaders[0];
+  const doc = { ...vote, status: "closed", winner: winner.key, tieBreak: st.leaders.length > 1, closedAt: new Date().toISOString() };
+  delete doc.id;
+  S.votes = S.votes.map(v => v.id === vote.id ? { ...doc, id: vote.id } : v);
+  render();
+  if (!(await save("votes", vote.id, doc, "Ha vinto: " + winner.title))) return;
+  const items = planItems();
+  const next = items.some(i => i.month === vote.id)
+    ? items.map(i => i.month === vote.id ? { ...i, title: winner.title, subtitle: winner.subtitle } : i)
+    : [...items, { month: vote.id, title: winner.title, subtitle: winner.subtitle }];
+  await savePlan(next);
+}
+
 /* ---------- views ---------- */
 function personPanel(topic) {
   const ppl = peopleFor(topic.id);
@@ -709,6 +839,7 @@ function topicView(topic) {
         <h2>A che punto siamo</h2>
         ${personPanel(topic)}
       </div>
+      ${votePanel()}
       <div class="panel">
         <h2>Esame finale</h2>
         <p>Domande su tutto il mese, comprese quelle che collegano capitoli diversi. Fatelo entrambi alla fine del mese e confrontate i risultati.</p>
@@ -925,10 +1056,134 @@ function archiveView() {
     </button>`).join("")}</div>`;
 }
 
+function voteView() {
+  const month = voteMonth(), vote = voteFor(month), topic = topicById(month);
+  const header = `<section class="hero">
+    <span class="label">Votazione · ${esc(monthLabel(month))}</span>
+    <h1>Scegliete il prossimo argomento</h1>
+    <p class="intro">Cinque argomenti in gara. Ognuno di voi ha ${VOTES_EACH} voti da dare a tre argomenti diversi, al massimo un voto per argomento. I voti dell'altro restano nascosti finché non avete votato entrambi. Vince l'argomento con più voti.</p>
+  </section>`;
+
+  if (!vote) {
+    const planned = planItems().find(i => i.month === month);
+    const vs = S.voteSuggest;
+    const rows = Array.from({ length: CANDIDATES }, (_, i) => `
+      <div class="draft-row">
+        <span class="rn">${roman(i + 1)}</span>
+        <input type="text" id="cand-t-${i}" data-draft="1" placeholder="Argomento" aria-label="Argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.title) : ""}" ${S.canWrite ? "" : "disabled"}>
+        <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" value="${i === 0 && planned ? esc(planned.subtitle) : ""}" ${S.canWrite ? "" : "disabled"}>
+      </div>`).join("");
+    return header + `<section class="sec">
+      <div class="sec-head"><h2>I cinque candidati</h2><span class="label">${topic ? "il programma di questo mese è già pronto" : "ancora da proporre"}</span></div>
+      <p>Scrivete cinque argomenti che vi incuriosiscono${canAsk() ? ", oppure lasciate le righe vuote e fatevele proporre da Claude" : ""}. ${planned ? "Il primo è quello previsto dal piano annuale." : ""}</p>
+      <div class="draft">${rows}</div>
+      ${vs?.error ? `<p class="err">${esc(vs.error)}</p>` : ""}
+      <div class="row">
+        ${canAsk() && S.canWrite ? (vs?.busy ? `<span class="thinking">Claude sta cercando idee</span>` : `<button class="btn" type="button" data-act="vote-suggest">Riempi le righe vuote con Claude</button>`) : ""}
+        <button class="btn primary" type="button" data-act="vote-open" ${S.canWrite ? "" : "disabled"}>Apri la votazione</button>
+      </div>
+    </section>`;
+  }
+
+  const st = voteState(vote);
+  const closed = vote.status === "closed";
+  const picks = closed ? (ballotFor(S.me, vote.round) || []) : myPicks(vote);
+  const saved = ballotFor(S.me, vote.round) || [];
+  const dirty = !closed && (picks.length !== saved.length || picks.some(k => !saved.includes(k)));
+  const cands = vote.candidates.map((c, i) => {
+    const mine = picks.includes(c.key), n = st.counts[c.key].length, win = closed && vote.winner === c.key;
+    return `<li class="cand ${win ? "win" : mine ? "mine" : ""}">
+      <span class="rn">${roman(i + 1)}</span>
+      <div><div class="t">${esc(c.title)}</div>${c.subtitle ? `<div class="s">${esc(c.subtitle)}</div>` : ""}</div>
+      ${closed ? (win ? `<span class="chip gold">vincitore</span>` : "<span></span>")
+        : `<button class="btn small ${mine ? "primary" : ""}" type="button" data-act="vote-pick" data-key="${esc(c.key)}" aria-pressed="${mine}" ${S.me && S.canWrite ? "" : "disabled"}>${mine ? "✓ Votato" : "Vota"}</button>`}
+      ${st.revealed ? `<div class="tally">
+          <div class="bar" aria-label="${n} voti"><i style="width:${st.max ? Math.round(n / Math.max(st.max, 2) * 100) : 0}%"></i></div>
+          <span class="ticks">${st.counts[c.key].map(uid => avatar(uid, "sm")).join("")}</span>
+          <span class="label num">${n} ${n === 1 ? "voto" : "voti"}</span>
+        </div>` : ""}
+    </li>`;
+  }).join("");
+
+  const votersHTML = st.people.map(uid => {
+    const b = ballotFor(uid, vote.round) || [];
+    const done = b.length === VOTES_EACH;
+    return `<div class="score-line">${avatar(uid, "sm")}<span>${esc(personName(uid))}</span>
+      <span class="label" style="margin-left:auto">${done ? "ha votato" : "deve ancora votare"}</span></div>`;
+  }).join("");
+
+  let outcome = "";
+  if (closed) {
+    const w = vote.candidates.find(c => c.key === vote.winner);
+    outcome = `<div class="result">
+      <div style="display:grid;gap:4px;min-width:0">
+        <span class="label">Argomento di ${esc(monthLabel(month))}${vote.tieBreak ? " · scelto a sorte dopo un pareggio" : ""}</span>
+        <span class="big" style="font-size:clamp(26px,4vw,38px)">${esc(w?.title || "")}</span>
+      </div>
+      <div class="row">${topic
+        ? `<button class="btn primary" type="button" data-act="topic" data-topic="${esc(month)}">Apri il programma</button>`
+        : canAsk() && S.canWrite ? (S.gen?.month === month && !S.gen.error
+            ? `<span class="thinking">Claude scrive il programma</span><button class="btn small" type="button" data-act="stop-gen">Interrompi</button>`
+            : `<button class="btn primary" type="button" data-act="gen-topic" data-month="${esc(month)}">Prepara il programma</button>`) : ""}</div>
+      ${S.gen?.month === month && S.gen.error ? `<p class="err">${esc(S.gen.error)}</p>` : ""}
+    </div>`;
+  } else if (st.revealed && st.leaders.length) {
+    const tie = st.leaders.length > 1;
+    outcome = `<div class="result">
+      <div style="display:grid;gap:4px;min-width:0">
+        <span class="label">${tie ? "Pareggio" : "In testa"}</span>
+        <span>${tie ? `Pari merito con ${st.max} voti: ${st.leaders.map(c => "<strong>" + esc(c.title) + "</strong>").join(", ")}. Potete cambiare i vostri voti per decidere, oppure tirare a sorte.` : `<strong>${esc(st.leaders[0].title)}</strong> con ${st.max} voti.`}</span>
+      </div>
+      ${S.canWrite ? `<div class="row">${tie
+        ? `<button class="btn gold" type="button" data-act="vote-close" data-random="1">Tira a sorte tra i primi</button>`
+        : `<button class="btn gold" type="button" data-act="vote-close">Conferma il vincitore</button>`}</div>` : ""}
+    </div>`;
+  }
+
+  return header + `<div class="grid">
+    <div>
+      <section class="sec">
+        ${outcome}
+        <div class="sec-head"><h2>Candidati</h2>${closed ? `<span class="label">votazione chiusa</span>` : `<span class="label num">i tuoi voti: ${picks.length} di ${VOTES_EACH}</span>`}</div>
+        <ol class="cands">${cands}</ol>
+        ${closed ? "" : `<div class="row">
+          <button class="btn primary" type="button" data-act="vote-submit" ${S.me && S.canWrite ? "" : "disabled"}>${saved.length === VOTES_EACH ? "Aggiorna i miei voti" : "Conferma i miei voti"}</button>
+          <span class="ballot-dots" aria-hidden="true">${Array.from({ length: VOTES_EACH }, (_, i) => `<i class="${i < picks.length ? "on" : ""}"></i>`).join("")}</span>
+          ${dirty && saved.length ? `<span class="label">modifiche non ancora confermate</span>` : ""}
+        </div>`}
+      </section>
+    </div>
+    <aside class="sec">
+      <div class="panel">
+        <h2>Chi ha votato</h2>
+        <div class="voters">${votersHTML}</div>
+        ${!st.revealed ? `<p class="kv">I risultati compaiono quando avete votato entrambi.</p>` : ""}
+      </div>
+      ${S.canWrite ? `<div class="panel">
+        <h2>Ricominciare</h2>
+        <p class="kv">Scegliete cinque argomenti nuovi. I voti dati finora vengono annullati.</p>
+        ${S.busy.voteReset
+          ? `<div class="row"><button class="btn small primary" type="button" data-act="vote-reset">Sì, ricomincia</button><button class="btn small" type="button" data-act="vote-reset-cancel">Annulla</button></div>`
+          : `<div class="row"><button class="btn small" type="button" data-act="vote-reset-ask">Nuova votazione</button></div>`}
+      </div>` : ""}
+    </aside>
+  </div>`;
+}
+
+function votePanel() {
+  const month = voteMonth(), vote = voteFor(month);
+  let text, btn = "Vai alla votazione";
+  if (!vote) text = `L'argomento di ${esc(monthLabel(month).toLowerCase())} lo scegliete voi: proponete cinque candidati e votate.`;
+  else if (vote.status === "closed") { const w = vote.candidates.find(c => c.key === vote.winner); text = `Avete scelto <strong>${esc(w?.title || "")}</strong>.`; btn = "Vedi il risultato"; }
+  else { const mine = (ballotFor(S.me, vote.round) || []).length === VOTES_EACH; text = mine ? "Hai votato. Si aspetta l'altro voto." : `La votazione è aperta e ti restano ${VOTES_EACH} voti da dare.`; }
+  return `<div class="panel"><h2>Il prossimo mese</h2><p>${text}</p><div class="row"><button class="btn" type="button" data-act="go" data-view="vote">${btn}</button></div></div>`;
+}
+
 function viewHTML() {
   if (!S.loaded.topics) return `<div class="empty"><h2>Apro lo studiolo…</h2><p>Sto caricando gli argomenti e i vostri progressi.</p></div>`;
   const v = S.view;
   if (v.name === "plan") return planView();
+  if (v.name === "vote") return voteView();
   if (v.name === "archive") return archiveView();
   if (v.name === "quiz") return quizView();
   if (v.name === "chapter") { const t = topicById(v.topicId); return t ? chapterView(t, v.chId) : topicView(currentTopic()); }
@@ -947,7 +1202,7 @@ function render() {
   main.innerHTML = viewHTML();
   for (const [id, v] of Object.entries(keep)) { const el = document.getElementById(id); if (el) el.value = v; }
   if (fid) { const el = document.getElementById(fid); if (el) { el.focus({ preventScroll: true }); if (sel) try { el.setSelectionRange(sel[0], sel[1]); } catch (e) {} } }
-  const tab = S.view.name === "plan" ? "plan" : S.view.name === "archive" ? "archive" : "home";
+  const tab = ["plan", "archive", "vote"].includes(S.view.name) ? S.view.name : "home";
   document.querySelectorAll("#nav button").forEach(b => { if (b.dataset.view === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
   const ppl = peopleFor(null);
   $("#people").innerHTML = ppl.map(uid => avatar(uid)).join("");
@@ -1000,6 +1255,20 @@ document.addEventListener("click", e => {
       savePlan([...items, { month: addMonths(last, 1), title: "", subtitle: "" }]);
       break;
     }
+    case "vote-suggest": suggestCandidates(voteMonth()); break;
+    case "vote-open": openVote(voteMonth()); break;
+    case "vote-pick": { const v = voteFor(voteMonth()); if (v) togglePick(v, d.key); break; }
+    case "vote-submit": { const v = voteFor(voteMonth()); if (v) submitBallot(v); break; }
+    case "vote-close": { const v = voteFor(voteMonth()); if (v) closeVote(v, d.random === "1"); break; }
+    case "vote-reset-ask": S.busy.voteReset = true; render(); break;
+    case "vote-reset-cancel": S.busy.voteReset = false; render(); break;
+    case "vote-reset": {
+      S.busy.voteReset = false;
+      const m = voteMonth();
+      S.votes = S.votes.filter(v => v.id !== m); render();
+      save("votes", m, { month: m, candidates: [], status: "reset", resetAt: new Date().toISOString() }, "Votazione azzerata");
+      break;
+    }
     case "plan-remove": savePlan(planItems().filter(i => i.month !== d.month), "Mese tolto dal piano"); break;
   }
 });
@@ -1033,6 +1302,8 @@ async function boot() {
   }
   Store.watch("topics", rows => { S.topics = rows.filter(r => isMonth(r.id) && Array.isArray(r.chapters)).sort((a, b) => a.id.localeCompare(b.id)); S.loaded.topics = true; render(); });
   Store.watch("progress", rows => { S.progress = rows; S.loaded.progress = true; render(); refreshProfiles(); });
+  Store.watch("votes", rows => { S.votes = rows; render(); });
+  Store.watch("ballots", rows => { S.ballots = rows; render(); refreshProfiles(); });
   Store.watch("plan", rows => { S.plan = rows.find(r => r.id === "year") || null; S.loaded.plan = true; render(); });
   refreshProfiles();
 }
