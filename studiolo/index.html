@@ -842,27 +842,56 @@ Rispondi solo con un oggetto JSON con questa forma:
  "deepDives": [esattamente 10 oggetti {"title": string (breve), "why": string (1-2 frasi: di che cosa si tratta e perché è interessante)}]}
 Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; esattamente 10 approfondimenti ("deepDives"): argomenti collegati al tema del mese che le 12 lezioni NON trattano o toccano solo di sfuggita (episodi poco noti, conseguenze successive, personaggi secondari, collegamenti con altre discipline o con il presente), ciascuno abbastanza specifico da meritare una lettura a sé.`;
 }
-function promptQuiz(topic, ch) {
+const HARD_RULES = `LIVELLO: DIFFICILE. Luca e Camilla hanno fatto 30 su 30 nei test precedenti: questo test deve metterli davvero alla prova. Chi ha letto le lezioni una sola volta dovrebbe ottenere circa il 60-70%; solo chi le ha studiate con attenzione arriva sopra il 90%.
+Regole per le domande:
+- Niente domande banali di sola memoria del tipo "in che anno nacque X" o "chi era X": al massimo 5 domande puramente mnemoniche, e solo su dettagli precisi presenti nelle lezioni (non sui punti principali).
+- Almeno 8 domande "quale di queste affermazioni è FALSA" oppure "quale è l'unica affermazione corretta", con quattro affermazioni sfumate e dettagliate.
+- Almeno 5 domande di cronologia: ordinare eventi ("quale sequenza è in ordine cronologico corretto"), capire che cosa venne prima o dopo, collegare date ed eventi vicini nel tempo.
+- Almeno 6 domande di causa ed effetto o di ragionamento: perché accadde, che cosa sarebbe cambiato se, quale fattore fu decisivo, quale conseguenza non derivò da un evento.
+- Almeno 4 domande che collegano contenuti di lezioni o settimane diverse.
+- Distrattori difficili: tutte e quattro le opzioni devono essere plausibili, della stessa lunghezza e dello stesso stile, costruite con nomi, date, luoghi e cifre veri dello stesso argomento ma sbagliati in quel contesto (per esempio anni vicini, personaggi contemporanei, cause reali di altri eventi). Mai opzioni assurde o comiche, mai "tutte le precedenti" o "nessuna delle precedenti". La risposta corretta non deve essere riconoscibile per lunghezza, precisione o tono.
+- Ogni domanda deve avere una sola risposta inequivocabilmente corretta secondo i fatti; nella spiegazione chiarisci anche perché le altre opzioni sono sbagliate.`;
+const QUIZ_FORMAT = `Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (2-3 frasi: perché la risposta è giusta e perché le altre no)}]}`;
+function promptQuiz(topic, ch, context) {
   if (ch) return `Crea il test conclusivo della settimana dedicata a "${ch.title}" nel percorso "${topic.title}".
-Contenuto del capitolo: ${ch.summary} Concetti chiave: ${(ch.points || []).join("; ")}.
-${AUDIENCE}
-Scrivi esattamente 30 domande a scelta multipla (né 29 né 31), di difficoltà crescente, che coprano tutti i concetti della settimana senza ripetersi: alcune di memoria (date, nomi, opere), altre di comprensione e collegamento tra idee. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
-Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi che spiegano la risposta)}]}`;
+Contenuto della settimana: ${ch.summary} Concetti chiave: ${(ch.points || []).join("; ")}.
+${context ? "Ecco il testo delle lezioni che hanno studiato: costruisci le domande soprattutto sui dettagli, i nessi e le sfumature di questi testi.\n<lezioni>\n" + context + "\n</lezioni>\n" : ""}${AUDIENCE}
+${HARD_RULES}
+Scrivi esattamente 30 domande a scelta multipla (né 29 né 31), che coprano tutte e tre le lezioni della settimana senza ripetersi.
+${QUIZ_FORMAT}`;
   return `Crea l'esame finale del percorso mensile "${topic.title}".
-Capitoli studiati:
+Settimane studiate:
 ${topic.chapters.map((c, i) => `${i + 1}. ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
-${AUDIENCE}
-Scrivi esattamente 30 domande a scelta multipla (né 29 né 31) che coprano in modo equilibrato tutte le settimane, con almeno 8 domande che chiedono di collegare settimane diverse. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
-Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
+${context ? "Estratti delle lezioni studiate:\n<lezioni>\n" + context + "\n</lezioni>\n" : ""}${AUDIENCE}
+${HARD_RULES}
+È l'esame finale: almeno 10 domande devono collegare settimane diverse e richiedere una visione d'insieme del mese.
+Scrivi esattamente 30 domande a scelta multipla (né 29 né 31) che coprano in modo equilibrato tutte le settimane.
+${QUIZ_FORMAT}`;
 }
-function promptPractice(topic, chapters) {
+function promptPractice(topic, chapters, context) {
   return `Crea un test di allenamento sul percorso mensile "${topic.title}".
 Le domande devono riguardare SOLO questi argomenti, già studiati:
 ${chapters.map(c => `- ${c.title}: ${(c.points || []).join("; ")}`).join("\n")}
-Non fare domande su altri argomenti del percorso, anche se li conosci.
+${context ? "Testo delle lezioni studiate:\n<lezioni>\n" + context + "\n</lezioni>\n" : ""}Non fare domande su altri argomenti del percorso, anche se li conosci.
 ${AUDIENCE}
-Scrivi esattamente 10 domande a scelta multipla, distribuite tra gli argomenti elencati, diverse da quelle più ovvie. Ogni domanda ha 4 opzioni plausibili e una sola corretta, in posizione variabile.
-Rispondi solo con JSON: {"questions": [{"q": string, "options": [4 stringhe], "answer": indice 0-3 della risposta corretta, "explain": string (1-2 frasi)}]}`;
+${HARD_RULES.replace(/Almeno (\d+)/g, (m, n) => "Almeno " + Math.max(1, Math.round(n / 3)))}
+Scrivi esattamente 10 domande a scelta multipla, distribuite tra gli argomenti elencati.
+${QUIZ_FORMAT}`;
+}
+// Text of the lessons already written for these chapters, without the concept maps, trimmed per lesson.
+async function lessonContext(topic, chapters, perLesson) {
+  const parts = [];
+  for (const c of chapters) {
+    for (let k = 0; k < LESSONS_PER_WEEK; k++) {
+      const id = lessonId(topic, c, k);
+      let doc = S.lessons[id];
+      if (doc === undefined) { try { doc = await Store.get("lessons", id); } catch (e) { doc = null; } }
+      if (!doc?.text) continue;
+      const clean = doc.text.replace(/```mappa[\s\S]*?```/g, "").replace(/\n{3,}/g, "\n\n").trim();
+      parts.push(`### ${c.title} · lezione ${k + 1}: ${lessonPlan(c)[k].title}\n${clean.slice(0, perLesson)}`);
+    }
+  }
+  return parts.join("\n\n");
 }
 function promptLesson(topic, ch, i) {
   const others = S.topics.filter(t => t.id !== topic.id).map(t => t.title).join("; ");
@@ -1016,7 +1045,7 @@ const TEST_SIZE = 30, PRACTICE_SIZE = 10;
 // Ask Claude for questions until there are exactly `target` valid, distinct ones:
 // malformed questions are dropped by cleanQuestions, so top up what is missing.
 async function genQuestions(prompt, target, ctl) {
-  const opts = () => ({ modelTier: "default", signal: ctl.signal, cache: false });
+  const opts = () => ({ modelTier: "complex", signal: ctl.signal, cache: false });
   const key = q => q.q.trim().toLowerCase();
   let qs = cleanQuestions(await S.sample.json(prompt, opts()), 1) || [];
   qs = qs.filter((q, i) => qs.findIndex(x => key(x) === key(q)) === i);
@@ -1032,7 +1061,11 @@ Ora scrivi SOLO ${missing} ${missing === 1 ? "domanda nuova" : "domande nuove"},
     qs = qs.concat(add);
   }
   if (qs.length < target) throw { code: "invalid_json" };
-  return qs.slice(0, target);
+  // Shuffle the options so the right answer's position carries no hint.
+  return qs.slice(0, target).map(q => {
+    const order = shuffle([0, 1, 2, 3]);
+    return { ...q, options: order.map(i => q.options[i]), answer: order.indexOf(q.answer) };
+  });
 }
 function cleanQuestions(r, min) {
   const qs = (r && Array.isArray(r.questions) ? r.questions : []).filter(q =>
@@ -1114,7 +1147,7 @@ async function practiceQuiz(topic, withClaude) {
   const chapters = studied.map(c => c.id);
   if (withClaude) {
     const ctl = new AbortController(); S.quiz.ctl = ctl;
-    const questions = await genQuestions(promptPractice(topic, studied), PRACTICE_SIZE, ctl);
+    const questions = await genQuestions(promptPractice(topic, studied, await lessonContext(topic, studied, 6000)), PRACTICE_SIZE, ctl);
     return { questions, chapters, source: "claude" };
   }
   const banks = [];
@@ -1142,7 +1175,8 @@ async function loadQuiz(topic, key, fresh) {
   }
   const ch = key === "final" ? null : topic.chapters.find(c => c.id === key);
   const ctl = new AbortController(); S.quiz.ctl = ctl;
-  const questions = await genQuestions(promptQuiz(topic, ch), TEST_SIZE, ctl);
+  const context = ch ? await lessonContext(topic, [ch], 14000) : await lessonContext(topic, topic.chapters, 4500);
+  const questions = await genQuestions(promptQuiz(topic, ch, context), TEST_SIZE, ctl);
   const doc = { topic: topic.id, key, questions, createdAt: new Date().toISOString(), source: "claude" };
   S.quizCache[id] = doc;
   await save("quizzes", id, doc);
