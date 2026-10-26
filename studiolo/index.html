@@ -251,7 +251,7 @@ textarea { min-height: 80px; resize: vertical; }
 .cand .tally .bar i { background: var(--gold); }
 @media (max-width: 520px) { .cand { grid-template-columns: 30px minmax(0, 1fr); } .cand > .btn { grid-column: 2; justify-self: start; } }
 .draft { display: grid; gap: 12px; }
-.draft-row { display: grid; grid-template-columns: 40px minmax(0, 1fr) 150px minmax(0, 1.2fr); gap: 8px; align-items: center; }
+.draft-row { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; align-items: center; }
 .draft-row .rn { font-family: var(--display); font-size: 22px; color: var(--gold); text-align: center; }
 @media (max-width: 620px) { .draft-row { grid-template-columns: 30px minmax(0, 1fr); } .draft-row > :not(.rn) { grid-column: 2; } }
 .voters { display: grid; gap: 8px; }
@@ -1342,21 +1342,43 @@ async function submitBallot(vote) {
 }
 function readDraft() {
   const items = [];
-  for (let i = 0; i < CANDIDATES; i++) {
-    const t = (document.getElementById("cand-t-" + i)?.value || "").trim();
-    const st = (document.getElementById("cand-s-" + i)?.value || "").trim();
-    const th = normTheme(document.getElementById("cand-th-" + i)?.value);
-    items.push({ title: t, subtitle: st, theme: th });
-  }
+  for (let i = 0; i < CANDIDATES; i++) items.push({ title: (document.getElementById("cand-t-" + i)?.value || "").trim().replace(/\s+/g, " ") });
   return items;
+}
+// Claude rewrites every candidate in the same voice (title, theme, one-line description),
+// so nobody can tell which topic was proposed by whom.
+function promptCandidates(month, titles) {
+  return `Questi sono i ${titles.length} argomenti proposti per il mese di ${monthLabel(month)}, scritti in fretta da due persone diverse:
+${titles.map((t, i) => `${i + 1}. ${t}`).join("\n")}
+${AUDIENCE}
+Per ciascuno, nello stesso ordine, scrivi:
+- "title": un titolo breve e curato (al massimo 60 caratteri), nello stesso stile per tutti e cinque, che mantenga esattamente l'argomento proposto senza cambiarlo né restringerlo troppo; correggi errori e maiuscole;
+- "theme": ${THEME_RULE}
+- "subtitle": una sola riga di descrizione (al massimo 110 caratteri) che faccia venire voglia di studiarlo.
+Il tono e la lunghezza devono essere uniformi, in modo che non si capisca chi ha proposto quale argomento.
+Rispondi solo con JSON: {"items": [{"title": string, "theme": string, "subtitle": string}]} con esattamente ${titles.length} elementi.`;
 }
 async function openVote(month) {
   const items = readDraft();
   if (items.some(x => !x.title)) { toast("Scrivi tutti e " + CANDIDATES + " gli argomenti prima di aprire la votazione."); return; }
-  if (items.some(x => !x.theme)) { toast("Scegli il tema di ogni argomento."); return; }
   if (new Set(items.map(x => x.title.toLowerCase())).size < CANDIDATES) { toast("Ci sono due argomenti uguali: cambiane uno."); return; }
+  if (!canAsk()) { toast("Per aprire la votazione serve Claude, che scrive tema e descrizione di ogni argomento."); return; }
+  S.busy.opening = true; render();
+  let polished;
+  try {
+    const r = await S.sample.json(promptCandidates(month, items.map(x => x.title)), { modelTier: "default", cache: false });
+    polished = (r && Array.isArray(r.items) ? r.items : []).slice(0, CANDIDATES).map((x, i) => ({
+      title: String(x?.title || items[i].title).trim().slice(0, 80) || items[i].title,
+      subtitle: String(x?.subtitle || "").trim().slice(0, 160),
+      theme: normTheme(x?.theme)
+    }));
+    if (polished.length !== CANDIDATES || polished.some(x => !x.theme || !x.subtitle)) throw { code: "invalid_json" };
+  } catch (e) {
+    S.busy.opening = false; render(); toast(sampleErr(e)); return;
+  }
+  S.busy.opening = false;
   const doc = { month, round: "r" + Date.now().toString(36), status: "open", winner: null,
-    candidates: items.map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle, theme: x.theme })),
+    candidates: shuffle(polished).map((x, i) => ({ key: "k" + (i + 1), title: x.title, subtitle: x.subtitle, theme: x.theme })),
     createdBy: S.me || null, createdAt: new Date().toISOString() };
   if (S.votes.find(v => v.id === month)?.currentMonth) doc.currentMonth = true;
   S.votes = [...S.votes.filter(v => v.id !== month), { ...doc, id: month }];
@@ -1371,15 +1393,13 @@ async function suggestCandidates(month) {
     const taken = S.topics.map(t => t.title).join("; ");
     const keepTitles = current.filter(x => x.title).map(x => x.title);
     const r = await S.sample.json(promptSuggest(month, taken + (keepTitles.length ? "; " + keepTitles.join("; ") : "")), { modelTier: "quick", cache: false });
-    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title && normTheme(x.theme)).map(x => ({ title: String(x.title), subtitle: String(x.subtitle || ""), theme: normTheme(x.theme) }));
+    const list = (Array.isArray(r) ? r : []).filter(x => x && x.title).map(x => ({ title: String(x.title) }));
     if (!list.length) throw { code: "invalid_json" };
     S.voteSuggest = null; render();
-    const used = new Set(current.filter(x => x.title && x.theme).map(x => x.theme));
-    const fresh = [...list.filter(x => !used.has(x.theme)), ...list.filter(x => used.has(x.theme))];
     let k = 0;
-    for (let i = 0; i < CANDIDATES && k < fresh.length; i++) {
-      const t = document.getElementById("cand-t-" + i), st = document.getElementById("cand-s-" + i), th = document.getElementById("cand-th-" + i);
-      if (t && !t.value.trim()) { t.value = fresh[k].title; if (st) st.value = fresh[k].subtitle; if (th) th.value = fresh[k].theme; k++; }
+    for (let i = 0; i < CANDIDATES && k < list.length; i++) {
+      const t = document.getElementById("cand-t-" + i);
+      if (t && !t.value.trim()) { t.value = list[k].title; k++; }
     }
     if (!k) toast("Tutte le righe sono già piene: svuotane una per ricevere un'altra proposta.");
   } catch (e) { S.voteSuggest = { error: sampleErr(e) }; render(); }
@@ -1787,17 +1807,16 @@ function voteView() {
     const rows = Array.from({ length: CANDIDATES }, (_, i) => `
       <div class="draft-row">
         <span class="rn">${roman(i + 1)}</span>
-        <input type="text" id="cand-t-${i}" data-draft="1" placeholder="Argomento" aria-label="Argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}>
-        ${themeSelect("cand-th-" + i, "", `data-draft="1" aria-label="Tema dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}`)}
-        <input type="text" id="cand-s-${i}" data-draft="1" placeholder="Una riga di descrizione (facoltativa)" aria-label="Descrizione dell'argomento ${i + 1}" ${S.canWrite ? "" : "disabled"}>
+        <input type="text" id="cand-t-${i}" data-draft="1" maxlength="90" placeholder="Argomento" aria-label="Argomento ${i + 1}" ${S.canWrite && !S.busy.opening ? "" : "disabled"}>
       </div>`).join("");
     return header + `<section class="sec">
       ${secHead("layers", "Cinque candidati")}
+      <p class="kv">${ic("sparkles")} Scrivete solo l'argomento: tema, descrizione e ordine li decide Claude, così non si capisce chi ha proposto cosa.</p>
       <div class="draft">${rows}</div>
       ${vs?.error ? `<p class="err">${esc(vs.error)}</p>` : ""}
       <div class="row">
         ${canAsk() && S.canWrite ? (vs?.busy ? `<span class="thinking">Claude sta cercando idee</span>` : `<button class="btn" type="button" data-act="vote-suggest">${ic("sparkles")}Riempi con Claude</button>`) : ""}
-        <button class="btn primary" type="button" data-act="vote-open" ${S.canWrite ? "" : "disabled"}>${ic("vote")}Apri la votazione</button>
+        ${S.busy.opening ? `<span class="thinking">Claude prepara le schede dei candidati</span>` : `<button class="btn primary" type="button" data-act="vote-open" ${S.canWrite ? "" : "disabled"}>${ic("vote")}Apri la votazione</button>`}
       </div>
     </section>`;
   }
