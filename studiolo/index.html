@@ -397,6 +397,46 @@ footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
 .arch .card { border: 0; box-shadow: var(--shadow); }
 .plan li { padding: 16px 0; }
 [hidden] { display: none !important; }
+.hall { margin-bottom: 36px; }
+.hf-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 16px; align-items: stretch; }
+@media (max-width: 860px) { .hf-grid { grid-template-columns: minmax(0, 1fr); } }
+.hf-spot { position: relative; overflow: hidden; display: grid; gap: 16px; align-content: start; padding: 22px; border-radius: 18px; color: var(--ink);
+  background: radial-gradient(130% 120% at 100% 0%, var(--gold-soft) 0%, transparent 60%), radial-gradient(120% 120% at 0% 100%, var(--lapis-soft) 0%, transparent 55%), var(--surface);
+  box-shadow: 0 0 0 2px var(--gold), var(--shadow); }
+.hf-spot .label .ic { color: var(--gold); }
+.hf-winner { display: flex; align-items: center; gap: 16px; position: relative; }
+.hf-crown { position: absolute; left: 14px; top: -20px; color: var(--gold); }
+.hf-crown .ic { width: 34px; height: 34px; fill: var(--gold-soft); stroke-width: 1.6; }
+.hf-av { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; color: var(--on-accent); font-family: var(--mono); font-size: 14px; flex: none; }
+.hf-av.big { width: 64px; height: 64px; font-size: 20px; box-shadow: 0 0 0 4px var(--gold-soft), 0 0 0 6px var(--gold); }
+.hf-av.sm { width: 26px; height: 26px; font-size: 10px; }
+.hf-pair { display: flex; }
+.hf-pair .hf-av { width: 56px; height: 56px; font-size: 18px; box-shadow: 0 0 0 3px var(--surface); }
+.hf-pair .hf-av + .hf-av { margin-left: -14px; }
+.hf-kicker { font-size: 13.5px; color: var(--muted); }
+.hf-name { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 5vw, 44px); line-height: 1.05; }
+.hf-score { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; font-family: var(--display); font-size: 24px; font-weight: 600; }
+.hf-dash { color: var(--muted); }
+.hf-tests { display: flex; gap: 14px; flex-wrap: wrap; }
+.hf-test { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; }
+.hf-test em { font-style: normal; font-family: var(--display); color: var(--muted); margin-right: 3px; }
+.hf-test em .ic { width: 12px; height: 12px; }
+.hf-test i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; border: 1.5px solid var(--line); }
+.hf-test i[style] { border: 0; }
+.hf-board { display: grid; gap: 12px; align-content: start; padding: 18px; border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
+.hf-tally { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.hf-tal { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--muted); }
+.hf-tal b { font-family: var(--display); font-size: 24px; color: var(--ink); }
+.hf-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.hf-list li { display: grid; grid-template-columns: 116px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.hf-list li:last-child { border-bottom: 0; }
+.hf-month { font-family: var(--display); font-style: italic; color: var(--gold); }
+.hf-topic { display: inline-flex; align-items: center; gap: 8px; min-width: 0; background: none; border: 0; padding: 0; text-align: left; cursor: pointer; color: var(--ink); font-weight: 600; }
+.hf-topic span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hf-topic .chip { flex: none; }
+.hf-res { display: inline-flex; gap: 5px; font-family: var(--display); font-size: 18px; }
+.hf-res span { color: var(--muted); }
+@media (max-width: 560px) { .hf-list li { grid-template-columns: minmax(0, 1fr) auto; } .hf-month { grid-column: 1 / -1; } .hf-who { grid-column: 1 / -1; } .hf-topic .chip { display: none; } }
 .deeps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .deep { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); }
 .deep.on { box-shadow: 0 0 0 2px var(--gold), var(--shadow); }
@@ -547,6 +587,7 @@ const ICON = {
   scale: '<path d="m16 16 3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1zM2 16l3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1zM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>',
   flask: '<path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3M7 15h10"/>',
   cpu: '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>',
+  crown: '<path d="M2 7l4.5 10h11L22 7l-5.5 4L12 4l-4.5 7z"/><path d="M6 21h12"/>',
   music: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>'
 };
 const ic = (n, cls = "") => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n] || ""}</svg>`;
@@ -1442,6 +1483,52 @@ function challenge(topic) {
   log.sort((a, b) => String(b.at).localeCompare(String(a.at)));
   return { ppl, pts, rows, practice, log: log.slice(0, 10) };
 }
+/* ---------- hall of fame: last month's winner and the results board ---------- */
+function monthOutcome(topic) {
+  const c = challenge(topic);
+  if (c.ppl.length < 2) return null;
+  const order = [c.ppl.find(u => u === S.me) || c.ppl[0]];
+  order.push(c.ppl.find(u => u !== order[0]));
+  const max = Math.max(...order.map(u => c.pts[u]));
+  const winners = order.filter(u => c.pts[u] === max);
+  return { topic, c, order, winners, tie: winners.length > 1 };
+}
+function hallSection() {
+  const past = S.topics.filter(t => t.id < NOW).sort((a, b) => b.id.localeCompare(a.id)).map(monthOutcome).filter(Boolean);
+  if (!past.length) return "";
+  const last = past[0], t = last.topic, mName = monthLabel(t.id).split(" ")[0].toLowerCase();
+  const [a, b] = last.order, w = last.winners[0];
+  const cells = last.c.rows.map(r => `<span class="hf-test ${r.lead.length === 2 ? "tie" : ""}" title="${esc(r.label)}">
+      <em>${r.key === "final" ? ic("flag") : roman(t.chapters.findIndex(ch => ch.id === r.key) + 1)}</em>
+      ${r.lead.length ? r.lead.map(u => `<i style="background:${toneOf(u)}"></i>`).join("") : "<i></i>"}
+    </span>`).join("");
+  const spotlight = `<div class="hf-spot ${last.tie ? "tie" : ""}">
+      <span class="label">${ic("trophy")} ${esc(monthLabel(t.id))} · ${esc(t.title)}</span>
+      ${last.tie
+        ? `<div class="hf-winner"><div class="hf-pair">${last.winners.map(u => `<span class="hf-av" style="background:${toneOf(u)}">${esc(initials(personName(u)))}</span>`).join("")}</div>
+           <div><span class="hf-kicker">${esc(mName.charAt(0).toUpperCase() + mName.slice(1))} finisce in parità</span><h3 class="hf-name">${last.winners.map(u => esc(personName(u))).join(" e ")}</h3></div></div>`
+        : `<div class="hf-winner"><span class="hf-crown">${ic("crown")}</span><span class="hf-av big" style="background:${toneOf(w)}">${esc(initials(personName(w)))}</span>
+           <div><span class="hf-kicker">Ha vinto la sfida di ${esc(mName)}</span><h3 class="hf-name">${esc(personName(w))}</h3></div></div>`}
+      <div class="hf-score num"><span style="color:${toneOf(a)}">${esc(personName(a))} ${last.c.pts[a]}</span><span class="hf-dash">–</span><span style="color:${toneOf(b)}">${last.c.pts[b]} ${esc(personName(b))}</span></div>
+      <div class="hf-tests">${cells}</div>
+    </div>`;
+  const wins = {}; let ties = 0;
+  past.forEach(o => { if (o.tie) ties++; else wins[o.winners[0]] = (wins[o.winners[0]] || 0) + 1; });
+  const tallyPeople = last.order;
+  const board = `<div class="hf-board">
+      <div class="hf-tally">${tallyPeople.map(u => `<span class="hf-tal"><span class="hf-av sm" style="background:${toneOf(u)}">${esc(initials(personName(u)))}</span><b class="num">${wins[u] || 0}</b><span>${(wins[u] || 0) === 1 ? "mese vinto" : "mesi vinti"}</span></span>`).join("")}${ties ? `<span class="hf-tal"><b class="num">${ties}</b><span>${ties === 1 ? "pareggio" : "pareggi"}</span></span>` : ""}</div>
+      <ol class="hf-list">${past.map(o => `<li>
+        <span class="hf-month">${esc(monthLabel(o.topic.id))}</span>
+        <button class="hf-topic" type="button" data-act="topic" data-topic="${esc(o.topic.id)}">${themeChip(o.topic.theme)}<span>${esc(o.topic.title)}</span></button>
+        <span class="hf-res num">${o.order.map(u => `<b style="color:${toneOf(u)}">${o.c.pts[u]}</b>`).join("<span>–</span>")}</span>
+        <span class="hf-who">${o.tie ? `<span class="chip">parità</span>` : `<span class="chip gold">${ic("trophy")}${esc(personName(o.winners[0]))}</span>`}</span>
+      </li>`).join("")}</ol>
+    </div>`;
+  return `<section class="sec hall" aria-label="Albo d'oro">
+    ${secHead("trophy", "Albo d'oro", "i mesi conclusi")}
+    <div class="hf-grid">${spotlight}${board}</div>
+  </section>`;
+}
 function scoreboard(topic) {
   const c = challenge(topic);
   if (!c.ppl.length) return "";
@@ -1559,6 +1646,7 @@ function topicView(topic) {
     </div>
     ${topic.intro ? `<details class="intro-more"><summary>Perché studiarlo</summary><p class="intro">${esc(topic.intro)}</p></details>` : ""}
   </section>
+  ${isNow ? hallSection() : ""}
   ${scoreboard(topic)}
   <div class="grid">
     <div class="maincol">
@@ -1600,7 +1688,8 @@ function practicePanel(topic) {
   </div>`;
 }
 
-function homeEmpty() {
+function homeEmpty() { return homeEmptyCard() + hallSection(); }
+function homeEmptyCard() {
   const v = voteFor(NOW), item = v?.status === "closed" ? v.candidates.find(c => c.key === v.winner) : null;
   const busy = S.gen?.month === NOW && !S.gen.error;
   return `<div class="empty">
