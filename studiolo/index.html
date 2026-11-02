@@ -884,7 +884,7 @@ Rispondi solo con un oggetto JSON con questa forma:
   }],
  "deepDives": [esattamente 10 oggetti {"title": string (breve), "why": string (1-2 frasi: di che cosa si tratta e perché è interessante)}]}
 Regole: esattamente 4 capitoli, uno per ogni settimana del mese, in ordine logico, ciascuno abbastanza ricco da occupare una settimana di studio; esattamente 10 approfondimenti ("deepDives"): argomenti collegati al tema del mese che le 12 lezioni NON trattano o toccano solo di sfuggita (episodi poco noti, conseguenze successive, personaggi secondari, collegamenti con altre discipline o con il presente), ciascuno abbastanza specifico da meritare una lettura a sé.
-Argomenti tecnici o pratici: se l'argomento ha anche una dimensione che si può imparare a fare (una tecnica, un'abilità, un metodo, uno strumento, una disciplina pratica: per esempio la fotografia, la tecnica di memoria dei luoghi, gli investimenti, la programmazione, la cucina, il disegno, un'arte marziale), metti "kind": "pratico" e dividi il mese a metà: le settimane 1 e 2 con "kind": "storia" raccontano storia, contesto e protagonisti come in un percorso normale; le settimane 3 e 4 con "kind": "pratica" sono una guida per imparare davvero a farlo, dai fondamenti agli esercizi progressivi, con metodo passo passo, errori comuni e un piano di allenamento realistico per due adulti con poco tempo. Se l'argomento è solo da conoscere e non da praticare, metti "kind": "teorico" e tutte e 4 le settimane con "kind": "storia".`;
+Argomenti tecnici o pratici: se l'argomento ha anche una dimensione che si può imparare a fare (una tecnica, un'abilità, un metodo, uno strumento, una disciplina pratica: per esempio la fotografia, la tecnica di memoria dei luoghi, gli investimenti, la programmazione, la cucina, il disegno, un'arte marziale), metti "kind": "pratico" e dividi il mese a metà: le settimane 1 e 2 con "kind": "storia" raccontano storia, contesto e protagonisti come in un percorso normale; le settimane 3 e 4 con "kind": "pratica" sono una guida per imparare davvero a farlo, dai fondamenti agli esercizi progressivi, con metodo passo passo, esercizi da svolgere da soli, errori comuni e un piano di allenamento individuale realistico per un adulto con poco tempo. Se l'argomento è solo da conoscere e non da praticare, metti "kind": "teorico" e tutte e 4 le settimane con "kind": "storia".`;
 }
 const HARD_RULES = `LIVELLO: DIFFICILE. Luca e Camilla hanno fatto 30 su 30 nei test precedenti: questo test deve metterli davvero alla prova. Chi ha letto le lezioni una sola volta dovrebbe ottenere circa il 60-70%; solo chi le ha studiate con attenzione arriva sopra il 90%.
 Regole per le domande:
@@ -940,11 +940,11 @@ async function lessonContext(topic, chapters, perLesson) {
 }
 // Structure for the "how to learn it" weeks of a practical topic.
 function practicalLessonRules(siblings) {
-  return `Questa è una lezione PRATICA: è una guida per imparare a farlo, non un capitolo di storia. Parla direttamente a Luca e Camilla ("provate", "fate"), con istruzioni concrete e verificabili. Lunghezza: 1500-2000 parole, mappa esclusa.
+  return `Questa è una lezione PRATICA: è una guida per imparare a farlo, non un capitolo di storia. Luca e Camilla studiano ciascuno per conto proprio: rivolgiti al singolo lettore ("prova", "fai"), con istruzioni concrete e verificabili. Ogni esercizio deve poter essere svolto da una persona sola, senza partner, senza sfide in coppia e senza bisogno di qualcuno che controlli. Lunghezza: 1500-2000 parole, mappa esclusa.
 Usa esattamente questi titoli, in quest'ordine:
 
-## Che cosa imparerete
-3-4 frasi: l'abilità concreta che avrete alla fine della lezione e perché conta.
+## Che cosa imparerai
+3-4 frasi: l'abilità concreta che avrai alla fine della lezione e perché conta.
 
 ## I fondamenti
 I concetti, gli strumenti e il lessico indispensabili, spiegati in modo semplice. Includi un elenco "- **Termine** — spiegazione in una riga" con 5-8 voci.
@@ -953,13 +953,13 @@ I concetti, gli strumenti e il lessico indispensabili, spiegati in modo semplice
 Il metodo in passaggi numerati (1., 2., 3. ...), ognuno con che cosa fare, come farlo e come capire se lo state facendo bene.
 
 ## Esercizi
-3-5 esercizi progressivi da fare in due, dal più facile al più impegnativo, ciascuno con un titoletto in grassetto, il tempo necessario e il risultato atteso. Almeno uno deve essere una piccola sfida tra voi.
+3-5 esercizi progressivi da fare da soli, dal più facile al più impegnativo, ciascuno con un titoletto in grassetto, il tempo necessario, il risultato atteso e un modo per verificare da sé se è riuscito (per esempio contare quanti elementi si ricordano o cronometrarsi).
 
 ## Errori comuni
 4-6 errori tipici dei principianti, in elenco, ciascuno con il modo per evitarlo.
 
 ## Piano di allenamento
-Un piano realistico per i prossimi 7 giorni (15-30 minuti al giorno), in elenco giorno per giorno, collegato alle altre settimane del mese (${siblings}).
+Un piano individuale realistico per i prossimi 7 giorni (15-30 minuti al giorno), in elenco giorno per giorno, collegato alle altre settimane del mese (${siblings}).
 
 ## Mappa di riepilogo
 Subito sotto il titolo, un blocco di codice con linguaggio "mappa" che contiene SOLO un oggetto JSON con questa forma:
@@ -969,9 +969,9 @@ Subito sotto il titolo, un blocco di codice con linguaggio "mappa" che contiene 
 Metti 4-6 rami che riassumono il metodo.
 
 ## Per discuterne in due
-2 domande per confrontarvi su come è andata la pratica.
+2 domande per confrontarsi, a esercizi finiti, su come è andata la pratica di ciascuno.
 
-Usa Markdown semplice: titoli con ## e ###, elenchi con - o numerati, grassetto con **. Nessun preambolo: inizia direttamente con "## Che cosa imparerete".`;
+Usa Markdown semplice: titoli con ## e ###, elenchi con - o numerati, grassetto con **. Nessun preambolo: inizia direttamente con "## Che cosa imparerai".`;
 }
 function promptLesson(topic, ch, i) {
   const others = S.topics.filter(t => t.id !== topic.id).map(t => t.title).join("; ");
